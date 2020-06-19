@@ -7,6 +7,7 @@ import {Assets} from "./common/http/Api";
 
 import LaunchController from "./mainController/LaunchController";
 import MainController from "./mainController/MainController";
+import WXController from "./mainController/WXController";
 
 export default function App() {
     console.disableYellowBox = true;
@@ -24,5 +25,6 @@ function ScreenList() {
     return <Navigator initialPage={LaunchController} headerMode='none'>
         <Screen name='Launch' component={LaunchController}/>
         <Screen name='Main' component={MainController}/>
+        <Screen name='WX' component={WXController}/>
     </Navigator>;
 }

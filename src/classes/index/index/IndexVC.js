@@ -45,7 +45,9 @@ export default class IndexVC extends PureComponent {
     render() {
         return (
             <View style={[CommonStyles.container, {marginTop: INSETS.top}]}>
-
+                <TouchableOpacity onPress={()=>{
+                    navigation.push('WX');
+                }}><Text>111111</Text></TouchableOpacity>
             </View>
         );
     }
