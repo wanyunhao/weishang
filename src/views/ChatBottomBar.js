@@ -51,7 +51,7 @@ export default class ChatBottomBar extends Component {
         >
           <Image
             style={styles.icon}
-            source={require("../../images/ic_chat_sound.png")}
+            source={require("../classes/resource/images/ic_chat_sound.png")}
           />
         </TouchableOpacity>
         <TextInput
@@ -67,7 +67,7 @@ export default class ChatBottomBar extends Component {
         >
           <Image
             style={styles.icon}
-            source={require("../../images/ic_chat_emoji.png")}
+            source={require("../classes/resource/images/ic_chat_emoji.png")}
           />
         </TouchableOpacity>
         {Utils.isEmpty(this.state.inputMsg) ? (
@@ -77,7 +77,7 @@ export default class ChatBottomBar extends Component {
           >
             <Image
               style={[styles.icon, { marginLeft: 10 }]}
-              source={require("../../images/ic_chat_add.png")}
+              source={require("../classes/resource/images/ic_chat_add.png")}
             />
           </TouchableOpacity>
         ) : (
@@ -110,7 +110,7 @@ export default class ChatBottomBar extends Component {
         >
           <Image
             style={styles.icon}
-            source={require("../../images/ic_chat_keyboard.png")}
+            source={require("../classes/resource/images/ic_chat_keyboard.png")}
           />
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={0.5} style={{ flex: 1 }}>
@@ -124,7 +124,7 @@ export default class ChatBottomBar extends Component {
         >
           <Image
             style={styles.icon}
-            source={require("../../images/ic_chat_emoji.png")}
+            source={require("../classes/resource/images/ic_chat_emoji.png")}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -133,7 +133,7 @@ export default class ChatBottomBar extends Component {
         >
           <Image
             style={[styles.icon, { marginLeft: 10 }]}
-            source={require("../../images/ic_chat_add.png")}
+            source={require("../classes/resource/images/ic_chat_add.png")}
           />
         </TouchableOpacity>
       </View>
