@@ -38,7 +38,7 @@ export default class HongBaoCell extends Component {
             <Text style={{color:Colors.white,fontWeight:'bold',fontSize:14,position: 'absolute',left:62,top:21}}>恭喜发财,大吉大利</Text>
           </View>
         </View>
-        <YHHongBaoPopView/>
+        <YHHongBaoPopView finishAnimation={this.props.finishAnimation}/>
       </View>
     );
   }

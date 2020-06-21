@@ -22,6 +22,7 @@ import {
 import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
 import HongBaoCell from "./views/HongBaoCell";
 import YHHongBaoPopView from "./views/YHHongBaoPopView";
+import {showToast} from "../../../../common/widgets/Loading";
 
 const { width } = Dimensions.get("window");
 
@@ -47,7 +48,11 @@ export default class ChattingScreen extends Component {
         }}/>
 
         {this.state.showHongbao? (
-            <HongBaoCell/>
+            <HongBaoCell finishAnimation={()=>{
+              this.setState({
+                showHongbao: false
+              })
+            }}/>
         ): null}
       </View>
     );
