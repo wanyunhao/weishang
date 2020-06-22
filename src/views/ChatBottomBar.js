@@ -22,7 +22,7 @@ export default class ChatBottomBar extends Component {
       barState: BAR_STATE_SHOW_KEYBOARD,
       showEmojiView: false,
       showMoreView: false,
-      inputMsg: ""
+      inputMsg: "123"
     };
   }
 

@@ -7,6 +7,7 @@ import Utils from "../../../../common/utils/WXUtils";
 // import TabConfig from "../configs/TabNavConfigs";
 import ListItemDivider from "../../../../views/ListItemDivider";
 import ImageAdapter from "../../../../views/ImageAdapter";
+import Emoticons from "react-native-emoticons";
 
 import {
   Dimensions,
@@ -18,11 +19,14 @@ import {
   TouchableHighlight,
   View,
   LayoutAnimation,
+  Keyboard,
 } from "react-native";
 import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
 import HongBaoCell from "./views/HongBaoCell";
 import YHHongBaoPopView from "./views/YHHongBaoPopView";
 import {showToast} from "../../../../common/widgets/Loading";
+import ChatBottomBar from "../../../../views/ChatBottomBar";
+import MoreView from "../../../../views/MoreView";
 
 const { width } = Dimensions.get("window");
 
@@ -32,13 +36,78 @@ export default class ChattingScreen extends Component {
     super(props);
     this.state = {
       userInfo: {},
-      showHongbao: false
-      // avatar: UserInfoUtil.getUserAvatar()
+      showHongbao: false,
+      showEmojiView: false,
+      showMoreView: false,
     };
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+        "keyboardDidShow",
+        () => {
+          // 键盘显示，则隐藏底部View
+          this.updateView(false, false);
+        }
+    );
+  }
+
+  updateView = (emoji, more) => {
+    this.setState(
+        {
+          showEmojiView: emoji,
+          showMoreView: more
+        },
+        () => {
+          if (emoji || more) {
+            Keyboard.dismiss();
+          }
+        }
+    );
+  };
 
   render() {
+    var moreView = [];
+    if (this.state.showEmojiView) {
+      moreView.push(
+          <View key={"emoji-view-key"}>
+            <View
+                style={{
+                  width: width,
+                  height: 1 / PixelRatio.get(),
+                  backgroundColor: Global.dividerColor
+                }}
+            />
+            <View style={{ height: Global.emojiViewHeight }}>
+              {/* <EmojiView /> */}
+              <Emoticons
+                  onEmoticonPress={this._onEmoticonPress}
+                  onBackspacePress={this._onBackspacePress}
+                  show={this.state.showEmojiView}
+                  concise={false}
+                  showHistoryBar={false}
+                  showPlusBar={false}
+              />
+            </View>
+          </View>
+      );
+    }
+    if (this.state.showMoreView) {
+      moreView.push(
+          <View key={"more-view-key"}>
+            <View
+                style={{
+                  width: width,
+                  height: 1 / PixelRatio.get(),
+                  backgroundColor: Global.dividerColor
+                }}
+            />
+            <View style={{ height: Global.addViewHeight }}>
+              <MoreView sendImageMessage={this.sendImageMessage.bind(this)} />
+            </View>
+          </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <NavigationBar title='我的' onBack={()=>{
@@ -54,6 +123,7 @@ export default class ChattingScreen extends Component {
               })
             }}/>
         ): null}
+        <ChatBottomBar/>
       </View>
     );
   }
