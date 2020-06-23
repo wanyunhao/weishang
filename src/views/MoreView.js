@@ -4,23 +4,24 @@ import Utils from '../common/utils/WXUtils';
 // import ImagePicker from 'react-native-image-crop-picker';
 
 import {Dimensions, Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
+import {Colors} from "../common/storage/Const";
 
 const {width} = Dimensions.get('window');
 
 const icons = [
-  require('../classes/resource/images/ic_more_card.png'),
-  require('../classes/resource/images/ic_more_take_pic.png'),
-  require('../classes/resource/images/ic_more_recorder.png'),
-  require('../classes/resource/images/ic_more_position.png'),
-  require('../classes/resource/images/ic_more_movie.png'),
-  require('../classes/resource/images/ic_more_phone.png'),
-  require('../classes/resource/images/ic_more_gallery.png'),
-  require('../classes/resource/images/ic_more_collection.png'),
+  require('../classes/resource/index/chat/wxlt_icon_xc.png'),
+  require('../classes/resource/index/chat/wxlt_icon_ps.png'),
+  require('../classes/resource/index/chat/wxlt_icon_spth.png'),
+  require('../classes/resource/index/chat/wxlt_icon_wz.png'),
+  require('../classes/resource/index/chat/wxlt_icon_hb.png'),
+  require('../classes/resource/index/chat/wxlt_icon_zz.png'),
+  require('../classes/resource/index/chat/wxlt_icon_yysr.png'),
+  require('../classes/resource/index/chat/wxlt_icon_wdsc.png'),
 ];
 
 const iconTexts = [
-  "相册", "拍摄", "语音聊天", "位置",
-  "红包", "语音输入", "名片", "我的收藏"
+  "相册", "拍摄", "视频通话", "位置",
+  "红包", "转账", "语音输入", "我的收藏"
 ];
 
 export default class MoreView extends Component {
@@ -116,22 +117,24 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cellImgContainer: {
-    width: 55,
-    height: 55,
+    width: 53,
+    height: 53,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FBFBFB',
+    backgroundColor: Colors.white,
     borderWidth: 1 / PixelRatio.get(),
     borderColor: '#DFDFDF',
     borderRadius: 10,
   },
   cellImage: {
-    width: 35,
-    height: 35,
+    width: 53,
+    height: 53,
   },
   cellText: {
-    fontSize: 12,
+    fontSize: 10,
     width: 55,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 6,
+    color:'#787878'
   }
 });

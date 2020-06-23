@@ -8,6 +8,9 @@ import MsgListCell from "./views/MsgListCell";
 import {XFlatList} from "react-native-easy-app";
 import ChatListCell from "./views/ChatListCell";
 import ChatZhuanZhangListCell from "./views/ChatZhuanZhangListCell";
+import ChatBottomBar from "../../../../views/ChatBottomBar";
+import ChatBottomBarView from "./views/ChatBottomBarView";
+import MoreView from "../../../../views/MoreView";
 
 const { width } = Dimensions.get("window");
 
@@ -38,6 +41,7 @@ export default class ChattingScreen extends Component {
         }}/>
 
         <XFlatList data={data}
+                   style={{marginBottom:52}}
                    renderItem={({item, index}) => {
                     switch (index) {
                       case 0:
@@ -93,7 +97,8 @@ export default class ChattingScreen extends Component {
                     }
                    }}
         />
-
+        <ChatBottomBarView bottom={220}/>
+        <MoreView/>
         {/*{this.state.showHongbao? (*/}
         {/*    <HongBaoCell finishAnimation={()=>{*/}
         {/*      this.setState({*/}

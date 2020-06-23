@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaProvider, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator,CardStyleInterpolators,HeaderStyleInterpolators,TransitionSpecs} from '@react-navigation/stack';
 import {XWidget} from "react-native-easy-app";
 import {Assets} from "./common/http/Api";
 
@@ -24,8 +24,10 @@ export default function App() {
 function ScreenList() {
     global.INSETS = useSafeAreaInsets();
     XWidget.initResource(Assets).initReferenceScreen(375, 677);
+    // return <MyStack />
     const {Navigator, Screen} = createStackNavigator();
-    return <Navigator initialPage={LaunchController} headerMode='none'>
+    return <Navigator initialPage={LaunchController} headerMode='none' screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // 切换路由时水平动画
+        headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}>
         <Screen name='Launch' component={LaunchController}/>
         <Screen name='Main' component={MainController}/>
         <Screen name='WX' component={WXController}/>
@@ -33,4 +35,18 @@ function ScreenList() {
         <Screen name='LoginVC' component={LoginVC}/>
         <Screen name='ChattingScreen' component={ChattingScreen}/>
     </Navigator>;
+}
+const Stack = createStackNavigator();
+
+function MyStack() {
+
+    return (
+        <Stack.Navigator  headerMode='none' screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, // 切换路由时水平动画
+            headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,}}>
+            <Stack.Screen name="Launch" component={LaunchController} />
+            <Stack.Screen name="Main" component={MainController} />
+            <Stack.Screen name="WX" component={WXController}/>
+            <Stack.Screen name="ChattingScreen" component={ChattingScreen}/>
+        </Stack.Navigator>
+    );
 }
