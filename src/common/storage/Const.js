@@ -31,11 +31,15 @@ export const Colors = { //App通用颜色
     text_hint: '#C8C8C8',
     split_line: '#D0D0D1',//分割线色值
     disable: '#F4F4F5',   //不可用颜色
-    page_bg: '#F5F5F5',   //默认页面背景色
+    page_bg: '#ededed',   //默认页面背景色
     transparent: 'transparent',
     gray_text_color: '#A2A2A2',
     deep_gray_text_color: '#464646',
     black_text_color: '#000000',
+    tabbar_normal_color: '#000000',
+    tabbar_select_color: '#0ABF60',
+    qipao_background_color: '#95EC69',
+
 };
 
 export const CommonStyles = {

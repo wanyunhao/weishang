@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
         flex: 1,
-        fontSize: 17,
+        fontSize: 16,
+        fontWeight: 'bold',
         textAlign: 'center',
         color: Colors.text,
         paddingHorizontal: 50,

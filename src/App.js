@@ -8,6 +8,9 @@ import {Assets} from "./common/http/Api";
 import LaunchController from "./mainController/LaunchController";
 import MainController from "./mainController/MainController";
 import WXController from "./mainController/WXController";
+import LoginVC from "./classes/login/LoginVC";
+import RegisterVC from "./classes/login/RegisterVC";
+import ChattingScreen from "./classes/index/wx/chat/ChattingScreen";
 
 export default function App() {
     console.disableYellowBox = true;
@@ -26,5 +29,8 @@ function ScreenList() {
         <Screen name='Launch' component={LaunchController}/>
         <Screen name='Main' component={MainController}/>
         <Screen name='WX' component={WXController}/>
+        <Screen name='Register' component={RegisterVC}/>
+        <Screen name='LoginVC' component={LoginVC}/>
+        <Screen name='ChattingScreen' component={ChattingScreen}/>
     </Navigator>;
 }

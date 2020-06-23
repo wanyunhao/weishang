@@ -17,6 +17,7 @@ export default class LaunchController extends PureComponent {
         XStorage.initStorage(RNStorage, AsyncStorage, () => {
             global.navigation = this.props.navigation;
             navigation.replace('Main')
+            // navigation.replace('LoginVC')
         }, this.printLog);
     };
 

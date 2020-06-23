@@ -10,6 +10,7 @@ import {
     Text,
     View,
 } from 'react-native';
+import {Const} from "../storage/Const";
 
 export default class YHDividingLine extends Component {
 
@@ -35,7 +36,7 @@ export default class YHDividingLine extends Component {
                 backgroundColor: this.props.line_color || '#eeeeee',
                 height: 0.5,
                 right: this.props.right,
-            }, this.props.isBottom ? styles.bottom_line : styles.top_line]}>
+            }, this.props.isBottom ? {bottom: this.props.bottom || 0,} : {top: this.props.top || 0,}]}>
 
             </View>
 
