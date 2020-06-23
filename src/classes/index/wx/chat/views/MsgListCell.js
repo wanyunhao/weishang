@@ -15,11 +15,11 @@ export default class MsgListCell extends Component {
     render() {
         return (
             <YHTouchableOpacity style={styles.container} onPress={this.props.itemClick}>
-                <View style={{flexDirection: 'row', paddingVertical: 13, paddingHorizontal: 17, alignItems:'center'}}>
-                    <XImage style={{borderRadius: 5}} icon={require('../../../../resource/images/avatar.png')} iconSize={51}
+                <View style={{flexDirection: 'row', paddingVertical: 11, paddingHorizontal: 15, alignItems:'center'}}>
+                    <XImage style={{borderRadius: 5}} icon={require('../../../../resource/images/avatar.png')} iconSize={45}
                             onPress={() => {
                             }}/>
-                    <View style={{flex: 1,marginLeft:10,}}>
+                    <View style={{flex: 1,marginLeft:11,}}>
                         <Text style={{fontSize:16,color:Colors.black_text_color}}>名称</Text>
                         <Text style={{fontSize:12,color:Colors.gray_text_color,marginTop:5}}>[语音消息]</Text>
                     </View>
