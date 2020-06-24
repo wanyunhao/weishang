@@ -18,7 +18,7 @@ export default class SideBar extends Component {
     }
     return (
       <View
-        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',position:'absolute',right:0,top:100}}>
+        style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',position:'absolute',top:0,right:0,bottom:0}}>
         {letterViewArr}
       </View>
     );

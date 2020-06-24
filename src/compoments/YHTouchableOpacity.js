@@ -10,9 +10,15 @@ import {
 export default class YHTouchableOpacity extends Component {
     render() {
         return (
-            <TouchableOpacity activeOpacity={1} {...this.props}>
+            this.props.text ? (
+                <TouchableOpacity activeOpacity={1} {...this.props} style={[this.props.style,{alignItems:'center',justifyContent:'center'}]}>
+                    <Text style={this.props.textStyle}>{this.props.text}</Text>
+                </TouchableOpacity>
+            ): (
+                <TouchableOpacity activeOpacity={1} {...this.props}>
 
-            </TouchableOpacity>
+                </TouchableOpacity>
+            )
         );
     }
 }

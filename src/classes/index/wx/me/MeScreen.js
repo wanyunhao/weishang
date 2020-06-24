@@ -76,7 +76,7 @@ export default class MeScreen extends Component {
             title: '支付',
             icon: require('../../../resource/index/wx/me/wd_icon_zf.png'),
           }} itemClick={() => {
-
+            navigation.push('PayScreen');
           }}/>
           <DiscoveryListCell hasLine marginTop={8} data={{
             title: '收藏',

@@ -34,11 +34,14 @@ export const Colors = { //App通用颜色
     page_bg: '#ededed',   //默认页面背景色
     transparent: 'transparent',
     gray_text_color: '#A2A2A2',
+    pay_gray_text_color: '#706F75',
     deep_gray_text_color: '#464646',
     black_text_color: '#000000',
+    wx_black_text_color: '#1A1A1A',
     tabbar_normal_color: '#000000',
     tabbar_select_color: '#0ABF60',
     qipao_background_color: '#95EC69',
+    wx_line_color: '#EBEBEB',
 
 };
 

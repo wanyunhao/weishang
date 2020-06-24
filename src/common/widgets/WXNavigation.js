@@ -8,14 +8,14 @@ import {Colors, CommonStyles, Const, ImageRes} from '../storage/Const';
 import {XImage, XText, XView} from 'react-native-easy-app';
 
 export function WXNavigationBar({onBack, clickRText, clickRImage, ...props}) {
-    let {title, hideBack = false, rightImage, rightText, noLine = false} = props;
+    let {title, hideBack = false, rightImage, rightText, noLine = false,nav_bg_color,left_img,left_img_size} = props;
     let lineStyle = noLine ? {} : CommonStyles.bottomLine;
-    return <XView style={{backgroundColor: Colors.white}}>
-        <XView style={[styles.titleBarParent, lineStyle,{marginTop: INSETS.top}]}>
+    return <XView style={{backgroundColor: nav_bg_color != null ? nav_bg_color : '#EDEDED',}}>
+        <XView style={[styles.titleBarParent, lineStyle,{marginTop: INSETS.top,backgroundColor: nav_bg_color != null ? nav_bg_color : '#EDEDED'}]}>
             {!isEmpty(title) && <XText style={[styles.titleText,{marginLeft:hideBack ? 13 : 36}]} numberOfLines={1} text={title}/>}
-            {!hideBack && <XImage style={styles.leftImage} icon={ImageRes.wx_back} iconSize={16} onPress={() => onBack && onBack()}/>}
+            {!hideBack && <XImage style={styles.leftImage} icon={left_img || ImageRes.wx_back} iconSize={left_img_size || 16} onPress={() => onBack && onBack()}/>}
             {rightText && <XText style={[styles.rightText]} text={rightText} onPress={() => clickRText && clickRText()}/>}
-            {rightImage && <XImage style={styles.rightImage} icon={rightImage} iconSize={22} onPress={() => clickRImage && clickRImage()}/>}
+            {rightImage && <XImage style={styles.rightImage} icon={rightImage} iconSize={15} onPress={() => clickRImage && clickRImage()}/>}
         </XView>
     </XView>;
 }
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: Const.isIos ? 44 : 50,
-        backgroundColor: '#EDEDED',
 
     },
     leftImage: {
@@ -61,8 +60,9 @@ const styles = StyleSheet.create({
     rightText: {
         right: 0,
         padding: 10,
-        fontSize: 13,
-        color: Colors.text,
+        marginRight:10,
+        fontSize: 14,
+        color: '#181818',
         position: 'absolute',
     },
 });
