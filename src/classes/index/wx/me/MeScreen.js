@@ -16,9 +16,12 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
+  View,
 } from "react-native";
 import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
+import {Colors} from "../../../../common/storage/Const";
+import {XImage} from "react-native-easy-app";
+import DiscoveryListCell from "../discovery/view/DiscoveryListCell";
 
 const { width } = Dimensions.get("window");
 
@@ -59,79 +62,53 @@ export default class MeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <NavigationBar title='我的' hideBack={true}/>
-        <View style={styles.divider} />
-        <ScrollView style={styles.content}>
-          <View style={{ width: width, height: 20 }} />
-          <TouchableHighlight
-            underlayColor={Global.touchableHighlightColor}
-            onPress={() => {
-              this.turnOnPage("PersonInfo");
-            }}
-          >
-            <View style={styles.meInfoContainer}>
-              <ImageAdapter
-                width={60}
-                height={60}
-                // path={UserInfoUtil.userInfo.avatarThumbPath}
-              />
-              <View style={styles.meInfoTextContainer}>
-                <Text style={styles.meInfoNickName}>
-                  {this.state.userInfo.username}
-                </Text>
-                <Text style={styles.meInfoWeChatId}>
-                  {"昵称：" + this.state.userInfo.nickname}
-                </Text>
-              </View>
-              <Image
-                style={styles.meInfoQRCode}
-                source={require("../../../resource/images/ic_qr_code.png")}
-              />
+        <ScrollView>
+          <View style={{backgroundColor: Colors.white}}>
+            <View style={{marginTop: INSETS.top,height:161.71}}>
+              <XImage icon={require('../../../resource/images/avatar.png')} iconSize={58} style={{position:'absolute',left:24,top:65}}/>
+              <Text style={{position:'absolute',left:98,top:65,fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>用户名</Text>
+              <XImage icon={require('../../../resource/index/wx/me/xiagnj.png')} style={{position:'absolute',right:16,top:16,width:18.5,height:15}}/>
+              <XImage icon={require('../../../resource/index/wx/me/ewm.png')} iconSize={11.32} style={{position:'absolute',bottom:44,right:38}}/>
+              <XImage icon={require('../../../resource/common/right.png')} style={{position:'absolute',bottom:40,right:15,width:10,height:20}}/>
             </View>
-          </TouchableHighlight>
-          <View />
-          <View style={{ width: width, height: 20 }} />
-          <ListItem
-            icon={require("../../../resource/images/ic_wallet.png")}
-            text={"钱包"}
-          />
-          <View style={{ width: width, height: 20 }} />
-          <ListItem
-            icon={require("../../../resource/images/ic_collect.png")}
-            text={"收藏"}
-            showDivider={true}
-          />
-          <ListItemDivider />
-          <ListItem
-            icon={require("../../../resource/images/ic_gallery.png")}
-            text={"相册"}
-            showDivider={true}
-            handleClick={() => {
-              this.turnOnPage("Moment");
-            }}
-          />
-          <ListItemDivider />
-          <ListItem
-            icon={require("../../../resource/images/ic_kabao.png")}
-            text={"卡包"}
-            showDivider={true}
-            handleClick={() => {
-              this.turnOnPage("CardPackage");
-            }}
-          />
-          <ListItemDivider />
-          <ListItem icon={require("../../../resource/images/ic_emoji.png")} text={"表情"} />
-          <View style={{ width: width, height: 20 }} />
-          <ListItem
-            icon={require("../../../resource/images/ic_settings.png")}
-            text={"设置"}
-            handleClick={() => {
-              this.turnOnPage("Settings");
-            }}
-          />
-          <View style={{ width: width, height: 20 }} />
+          </View>
+          <DiscoveryListCell marginTop={8} data={{
+            title: '支付',
+            icon: require('../../../resource/index/wx/me/wd_icon_zf.png'),
+          }} itemClick={() => {
+
+          }}/>
+          <DiscoveryListCell hasLine marginTop={8} data={{
+            title: '收藏',
+            icon: require('../../../resource/index/wx/me/wd_icon_sc.png'),
+          }} itemClick={() => {
+
+          }}/>
+          <DiscoveryListCell hasLine data={{
+            title: '相册',
+            icon: require('../../../resource/index/wx/me/wd_icon_xc.png'),
+          }} itemClick={() => {
+
+          }}/>
+          <DiscoveryListCell hasLine data={{
+            title: '卡包',
+            icon: require('../../../resource/index/wx/me/wd_icon_kb.png'),
+          }} itemClick={() => {
+
+          }}/>
+          <DiscoveryListCell data={{
+            title: '表情',
+            icon: require('../../../resource/index/wx/me/wd_icon_bq.png'),
+          }} itemClick={() => {
+
+          }}/>
+          <DiscoveryListCell marginTop={8} data={{
+            title: '设置',
+            icon: require('../../../resource/index/wx/me/wd_icon_sz.png'),
+          }} itemClick={() => {
+
+          }}/>
         </ScrollView>
-        <View style={styles.divider} />
       </View>
     );
   }
@@ -148,6 +125,7 @@ export default class MeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:Colors.page_bg
   },
   divider: {
     width: width,
