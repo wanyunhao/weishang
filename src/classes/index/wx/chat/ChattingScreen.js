@@ -11,6 +11,7 @@ import ChatZhuanZhangListCell from "./views/ChatZhuanZhangListCell";
 import ChatBottomBar from "../../../../views/ChatBottomBar";
 import ChatBottomBarView from "./views/ChatBottomBarView";
 import MoreView from "../../../../views/MoreView";
+import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 
 const { width } = Dimensions.get("window");
 
@@ -34,11 +35,12 @@ export default class ChattingScreen extends Component {
     let data = ['1', '2','3',4,1,6,7,7,1,1,1,1]
     return (
       <View style={styles.container}>
-        <NavigationBar title='消息' onBack={()=>{
-          this.setState({
-            showHongbao: !this.state.showHongbao
-          })
-        }}/>
+        <WXNavigationBar title='消息'/>
+        {/*<NavigationBar title='消息' onBack={()=>{*/}
+        {/*  this.setState({*/}
+        {/*    showHongbao: !this.state.showHongbao*/}
+        {/*  })*/}
+        {/*}}/>*/}
 
         <XFlatList data={data}
                    style={{marginBottom:52}}

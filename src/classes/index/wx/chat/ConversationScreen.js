@@ -6,6 +6,7 @@ import HongBaoCell from "./views/HongBaoCell";
 import {XFlatList} from "react-native-easy-app";
 import MsgListCell from "./views/MsgListCell";
 import {Colors} from "../../../../common/storage/Const";
+import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 
 const {width} = Dimensions.get("window");
 
@@ -23,7 +24,7 @@ export default class ConversationScreen extends Component {
         let data = ['1', '2']
         return (
             <View style={styles.container}>
-                <NavigationBar title='消息' hideBack={true}/>
+                <WXNavigationBar title='微信' hideBack={true}/>
                 <XFlatList data={data}
                            style={{backgroundColor: Colors.white}}
                            renderItem={({item, index}) => <MsgListCell itemClick={() => {

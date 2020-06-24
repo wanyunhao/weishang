@@ -4,7 +4,7 @@ import React, {Component} from "react";
 // import TabConfig from "../configs/TabNavConfigs";
 
 import {Dimensions, StyleSheet, View,ScrollView} from "react-native";
-import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
+import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {Colors} from "../../../../common/storage/Const";
 import MsgListCell from "../chat/views/MsgListCell";
 import {XFlatList} from "react-native-easy-app";
@@ -17,49 +17,12 @@ export default class DiscoveryScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.data = [
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-            {
-                title: '朋友圈',
-                icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
-                right_icon: require('../../../resource/images/avatar.png')
-            },
-        ]
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <NavigationBar title='发现' hideBack={true}/>
+                <WXNavigationBar title='发现' hideBack={true}/>
                 <ScrollView>
                     <DiscoveryListCell data={{
                         title: '朋友圈',

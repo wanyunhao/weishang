@@ -24,6 +24,7 @@ import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
 import SideBar from "./views/SideBar";
 import {showToast} from "../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
+import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 
 const { width } = Dimensions.get("window");
 
@@ -231,7 +232,7 @@ export default class ContactScreen extends Component {
     this.listData = listData;
     return (
       <View style={styles.container}>
-        <NavigationBar title='通讯录' hideBack={true}/>
+        <WXNavigationBar title='通讯录' hideBack={true}/>
         <View style={styles.content}>
           <FlatList
               ref={"list"}
