@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {XStorage} from 'react-native-easy-app';
 import {RNStorage} from '../common/storage/AppStorage';
 import XLog from "../common/utils/XLog";
+import {queryAllFromRealm, SelfTableName, SelfTableNameSchema, writeToRealm} from "../common/utils/RealmUtil";
 
 export default class LaunchController extends PureComponent {
 
@@ -16,6 +17,12 @@ export default class LaunchController extends PureComponent {
     initAsync = () => {
         XStorage.initStorage(RNStorage, AsyncStorage, () => {
             global.navigation = this.props.navigation;
+            queryAllFromRealm(SelfTableName).then((data)=>{
+                if (data == null) {
+                    let userinfo = {user_id:1,user_name:'wyh',avatar:'https://avatars0.githubusercontent.com/u/15177441?s=60&v=4'}
+                    writeToRealm(userinfo,SelfTableName,SelfTableNameSchema);
+                }
+            })
             navigation.replace('Main')
             // navigation.replace('LoginVC')
         }, this.printLog);
