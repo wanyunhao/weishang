@@ -12,7 +12,7 @@ import {
     queryAllFromRealm,
     writeToRealm,
     WXConversationSchema,
-    WXConversationTableName, instance, MSGTableName
+    WXConversationTableName, instance, MSGTableName, UsersTableName
 } from "../../../../common/utils/RealmUtil";
 import {showMsg} from "react-native-debug-tool/lib/utils/DebugUtils";
 
@@ -23,45 +23,45 @@ export default class ConversationScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            realm: null,
             data:[],
         };
     }
 
     componentDidMount() {
-        queryAllFromRealm(WXConversationTableName)
-            .then((data)=>{
-                // showMsg(data)
-                console.log(data);
-                // this.setState({
-                //     data:data,
-                // })
-            })
+        this.realm = instance;
+        var objects = this.realm.objects(WXConversationTableName);
+        var data = [];
+        for (const objectsKey in objects) {
+            let model = objects[objectsKey];
+            let user = this.realm.objects(UsersTableName).filtered('id=' + model.user_id);
+            if (user != null) {
+                model.userinfo = user[0];
+            }
+            data.push(model);
+        }
+        this.setState({
+            data:data,
+        })
     }
 
     componentWillUnmount() {
-        // Close the realm if there is one open.
-        // const {realm} = this.state;
-        // if (realm !== null && !realm.isClosed) {
-        //     realm.close();
+        // if (this.realm !== null && !this.realm.isClosed) {
+        //     this.realm.close();
         // }
-    }
-    componentWillMount() {
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={()=>{
-                    let realm = instance;
+                    let conversation = this.realm.objects(WXConversationTableName).filtered('id=1')
+                    if (conversation != null) {
+                        let msgs = conversation[0].msgs || [];
+                        this.realm.write(() => {
+                            msgs.push({id:106,other: true,type:1,text:'垃圾试试水'})
+                        });
+                    }
 
-                    let conversation = realm.objects(WXConversationTableName).filtered('id=1')
-                    // showMsg(conversation);
-                    let msgs = conversation.msgs || [];
-                    msgs.push({id:101,other: true,type:1,text:'垃圾试试水'})
-                    realm.write(() => {
-                        realm.create(WXConversationTableName, {id: 1,msgs: msgs}, Realm.UpdateMode.Modified);
-                    });
                     // realm.write(()=>{
                     //     let conversation =
                     // })
@@ -70,7 +70,7 @@ export default class ConversationScreen extends Component {
 
                 <XFlatList data={this.state.data}
                            style={{backgroundColor: Colors.white}}
-                           renderItem={({item, index}) => <MsgListCell itemClick={() => {
+                           renderItem={({item, index}) => <MsgListCell data={item} itemClick={() => {
                                navigation.push('ChattingScreen');
                            }}/>}
                 />
