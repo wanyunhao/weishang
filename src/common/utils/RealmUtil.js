@@ -14,7 +14,8 @@ export const WXConversationSchema = {
         id: 'int',
         user_id: 'int',
         df_user_id: 'int',
-        msgs: {type: 'list', objectType: MSGTableName},
+        last_time: 'string?',
+        last_type: 'string?',
     }
 };
 
@@ -44,7 +45,8 @@ export const WXMSGSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
-        other : 'bool',
+        c_id: 'int',//会话id
+        send_id : 'int',
         type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账
         user_name: 'string?',
         avatar: 'string?',
@@ -84,6 +86,14 @@ export function writeToRealm(obj,tabName) {
 export function queryAllFromRealm(tabName) {
     return new Promise((resolve, reject) => {
         let obj = instance.objects(tabName);
+        let objStr = JSON.stringify(obj);
+        resolve(JSON.parse(objStr))
+    })
+}
+
+export function queryFilterFromRealm(tabName,filter) {
+    return new Promise((resolve, reject) => {
+        let obj = instance.objects(tabName).filtered(filter);
         let objStr = JSON.stringify(obj);
         resolve(JSON.parse(objStr))
     })

@@ -71,7 +71,7 @@ export default class ConversationScreen extends Component {
                 <XFlatList data={this.state.data}
                            style={{backgroundColor: Colors.white}}
                            renderItem={({item, index}) => <MsgListCell data={item} itemClick={() => {
-                               navigation.push('ChattingScreen');
+                               navigation.push('ChattingScreen',{data:item});
                            }}/>}
                 />
             </View>

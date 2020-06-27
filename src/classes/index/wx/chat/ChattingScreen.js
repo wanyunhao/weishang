@@ -12,6 +12,7 @@ import ChatBottomBar from "../../../../views/ChatBottomBar";
 import ChatBottomBarView from "./views/ChatBottomBarView";
 import MoreView from "../../../../views/MoreView";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
+import {instance, MSGTableName, queryFilterFromRealm} from "../../../../common/utils/RealmUtil";
 
 const { width } = Dimensions.get("window");
 
@@ -24,14 +25,24 @@ export default class ChattingScreen extends Component {
       showHongbao: false,
       showEmojiView: false,
       showMoreView: false,
+      c_data: {}
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      c_data: this.props.route.params.data
+    },()=>{
+      queryFilterFromRealm(MSGTableName,'c_id='+this.state.c_data.id).then((data)=>{
+        console.log(data);
+      });
+    })
   }
 
   componentWillMount() {
   }
 
   render() {
-
     let data = ['1', '2','3',4,1,6,7,7,1,1,1,1]
     return (
       <View style={styles.container}>
@@ -99,7 +110,7 @@ export default class ChattingScreen extends Component {
                     }
                    }}
         />
-        <ChatBottomBarView bottom={220}/>
+        <ChatBottomBarView bottom={220} c_id={this.state.c_data.id} send_id={1}/>
         <MoreView/>
         {/*{this.state.showHongbao? (*/}
         {/*    <HongBaoCell finishAnimation={()=>{*/}

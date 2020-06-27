@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import {instance} from "../common/utils/RealmUtil";
 
 const BAR_STATE_SHOW_KEYBOARD = 1;
 const BAR_STATE_SHOW_RECORDER = 2;
@@ -94,11 +95,14 @@ export default class ChatBottomBar extends Component {
   }
 
   sendMsg() {
-    let onSendBtnClickListener = this.props.handleSendBtnClick;
-    if (!Utils.isEmpty(onSendBtnClickListener)) {
-      onSendBtnClickListener(this.state.inputMsg);
-    }
-    this.setState({ inputMsg: "" });
+    instance.write(()=>{
+
+    })
+    // let onSendBtnClickListener = this.props.handleSendBtnClick;
+    // if (!Utils.isEmpty(onSendBtnClickListener)) {
+    //   onSendBtnClickListener(this.state.inputMsg);
+    // }
+    // this.setState({ inputMsg: "" });
   }
 
   renderRecorderView() {
