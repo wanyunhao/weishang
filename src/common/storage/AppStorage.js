@@ -2,6 +2,7 @@ import React from 'react';
 import DeviceInfo from 'react-native-device-info';
 
 export const RNStorage = {//持久化数据列表
+    user_id: undefined,
     token: undefined,
     avatarUrl: undefined,
     customerId: undefined,//客户ID

@@ -12,7 +12,9 @@ import ChatBottomBar from "../../../../views/ChatBottomBar";
 import ChatBottomBarView from "./views/ChatBottomBarView";
 import MoreView from "../../../../views/MoreView";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
-import {instance, MSGTableName, queryFilterFromRealm} from "../../../../common/utils/RealmUtil";
+import {instance, MSGTableName, queryFilterFromRealm, UsersTableName} from "../../../../common/utils/RealmUtil";
+import {RNStorage} from "../../../../common/storage/AppStorage";
+import {isEmpty} from "../../../../common/utils/Utils";
 
 const { width } = Dimensions.get("window");
 
@@ -25,7 +27,8 @@ export default class ChattingScreen extends Component {
       showHongbao: false,
       showEmojiView: false,
       showMoreView: false,
-      c_data: {}
+      c_data: {},
+      data: []
     };
   }
 
@@ -33,10 +36,26 @@ export default class ChattingScreen extends Component {
     this.setState({
       c_data: this.props.route.params.data
     },()=>{
-      queryFilterFromRealm(MSGTableName,'c_id='+this.state.c_data.id).then((data)=>{
-        console.log(data);
-      });
+      this.queryChat();
     })
+  }
+
+  queryChat() {
+    queryFilterFromRealm(MSGTableName,'c_id='+this.state.c_data.id).then((data)=>{
+      let dataArray = [];
+      for (const dataKey in data) {
+        let model = data[dataKey];
+        queryFilterFromRealm(UsersTableName,'id=' + model.send_id).then((data1)=>{
+          if (!isEmpty(data1)) {
+            model.userinfo = data1[0];
+            dataArray.push(model);
+          }
+        })
+      }
+      this.setState({
+        data:dataArray
+      })
+    });
   }
 
   componentWillMount() {
@@ -53,21 +72,17 @@ export default class ChattingScreen extends Component {
         {/*  })*/}
         {/*}}/>*/}
 
-        <XFlatList data={data}
+        <XFlatList data={this.state.data}
                    style={{marginBottom:52}}
                    renderItem={({item, index}) => {
-                    switch (index) {
-                      case 0:
-                        return (
-                            <HongBaoCell/>
-                        )
+                    switch (item.type) {
                       case 1:
                         return (
-                            <HongBaoCell/>
+                            <ChatListCell isSelf={RNStorage.user_id == item.send_id} data={item}/>
                         )
                       case 2:
                         return (
-                            <ChatListCell isSelf/>
+                            <ChatListCell isSelf={RNStorage.user_id == item.send_id}/>
                         )
                       case 3:
                         return (
@@ -75,42 +90,25 @@ export default class ChattingScreen extends Component {
                         )
                       case 4:
                         return (
-                            <ChatZhuanZhangListCell isSelf/>
+                            <ChatZhuanZhangListCell isSelf={RNStorage.user_id == item.send_id}/>
                         )
                       case 5:
                         return (
-                            <ChatZhuanZhangListCell/>
+                            // <ChatZhuanZhangListCell/>
+                            <HongBaoCell isSelf={RNStorage.user_id == item.send_id} isReceived={item.isReceived}/>
                         )
                       case 6:
                         return (
-                            <ChatZhuanZhangListCell isSelf isReceived/>
-                        )
-                      case 7:
-                        return (
-                            <ChatZhuanZhangListCell isReceived/>
-                        )
-                      case 8:
-                        return (
-                            <HongBaoCell isSelf/>
-                        )
-                      case 9:
-                        return (
-                            <HongBaoCell/>
-                        )
-                      case 10:
-                        return (
-                            <HongBaoCell isSelf isReceived/>
-                        )
-                      case 11:
-                        return (
-                            <HongBaoCell isReceived/>
+                            <ChatZhuanZhangListCell isSelf={RNStorage.user_id == item.send_id} isReceived={item.isReceived}/>
                         )
                       default:
                         break;
                     }
                    }}
         />
-        <ChatBottomBarView bottom={220} c_id={this.state.c_data.id} send_id={1}/>
+        <ChatBottomBarView bottom={220} c_id={this.state.c_data.id} refrshChat={()=>{
+          this.queryChat();
+        }}/>
         <MoreView/>
         {/*{this.state.showHongbao? (*/}
         {/*    <HongBaoCell finishAnimation={()=>{*/}

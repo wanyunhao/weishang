@@ -14,6 +14,8 @@ import Utils from '../../../../../common/utils/WXUtils'
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import {instance, MSGTableName} from "../../../../../common/utils/RealmUtil";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
+import {getNow} from "../../../../../common/utils/DateUtils";
 
 
 const BAR_STATE_SHOW_KEYBOARD = 1;
@@ -32,7 +34,6 @@ export default class ChatBottomBarView extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.c_id = this.props.c_id;
-        this.send_id = this.props.send_id;
     }
 
 
@@ -71,6 +72,7 @@ export default class ChatBottomBarView extends Component {
                 <View
                     style={styles.input}>
                     <TextInput
+                        style={{height:'100%'}}
                         value={this.state.inputMsg}
                         onChangeText={text => {
                             this.setState({inputMsg: text});
@@ -120,14 +122,14 @@ export default class ChatBottomBarView extends Component {
         // }
         instance.write(() => {
             instance.create(MSGTableName, {
-                id: 1,
+                id: getNow(),
                 c_id: this.c_id,
-                send_id: this.send_id,
+                send_id: RNStorage.user_id,
                 type: 1,
                 text: this.state.inputMsg
             }, Realm.UpdateMode.Never);
         });
-        this.setState({inputMsg: ""});
+        this.setState({inputMsg: ""},this.props.refrshChat);
     }
 
     renderRecorderView() {

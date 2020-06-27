@@ -45,7 +45,7 @@ export default class MoreView extends Component {
       );
     }
     return (
-      <View style={styles.moreViewContainer}>
+      <View style={[styles.moreViewContainer,{paddingBottom:INSETS.bottom}]}>
         {page}
       </View>
     );

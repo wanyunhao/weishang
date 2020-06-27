@@ -56,6 +56,7 @@ export const WXMSGSchema = {
         shipin: 'string?',
         hongbao : 'string?',
         zhuanzhang: 'string?',
+        isReceived: 'bool?',
 
     }
 };
@@ -86,16 +87,24 @@ export function writeToRealm(obj,tabName) {
 export function queryAllFromRealm(tabName) {
     return new Promise((resolve, reject) => {
         let obj = instance.objects(tabName);
-        let objStr = JSON.stringify(obj);
-        resolve(JSON.parse(objStr))
+        let data = [];
+        for (const objectsKey in obj) {
+            let model = obj[objectsKey];
+            data.push(model);
+        }
+        resolve(data);
     })
 }
 
 export function queryFilterFromRealm(tabName,filter) {
     return new Promise((resolve, reject) => {
         let obj = instance.objects(tabName).filtered(filter);
-        let objStr = JSON.stringify(obj);
-        resolve(JSON.parse(objStr))
+        let data = [];
+        for (const objectsKey in obj) {
+            let model = obj[objectsKey];
+            data.push(model);
+        }
+        resolve(data);
     })
 }
 

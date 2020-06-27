@@ -3,6 +3,9 @@ import {isEmpty, numFormat} from "./Utils";
 
 let clickTimes = 0, lastClickTime;//连续点击事件
 
+export function getNow() {
+    return (new Date()).valueOf();
+}
 export function dateFormat(dateTime = (new Date()).valueOf(), format = "yyyy-MM-dd") {
     if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateTime)) return dateTime;
     let date = new Date(dateTime);
