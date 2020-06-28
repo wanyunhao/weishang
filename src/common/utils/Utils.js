@@ -24,7 +24,7 @@ export function toStr(target) {//返回字符串
     return typeof target === 'object' ? JSON.stringify(target) : target;
 }
 
-export function isEmpty(obj): Boolean {
+export function isEmpty(obj) {
     if (obj === undefined || obj == null) {
         return true;
     }
