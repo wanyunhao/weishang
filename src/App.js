@@ -16,6 +16,8 @@ import WalletScreen from "./classes/index/wx/me/pay/WalletScreen";
 import BillsScreen from "./classes/index/wx/me/pay/BillsScreen";
 import PocketMoneyScreen from "./classes/index/wx/me/pay/PocketMoneyScreen";
 import TiXianScreen from "./classes/index/wx/me/pay/TiXianScreen";
+import AddBankCardScreen from "./classes/index/wx/me/pay/AddBankCardScreen";
+import PYQListScreen from "./classes/index/wx/discovery/PYQListScreen";
 
 export default function App() {
     console.disableYellowBox = true;
@@ -43,5 +45,7 @@ function ScreenList() {
         <Screen name='BillsScreen' component={BillsScreen}/>
         <Screen name='PocketMoneyScreen' component={PocketMoneyScreen}/>
         <Screen name='TiXianScreen' component={TiXianScreen}/>
+        <Screen name='PYQListScreen' component={PYQListScreen}/>
+        <Screen name='AddBankCardScreen' component={AddBankCardScreen}/>
     </Navigator>;
 }

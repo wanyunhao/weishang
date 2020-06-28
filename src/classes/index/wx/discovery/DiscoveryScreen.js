@@ -29,7 +29,7 @@ export default class DiscoveryScreen extends Component {
                         icon: require('../../../resource/index/wx/fx/wx_fx_pyq.png'),
                         right_icon: require('../../../resource/images/avatar.png')
                     }} itemClick={() => {
-
+                        navigation.push('PYQListScreen');
                     }}/>
                     <DiscoveryListCell hasLine marginTop={8} data={{
                         title: '扫一扫',
