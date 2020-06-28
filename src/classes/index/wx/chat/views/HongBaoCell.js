@@ -32,7 +32,7 @@ export default class HongBaoCell extends Component {
     let isSelf = this.props.isSelf;
     let isReceived = this.props.isReceived;
     return (
-      <YHTouchableOpacity style={styles.container}>
+      <YHTouchableOpacity style={styles.container} {...this.props}>
         <View style={{flexDirection: 'row', paddingTop: 11, paddingHorizontal: 11, alignItems:'center'}}>
           {isSelf? null:(<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={require('../../../../resource/images/avatar.png')} iconSize={38}
                                  onPress={() => {
@@ -57,6 +57,7 @@ export default class HongBaoCell extends Component {
                              onPress={() => {
                              }}/>): null}
         </View>
+
         {/*<YHHongBaoPopView finishAnimation={this.props.finishAnimation}/>*/}
       </YHTouchableOpacity>
     );

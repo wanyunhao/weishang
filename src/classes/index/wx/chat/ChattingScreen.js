@@ -15,6 +15,7 @@ import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {instance, MSGTableName, queryFilterFromRealm, UsersTableName} from "../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {isEmpty} from "../../../../common/utils/Utils";
+import YHHongBaoPopView from "./views/YHHongBaoPopView";
 
 const { width } = Dimensions.get("window");
 
@@ -111,13 +112,11 @@ export default class ChattingScreen extends Component {
           this.queryChat();
         }}/>
         <MoreView/>
-        {/*{this.state.showHongbao? (*/}
-        {/*    <HongBaoCell finishAnimation={()=>{*/}
-        {/*      this.setState({*/}
-        {/*        showHongbao: false*/}
-        {/*      })*/}
-        {/*    }}/>*/}
-        {/*): null}*/}
+        {this.state.showRP ? (<YHHongBaoPopView finishAnimation={()=>{
+          this.setState({
+            showRP: false,
+          })
+        }}/>) : null}
       </View>
     );
   }
