@@ -29,13 +29,14 @@
     "react-native-debug-tool": "https://github.com/chende008/react-native-debug-tool.git#master",
     "react-native-device-info": "^5.4.4",
     "react-native-easy-app": "https://github.com/chende008/react-native-easy-app.git#master",
+    "react-native-emoticons": "^1.0.13",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
     "react-native-root-toast": "3.0.0",
     "react-native-safe-area-context": "^3.0.2",
     "react-native-screens": "^2.8.0",
     "react-native-webview": "8.2.1",
-    "react-native-emoticons": "^1.0.13"
+    "realm": "^6.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
