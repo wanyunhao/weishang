@@ -13,7 +13,7 @@ import {
 import Utils from '../../../../../common/utils/WXUtils'
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Colors, Const} from "../../../../../common/storage/Const";
-import {instance, MSGTableName} from "../../../../../common/utils/RealmUtil";
+import {instance, MSGTableName, writeToRealm} from "../../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {getNow} from "../../../../../common/utils/DateUtils";
 
@@ -120,15 +120,13 @@ export default class ChatBottomBarView extends Component {
         // if (!Utils.isEmpty(onSendBtnClickListener)) {
         //   onSendBtnClickListener(this.state.inputMsg);
         // }
-        instance.write(() => {
-            instance.create(MSGTableName, {
-                id: getNow(),
-                c_id: this.c_id,
-                send_id: RNStorage.user_id,
-                type: 1,
-                text: this.state.inputMsg
-            }, Realm.UpdateMode.Never);
-        });
+        writeToRealm({
+            id: getNow(),
+            c_id: this.c_id,
+            send_id: RNStorage.user_id,
+            type: 1,
+            text: this.state.inputMsg
+        },MSGTableName)
         this.setState({inputMsg: ""},this.props.refrshChat);
     }
 

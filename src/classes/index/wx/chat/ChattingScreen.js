@@ -49,12 +49,13 @@ export default class ChattingScreen extends Component {
           if (!isEmpty(data1)) {
             model.userinfo = data1[0];
             dataArray.push(model);
+            this.setState({
+              data:dataArray
+            })
           }
+
         })
       }
-      this.setState({
-        data:dataArray
-      })
     });
   }
 

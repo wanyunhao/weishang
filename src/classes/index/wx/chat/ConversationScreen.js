@@ -15,6 +15,8 @@ import {
     WXConversationTableName, instance, MSGTableName, UsersTableName
 } from "../../../../common/utils/RealmUtil";
 import {showMsg} from "react-native-debug-tool/lib/utils/DebugUtils";
+import {getNow} from "../../../../common/utils/DateUtils";
+import {RNStorage} from "../../../../common/storage/AppStorage";
 
 const {width} = Dimensions.get("window");
 const Realm = require('realm');
@@ -28,6 +30,10 @@ export default class ConversationScreen extends Component {
     }
 
     componentDidMount() {
+        this.requestData();
+    }
+
+    requestData() {
         this.realm = instance;
         var objects = this.realm.objects(WXConversationTableName);
         var data = [];
@@ -54,17 +60,15 @@ export default class ConversationScreen extends Component {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={()=>{
-                    let conversation = this.realm.objects(WXConversationTableName).filtered('id=1')
-                    if (conversation != null) {
-                        let msgs = conversation[0].msgs || [];
-                        this.realm.write(() => {
-                            msgs.push({id:106,other: true,type:1,text:'垃圾试试水'})
-                        });
-                    }
-
-                    // realm.write(()=>{
-                    //     let conversation =
-                    // })
+                    instance.write(() => {
+                        instance.create(WXConversationTableName, {
+                            id: getNow(),
+                            user_id: 1,
+                            df_user_id: 1,
+                        }, Realm.UpdateMode.Never);
+                    });
+                    this.requestData();
+                    console.log(Realm.defaultPath);
 
                 }}/>
 

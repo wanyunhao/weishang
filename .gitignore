@@ -2,3 +2,5 @@ node_modules
 android/.gradle
 build/
 .idea/
+android/app/release/app-release.apk
+android/app/release/output.json
