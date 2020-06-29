@@ -9,6 +9,8 @@ import {Colors} from "../../../../common/storage/Const";
 import MsgListCell from "../chat/views/MsgListCell";
 import {XFlatList} from "react-native-easy-app";
 import DiscoveryListCell from "./view/DiscoveryListCell";
+import {instance, PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
+import {getNow} from "../../../../common/utils/DateUtils";
 
 const {width} = Dimensions.get("window");
 
@@ -35,7 +37,14 @@ export default class DiscoveryScreen extends Component {
                         title: '扫一扫',
                         icon: require('../../../resource/index/wx/fx/wx_fx_sys.png'),
                     }} itemClick={() => {
-
+                        writeToRealm({
+                            id: getNow(),
+                            user_name: 'wyh',
+                            avatar: require('../../../resource/images/avatar.png'),
+                            text: '我今天天天气 打的 的的的外放就欧是的就',
+                            time: '10分钟前',
+                            dianzanText: '吴彦祖,对对对,对对对打的'
+                        },PYQListTableName)
                     }}/>
                     <DiscoveryListCell data={{
                         title: '摇一摇',

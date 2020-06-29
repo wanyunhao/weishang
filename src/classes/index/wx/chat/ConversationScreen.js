@@ -68,7 +68,7 @@ export default class ConversationScreen extends Component {
                         }, Realm.UpdateMode.Never);
                     });
                     this.requestData();
-                    console.log(Realm.defaultPath);
+                    // console.log(Realm.defaultPath);
 
                 }}/>
 

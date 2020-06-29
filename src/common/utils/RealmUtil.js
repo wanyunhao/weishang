@@ -5,6 +5,7 @@ export const WXConversationTableName = 'WXConversation';
 export const SelfTableName = 'Self';
 export const UsersTableName = 'Users';
 export const MSGTableName = 'MSG';
+export const PYQListTableName = 'PYQListTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -60,6 +61,20 @@ export const WXMSGSchema = {
 
     }
 };
+//消息
+export const PYQListSchema = {
+    name: PYQListTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        user_name: 'string?',
+        avatar: 'string?',
+        text: 'string?',//文字
+        time: 'string?',//时间
+        dianzanText: 'string?',//点赞
+
+    }
+};
 
 export const instance = new Realm({
     schema: [
@@ -67,6 +82,7 @@ export const instance = new Realm({
         UsersSchema,
         WXMSGSchema,
         SelfTableNameSchema,
+        PYQListSchema,
     ],
     deleteRealmIfMigrationNeeded: true,
     inMemory: false,
