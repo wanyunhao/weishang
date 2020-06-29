@@ -20,7 +20,7 @@ export default class PYQSendScreen extends Component {
             didian: null,
             userinfo: {},
         };
-        this.imgWidth = (Const.screenWidth - 38) / 4;
+        this.imgWidth = (Const.screenWidth - 38) / 4 -1;
     }
 
 
