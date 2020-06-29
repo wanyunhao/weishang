@@ -16,7 +16,7 @@ export default class TitleAndSubCell extends Component {
             <View style={{backgroundColor:Colors.white,width: Const.screenWidth,alignItems:'center',justifyContent:'space-between',flexDirection:'row',height:50,paddingHorizontal:15}}>
                 <Text style={{color:'#5C6B8C',fontSize:13}}>{this.props.title}</Text>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <TextInput style={{color:'#7F7F7F',fontSize:13,textAlign:'right'}} value={this.props.sub_title} editable={this.props.isEdit}/>
+                    <TextInput {...this.props} style={{color:'#7F7F7F',fontSize:13,textAlign:'right'}} placeholder={this.props.sub_title} editable={this.props.isEdit}/>
                     {this.props.isEdit? null : (<XImage iconSize={17} icon={require('../../../../../resource/common/right.png')}/>)}
                 </View>
                 <YHDividingLine/>

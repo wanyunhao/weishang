@@ -25,6 +25,8 @@ import SideBar from "./views/SideBar";
 import {showToast} from "../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
+import {queryAllFromRealm, UsersTableName} from "../../../../common/utils/RealmUtil";
+import {XImage} from "react-native-easy-app";
 
 const { width } = Dimensions.get("window");
 
@@ -33,19 +35,26 @@ export default class ContactScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contactData: [{
-        nickname: '万运浩111',
-        username: '万运浩',
-
-      },{
-        nickname: '中午',
-        username: '郑文',
-
-      }], // 联系人数据
+      contactData: [], // 联系人数据
       listData: null, // 整个列表的数据
+      hideBack: true
     };
   }
 
+  componentDidMount() {
+    queryAllFromRealm(UsersTableName).then((data)=>{
+      this.setState({
+        contactData:data,
+      })
+    })
+    if (this.props.route.params != null) {
+
+      this.setState({
+        hideBack: false
+      })
+      this.chooseItem = this.props.route.params.chooseItem;
+    }
+  }
 
   _renderItem = item => {
     var msgDotView = null;
@@ -94,13 +103,11 @@ export default class ContactScreen extends Component {
           >
             <View style={listItemStyle.container} key={"item" + item.item.key}>
               <View style={listItemStyle.image}>
-                <ImageAdapter path={item.item.icon} width={35} height={35} />
+                {/*<ImageAdapter path={item.item.icon} width={35} height={35} />*/}
+                <XImage icon={item.item.icon} iconSize={35}/>
               </View>
               {/* <Image style={listItemStyle.image} source={item.item.icon} /> */}
               <Text style={listItemStyle.itemText}>{item.item.title}</Text>
-              <Text style={listItemStyle.subText}>
-                {Utils.isEmpty(item.item.nick) ? "" : "(" + item.item.nick + ")"}
-              </Text>
               {msgDotView}
             </View>
           </TouchableHighlight>
@@ -130,6 +137,10 @@ export default class ContactScreen extends Component {
     } else if (index >= 1 && index <= 3) {
       showToast("没东西")
     } else {
+      if (this.chooseItem != null) {
+        this.chooseItem(item.item);
+        navigation.goBack();
+      }
       // this.props.navigation.navigate("ContactDetail", {
       //   title: "详细资料",
       //   data: item.item
@@ -170,26 +181,26 @@ export default class ContactScreen extends Component {
     var contacts = this.state.contactData;
     for (var i = 0; i < contacts.length; i++) {
       var item = contacts[i];
-      var name = item.nickname || item.username;
-      var pinyin = PinyinUtil.getFullChars(item.username).toUpperCase();
+      var name = item.user_name;
+      var pinyin = PinyinUtil.getFullChars(item.user_name).toUpperCase();
       // var pinyin = contacts[i].pinyin.toUpperCase();
       var firstLetter = pinyin.substring(0, 1);
       if (firstLetter < "A" || firstLetter > "Z") {
         firstLetter = "#";
       }
-      let icon = require("../../../resource/images/avatar.png");
-      if (!Utils.isEmpty(item.avatarThumbPath)) {
-        icon = item.avatarThumbPath;
-        // if (Platform.OS === "android") {
-        //   icon = { uri: "file://" + item.avatarThumbPath };
-        // } else {
-        //   icon = { uri: item.avatarThumbPath };
-        // }
-      }
+      let icon = item.avatar || require("../../../resource/images/avatar.png");
+      // if (!Utils.isEmpty(item.avatarThumbPath)) {
+      //   icon = item.avatarThumbPath;
+      //   // if (Platform.OS === "android") {
+      //   //   icon = { uri: "file://" + item.avatarThumbPath };
+      //   // } else {
+      //   //   icon = { uri: item.avatarThumbPath };
+      //   // }
+      // }
       listData.push({
         key: index++,
         icon: icon,
-        title: item.username,
+        title: item.user_name,
         nick: name,
         pinyin: pinyin,
         firstLetter: firstLetter,
@@ -232,7 +243,7 @@ export default class ContactScreen extends Component {
     this.listData = listData;
     return (
       <View style={styles.container}>
-        <WXNavigationBar title='通讯录' hideBack={true}/>
+        <WXNavigationBar title='通讯录' hideBack={this.state.hideBack}/>
         <View style={styles.content}>
           <FlatList
               ref={"list"}

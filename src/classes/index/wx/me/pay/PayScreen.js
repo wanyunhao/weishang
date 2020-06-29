@@ -111,7 +111,7 @@ export default class PayScreen extends Component {
             }}>
               <XImage icon={require('../../../../resource/index/wx/me/pay/zf_icon_qb.png')} style={{width:31,height:25}}/>
               <Text style={{color:Colors.white,fontSize:16,marginTop:14}}>钱包</Text>
-              <Text style={{color:'#9AD6B2',fontSize:13,marginTop:0,}}>￥3288.88</Text>
+              <Text style={{color:'#9AD6B2',fontSize:13,marginTop:0,}}>￥2312.88</Text>
             </YHTouchableOpacity>
           </View>
 

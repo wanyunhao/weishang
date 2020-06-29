@@ -6,12 +6,25 @@ import {Colors, Const} from "../../../../common/storage/Const";
 import {XFlatList, XImage, XText} from "react-native-easy-app";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import MsgListCell from "../chat/views/MsgListCell";
+import {PYQListTableName, queryAllFromRealm} from "../../../../common/utils/RealmUtil";
 
 export default class PYQListScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            data:[],
+        };
+    }
+
+    componentDidMount() {
+        queryAllFromRealm(PYQListTableName)
+            .then((data)=>{
+                console.log(data);
+                this.setState({
+                    data,
+                })
+            })
     }
 
     render() {
@@ -19,17 +32,21 @@ export default class PYQListScreen extends Component {
             <View style={styles.container}>
 
                 <XFlatList
-                    data={['1']}
+                    data={this.state.data}
                     ListHeaderComponent={() => {
                         return this._renderHeader();
                     }}
                     renderItem={({item, index}) => {
-                        return this._renderCell();
+                        return this._renderCell(item,index);
                     }}
                 />
                 <View style={{top:INSETS.top + 14,width:Const.screenWidth,position:'absolute',flexDirection:'row',justifyContent:'space-between',paddingHorizontal:16,}}>
-                    <XImage style={{width:9,height:16}} icon={require('../../../resource/index/wx/fx/back_white.png')} />
-                    <XImage style={{width:18.7,height:14.85}} icon={require('../../../resource/index/wx/fx/pyq_pz.png')} />
+                    <XImage style={{width:9,height:16}} icon={require('../../../resource/index/wx/fx/back_white.png')} onPress={()=>{
+                        navigation.goBack();
+                    }}/>
+                    <XImage style={{width:18.7,height:14.85}} icon={require('../../../resource/index/wx/fx/pyq_pz.png')} onPress={()=>{
+                        navigation.push('PYQSendScreen');
+                    }}/>
                 </View>
             </View>
         );
@@ -48,17 +65,16 @@ export default class PYQListScreen extends Component {
             </View>
         )
     }
-    _renderCell() {
+    _renderCell(item,index) {
         let imgs = [1,2,3,4,5,6,7];
         let xihuans = [1,2,3,4,5,6,7,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6];
         const imgWidth = (Const.screenWidth - 65 - 6) /3
         return (
             <View style={{flexDirection:'row',padding:10,backgroundColor: Colors.white}}>
-                <XImage icon={require('../../../resource/images/avatar.png')} iconSize={38}/>
+                <XImage icon={item.avatar} iconSize={38}/>
                 <View style={{marginLeft:7, width:Const.screenWidth - 65}}>
-                    <Text style={{color:'#5A6090',fontWeight:'bold',fontSize:16}}>琳琳</Text>
-                    <Text style={{color:'#333333',fontSize:16,marginTop:1}}>来一波可爱的肉肉，遗憾忙的没拍视频！
-                        等待直播</Text>
+                    <Text style={{color:'#5A6090',fontWeight:'bold',fontSize:16}}>{item.user_name}</Text>
+                    <Text style={{color:'#333333',fontSize:16,marginTop:1}}>{item.text}</Text>
                     <View style={{flexDirection:'row', flexWrap: 'wrap', marginTop:8}}>
                         {imgs.map((value)=>{
                             return (
@@ -67,7 +83,7 @@ export default class PYQListScreen extends Component {
                         })}
                     </View>
                     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:15,}}>
-                        <Text style={{color:'#7C7C7C',fontSize:11}}>28分钟前</Text>
+                        <Text style={{color:'#7C7C7C',fontSize:11}}>{item.time}</Text>
                         <XImage style={{width:29.92,height:18.78}} icon={require('../../../resource/index/wx/fx/pyqbg.png')}/>
                     </View>
                     <View style={{backgroundColor: '#F7F7F7',paddingHorizontal:7,paddingVertical:12,marginTop:8, }}>
