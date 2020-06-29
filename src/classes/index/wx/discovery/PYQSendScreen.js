@@ -10,6 +10,7 @@ import {PYQListTableName, queryAllFromRealm} from "../../../../common/utils/Real
 import DiscoveryListCell from "./view/DiscoveryListCell";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import {NavigationPage, ActionPopover, Button,ActionSheet} from 'teaset';
+import ImagePicker from 'react-native-image-picker';
 export default class PYQSendScreen extends Component {
 
     constructor(props) {
@@ -73,7 +74,34 @@ export default class PYQSendScreen extends Component {
                         </View>
                     </YHTouchableOpacity>
                     <YHTouchableOpacity ref='apButton' style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}} onPress={()=>{
+                        const options = {
+                            title: 'Select Avatar',
+                            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+                            storageOptions: {
+                                skipBackup: true,
+                                path: 'images',
+                            },
+                        };
+                        ImagePicker.showImagePicker(options, (response) => {
+                            console.log('Response = ', response);
 
+                            if (response.didCancel) {
+                                console.log('User cancelled image picker');
+                            } else if (response.error) {
+                                console.log('ImagePicker Error: ', response.error);
+                            } else if (response.customButton) {
+                                console.log('User tapped custom button: ', response.customButton);
+                            } else {
+                                // const source = { uri: response.uri };
+
+                                // You can also display the image using data:
+                                const source = { uri: 'data:image/jpeg;base64,' + response.data };
+                                console.log(source)
+                                // this.setState({
+                                //     avatarSource: source,
+                                // });
+                            }
+                        });
                     }}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <XImage style={{marginRight:8}} icon={require('../../../resource/index/wx/fx/fb_icon_time.png')} iconSize={17.5}/>
