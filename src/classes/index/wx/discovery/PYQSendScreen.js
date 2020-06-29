@@ -9,7 +9,7 @@ import MsgListCell from "../chat/views/MsgListCell";
 import {PYQListTableName, queryAllFromRealm} from "../../../../common/utils/RealmUtil";
 import DiscoveryListCell from "./view/DiscoveryListCell";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
-
+import {NavigationPage, ActionPopover, Button,ActionSheet} from 'teaset';
 export default class PYQSendScreen extends Component {
 
     constructor(props) {
@@ -18,10 +18,13 @@ export default class PYQSendScreen extends Component {
             data:[],
             city: null,
             didian: null,
-            userinfo: {}
+            userinfo: {},
+            date:"2016-05-15",
+            datetime1: '2016-05-05 20:00'
         };
         this.imgWidth = (Const.screenWidth - 38) / 4;
     }
+
 
     render() {
         return (
@@ -71,16 +74,20 @@ export default class PYQSendScreen extends Component {
                             <XImage style={{marginLeft:10}} icon={require('../../../resource/common/right.png')} iconSize={17}/>
                         </View>
                     </YHTouchableOpacity>
-                    <YHTouchableOpacity style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}}>
+                    <YHTouchableOpacity ref='apButton' style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}} onPress={()=>{
+                        navigation.push('Home');
+                    }}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <XImage style={{marginRight:8}} icon={require('../../../resource/index/wx/fx/fb_icon_time.png')} iconSize={17.5}/>
                             <Text style={{fontSize:16,color:'#1D1D1D'}}>发布时间</Text>
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{fontSize:16,color:'#1D1D1D'}}>2020-01-05  12:18:06</Text>
+
+                            {/*<Label size='xl' text='Hello world!' />*/}
                             <XImage style={{marginLeft:10}} icon={require('../../../resource/common/right.png')} iconSize={17}/>
                         </View>
                     </YHTouchableOpacity>
+
                 </View>
             </View>
         );

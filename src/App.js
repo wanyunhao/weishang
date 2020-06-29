@@ -21,7 +21,9 @@ import PYQListScreen from "./classes/index/wx/discovery/PYQListScreen";
 import PYQSendScreen from "./classes/index/wx/discovery/PYQSendScreen";
 import ChooseLocationScreen from "./classes/index/wx/discovery/ChooseLocationScreen";
 import ContactScreen from './classes/index/wx/contact/ContactScreen';
+import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
+import TeasetExampleHome from './classes/demo/views/Home';
 export default function App() {
     console.disableYellowBox = true;
     return <SafeAreaProvider>
@@ -30,6 +32,12 @@ export default function App() {
         </NavigationContainer>
     </SafeAreaProvider>
 }
+
+// export default function App() {
+//     return (
+//         <TeaNavigator rootView={<TeasetExampleHome />} />
+//     )
+// }
 
 function ScreenList() {
     global.INSETS = useSafeAreaInsets();
