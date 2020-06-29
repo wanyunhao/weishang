@@ -27,7 +27,6 @@
     "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "realm": "^6.0.2",
     "react-native-debug-tool": "https://github.com/chende008/react-native-debug-tool.git#master",
     "react-native-device-info": "^5.4.4",
     "react-native-easy-app": "https://github.com/chende008/react-native-easy-app.git#master",
@@ -39,6 +38,7 @@
     "react-native-safe-area-context": "^3.0.2",
     "react-native-screens": "^2.8.0",
     "react-native-webview": "8.2.1",
+    "realm": "^6.0.2",
     "teaset": "^0.7.4"
   },
   "devDependencies": {

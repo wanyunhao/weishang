@@ -19,8 +19,6 @@ export default class PYQSendScreen extends Component {
             city: null,
             didian: null,
             userinfo: {},
-            date:"2016-05-15",
-            datetime1: '2016-05-05 20:00'
         };
         this.imgWidth = (Const.screenWidth - 38) / 4;
     }
@@ -75,7 +73,7 @@ export default class PYQSendScreen extends Component {
                         </View>
                     </YHTouchableOpacity>
                     <YHTouchableOpacity ref='apButton' style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}} onPress={()=>{
-                        navigation.push('Home');
+
                     }}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <XImage style={{marginRight:8}} icon={require('../../../resource/index/wx/fx/fb_icon_time.png')} iconSize={17.5}/>

@@ -1,4 +1,4 @@
-Ωßplatform :ios, '9.0'
+platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 def add_flipper_pods!(versions = {})
@@ -77,9 +77,8 @@ target 'EasyApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'RealmJS', :path => '../node_modules/realm'
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
 
   target 'EasyAppTests' do
     inherit! :complete
