@@ -1,16 +1,11 @@
 import React, {Component} from "react";
 
-import {Text, StyleSheet, View,ScrollView,Image,TextInput} from "react-native";
+import {StyleSheet, Text, TextInput, View} from "react-native";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {Colors, Const} from "../../../../common/storage/Const";
-import {XFlatList, XImage, XText} from "react-native-easy-app";
-import {RNStorage} from "../../../../common/storage/AppStorage";
-import MsgListCell from "../chat/views/MsgListCell";
-import {PYQListTableName, queryAllFromRealm} from "../../../../common/utils/RealmUtil";
-import DiscoveryListCell from "./view/DiscoveryListCell";
+import {XImage} from "react-native-easy-app";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
-import {NavigationPage, ActionPopover, Button,ActionSheet} from 'teaset';
-import ImagePicker from 'react-native-image-picker';
+
 export default class PYQSendScreen extends Component {
 
     constructor(props) {
@@ -20,6 +15,7 @@ export default class PYQSendScreen extends Component {
             city: null,
             didian: null,
             userinfo: {},
+            pics:[require('../../../resource/index/wx/fx/fb_add.png')]
         };
         this.imgWidth = (Const.screenWidth - 38) / 4 -1;
     }
@@ -33,10 +29,48 @@ export default class PYQSendScreen extends Component {
                 }}/>
                 <View style={{paddingHorizontal:15,marginTop:20}}>
                     <TextInput style={{fontSize:16,color:'#7E7E7E',maxHeight:100,}} placeholder='这一刻的想法…' multiline={true}/>
-                    <View style={{flexDirection:'row', flexWrap: 'wrap', marginTop:8}}>
-                        {[1,2,3,4,5,7].map((value)=>{
+                    <View style={{flexDirection:'row', flexWrap: 'wrap', marginTop:8,maxHeight: (this.imgWidth * 3) + 4}}>
+                        {
+                            this.state.pics.map((value,index)=>{
                             return (
-                                <View style={{width:this.imgWidth,height:this.imgWidth,backgroundColor: 'blue',marginRight:2,marginTop:2}}/>
+                                <XImage resizeMode='stretch' style={{marginRight:2,marginTop:2}} iconSize={this.imgWidth} icon={value} onPress={()=>{
+                                    if (index == this.state.pics.length - 1) {
+                                        // SyanImagePicker.showImagePicker({imageCount:9,enableBase64:true}, (err, selectedPhotos) => {
+                                        //     if (err) {
+                                        //         // 取消选择
+                                        //         return;
+                                        //     }
+                                        //     // 选择成功，渲染图片
+                                        //     // ...
+                                        // })
+                                        // const options = {
+                                        //     title: '选择照片',
+                                        //     storageOptions: {
+                                        //         skipBackup: true,
+                                        //         path: 'images',
+                                        //     },
+                                        //     takePhotoButtonTitle:'拍照',
+                                        //     chooseFromLibraryButtonTitle:'图库',
+                                        //     multiple: true
+                                        // };
+                                        // ImagePicker.showImagePicker(options, (response) => {
+                                        //     if (response.didCancel) {
+                                        //         console.log('User cancelled image picker');
+                                        //     } else if (response.error) {
+                                        //         console.log('ImagePicker Error: ', response.error);
+                                        //     } else if (response.customButton) {
+                                        //         console.log('User tapped custom button: ', response.customButton);
+                                        //     } else {
+                                        //         var imgArr = deepClone(this.state.pics);
+                                        //         imgArr.unshift('data:image/jpeg;base64,' + response.data);
+                                        //         this.setState({
+                                        //             pics: imgArr,
+                                        //         });
+                                        //     }
+                                        // });
+                                    }
+
+                                }}/>
                             )
                         })}
                     </View>
@@ -74,34 +108,7 @@ export default class PYQSendScreen extends Component {
                         </View>
                     </YHTouchableOpacity>
                     <YHTouchableOpacity ref='apButton' style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}} onPress={()=>{
-                        const options = {
-                            title: 'Select Avatar',
-                            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-                            storageOptions: {
-                                skipBackup: true,
-                                path: 'images',
-                            },
-                        };
-                        ImagePicker.showImagePicker(options, (response) => {
-                            console.log('Response = ', response);
 
-                            if (response.didCancel) {
-                                console.log('User cancelled image picker');
-                            } else if (response.error) {
-                                console.log('ImagePicker Error: ', response.error);
-                            } else if (response.customButton) {
-                                console.log('User tapped custom button: ', response.customButton);
-                            } else {
-                                // const source = { uri: response.uri };
-
-                                // You can also display the image using data:
-                                const source = { uri: 'data:image/jpeg;base64,' + response.data };
-                                console.log(source)
-                                // this.setState({
-                                //     avatarSource: source,
-                                // });
-                            }
-                        });
                     }}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <XImage style={{marginRight:8}} icon={require('../../../resource/index/wx/fx/fb_icon_time.png')} iconSize={17.5}/>
