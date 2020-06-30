@@ -7,10 +7,11 @@ import {Dimensions, StyleSheet, View,ScrollView,Text,TextInput} from "react-nati
 import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import DiscoveryListCell from "../../discovery/view/DiscoveryListCell";
 import {Colors, Const} from "../../../../../common/storage/Const";
-import {XText} from "react-native-easy-app";
+import {XImage, XText} from "react-native-easy-app";
 import {showToast} from "../../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
+import {Button, Label, Overlay, Theme} from "teaset";
 
 const {width} = Dimensions.get("window");
 
@@ -23,6 +24,69 @@ export default class TiXianScreen extends Component {
         };
     }
 
+    showPull(side, modal, text, rootTransform) {
+        let overlayView = (
+            <Overlay.PullView side={side} modal={modal} rootTransform={rootTransform} ref={v => this.overlayPullView = v}>
+                {/*<View style={{backgroundColor: Theme.defaultColor, minWidth: 300, minHeight: 260, justifyContent: 'center', alignItems: 'center'}}>*/}
+                {/*    <Label type='title' size='xl' text={text} />*/}
+                {/*    {modal ? <View style={{height: 60}} /> : null}*/}
+                {/*    {modal ? <Button title='Close' onPress={() => this.overlayPullView && this.overlayPullView.close()} /> : null}*/}
+                {/*</View>*/}
+                <View style={{paddingHorizontal:20,paddingTop:20}}>
+                    <Text style={{color:'#181818',fontSize:17,}}>选择到账银行卡</Text>
+                    <Text style={{color:'#888888',fontSize:11,marginTop:5}}>请留意各银行到帐时间</Text>
+                    <YHDividingLine isBottom={false} top={77}/>
+                    <View style={{marginTop:25}}>
+                        {
+                            ['',2].map((value)=>{
+                                return (
+                                    <View style={{flexDirection:'row',alignItems:'center',paddingVertical:12}}>
+                                        <XImage icon={require('../../../../resource/index/wx/me/pay/wallet/pocketmoney/yh_b_jh.png')} iconSize={23.5}/>
+                                        <View style={{marginLeft:21,flex:1}}>
+                                            <Text style={{color:'#181818',fontSize:16}}>建设银行储蓄卡(8888)</Text>
+                                            <Text style={{color:'#999999',fontSize:10,marginTop:1}}>2小时内到账</Text>
+                                        </View>
+                                        <XImage icon={require('../../../../resource/index/wx/me/pay/wallet/pocketmoney/radio_s.png')} iconSize={15}/>
+                                        <YHDividingLine left={22}/>
+                                    </View>
+                                )
+                            })
+                        }
+                        <YHTouchableOpacity onPress={()=>{
+                            this.overlayPullView && this.overlayPullView.close()
+                            navigation.push('AddBankCardScreen')
+                        }} style={{flexDirection:'row',alignItems:'center',paddingVertical:12}}>
+                            <View style={{marginLeft:45,flex:1}}>
+                                <Text style={{color:'#181818',fontSize:16}}>使用新卡提现</Text>
+                            </View>
+                            <XImage icon={require('../../../../resource/index/wx/me/pay/wallet/pocketmoney/radio_s.png')} iconSize={15}/>
+                            <YHDividingLine left={22}/>
+                        </YHTouchableOpacity>
+                    </View>
+
+                </View>
+            </Overlay.PullView>
+        );
+        Overlay.show(overlayView);
+    }
+
+    showPop(type, modal, text) {
+        let overlayView = (
+            <Overlay.PopView
+                style={{alignItems: 'center', justifyContent: 'center'}}
+                type={type}
+                modal={modal}
+                ref={v => this.overlayPopView = v}
+            >
+                <View style={{backgroundColor: Theme.defaultColor, minWidth: 260, minHeight: 180, borderRadius: 15, justifyContent: 'center', alignItems: 'center'}}>
+                    <Label type='title' size='xl' text={text} />
+                    {modal ? <View style={{height: 60}} /> : null}
+                    {modal ? <Button title='Close' onPress={() => this.overlayPopView && this.overlayPopView.close()} /> : null}
+                </View>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -33,9 +97,9 @@ export default class TiXianScreen extends Component {
                     <View style={{flexDirection:'row'}}>
                         <XText text='到账银行卡' style={{fontSize:13,color:'#000000',}}/>
                         <View style={{paddingLeft:34}}>
-                            <XText style={{color:'#596B91',fontSize:13}} text='请选择银行卡' onPress={()=>{
+                            <XText style={{color:'#596B91',fontSize:13}} text='请选择银行卡' /*onPress={()=>{
                                 navigation.push('AddBankCardScreen')
-                            }}/>
+                            }}*/ onPress={() => this.showPull('bottom', false, 'Pull from bottom')}/>
                             <XText style={{color:'#B4B4B4',fontSize:12,marginTop:8}} text='2小时内到账'/>
                         </View>
                     </View>
@@ -45,7 +109,8 @@ export default class TiXianScreen extends Component {
                     <View style={{flexDirection:'row',alignItems:'center',marginTop:10,}}>
                         <Text style={{color:'#1A1A1A',fontSize:31,fontWeight:'bold',width:31}}>￥</Text>
                         <TextInput
-                            style={{height:44,width:Const.screenWidth - 86 - 31,fontSize:31,fontWeight:'bold'}}
+                            keyboardType="numeric"
+                            style={{height:60,width:Const.screenWidth - 86 - 31,fontSize:31,fontWeight:'bold'}}
                             value={this.state.inputMsg}
                             onChangeText={text => {
                                 this.setState({inputMsg: text});
@@ -55,7 +120,7 @@ export default class TiXianScreen extends Component {
                     </View>
                     <Text style={{color:'#B4B4B4',fontsize:12,marginTop:11}}>当前零钱余额3297.88元，<XText style={{color:'#5B6B8D',fontsize:12,}} text='全部提现'/></Text>
                     <YHTouchableOpacity text='提现' style={{width:'100%',height:45,backgroundColor: '#F2F2F2',marginTop:27,borderRadius:5,}} onPress={()=>{
-                        showToast('提现')
+                        this.showPop('zoomIn', false, 'Pop zoom in')
                     }}/>
                 </View>
             </View>
