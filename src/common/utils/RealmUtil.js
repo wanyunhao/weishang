@@ -6,6 +6,8 @@ export const SelfTableName = 'Self';
 export const UsersTableName = 'Users';
 export const MSGTableName = 'MSG';
 export const PYQListTableName = 'PYQListTableName';
+export const PYQListPicTableName = 'PYQListPicTableName';
+export const PYQListTalkTableName = 'PYQListTalkTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -61,7 +63,7 @@ export const WXMSGSchema = {
 
     }
 };
-//消息
+//朋友消息
 export const PYQListSchema = {
     name: PYQListTableName,
     primaryKey: 'id',
@@ -72,7 +74,29 @@ export const PYQListSchema = {
         text: 'string?',//文字
         time: 'string?',//时间
         dianzanText: 'string?',//点赞
-
+        location: 'string?',//地点
+    }
+};
+//朋友圈图片
+export const PYQListPicSchema = {
+    name: PYQListPicTableName,
+    properties: {
+        pyq_id: 'int',
+        pic: 'string?',
+        width: 'string?',//宽度
+        height: 'string?',//高度
+    }
+};
+//朋友圈消息
+export const PYQListTalkSchema = {
+    name: PYQListTalkTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        pyq_id: 'int',
+        user_name: 'string?',
+        father_name: 'string?',
+        text: 'string?',
     }
 };
 
@@ -83,6 +107,8 @@ export const instance = new Realm({
         WXMSGSchema,
         SelfTableNameSchema,
         PYQListSchema,
+        PYQListPicSchema,
+        PYQListTalkSchema
     ],
     deleteRealmIfMigrationNeeded: true,
     inMemory: false,

@@ -28,6 +28,10 @@ export function isEmpty(obj) {
     if (obj === undefined || obj == null) {
         return true;
     }
+
+    if (JSON.stringify(obj) == '{}') {
+        return true;
+    }
     if (Array.isArray(obj) && obj.length === 0) {//数组
         return true;
     } else {
@@ -35,6 +39,7 @@ export function isEmpty(obj) {
             return true;
         }//字符串
     }
+
     return false;
 }
 

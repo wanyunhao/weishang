@@ -27,13 +27,13 @@ export default class LaunchController extends PureComponent {
             global.navigation = this.props.navigation;
             queryAllFromRealm(SelfTableName).then((data)=>{
                 if (isEmpty(data)) {
-                    console.log("0000空的");
                     let userinfo = {user_id:1,user_name:'wyh',avatar:'https://avatars0.githubusercontent.com/u/15177441?s=60&v=4'}
                     writeToRealm(userinfo,SelfTableName);
                 } else {
-                    console.log("1111有的");
                     queryAllFromRealm(SelfTableName).then((data)=>{
-                        RNStorage.user_id = data[0].user_id
+                        RNStorage.user_id = data[0].user_id;
+                        RNStorage.avatarUrl = data[0].avatar;
+                        RNStorage.user_name = data[0].user_name;
                     })
                 }
             })

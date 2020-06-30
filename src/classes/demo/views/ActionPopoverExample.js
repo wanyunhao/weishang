@@ -16,6 +16,7 @@ export default class ActionPopoverExample extends NavigationPage {
   };
 
   show(view) {
+    console.log(view);
     view.measure((x, y, width, height, pageX, pageY) => {
       let items = [
         {title: 'Copy', onPress: () => alert('Copy')},
