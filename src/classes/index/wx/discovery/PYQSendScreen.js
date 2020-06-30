@@ -10,6 +10,8 @@ import {PYQListTableName, queryAllFromRealm} from "../../../../common/utils/Real
 import DiscoveryListCell from "./view/DiscoveryListCell";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import {NavigationPage, ActionPopover, Button,ActionSheet} from 'teaset';
+import {ImagePicker} from "@ant-design/react-native";
+import ImagePickerExample from "@ant-design/react-native/es/image-picker/demo/basic";
 export default class PYQSendScreen extends Component {
 
     constructor(props) {
@@ -87,7 +89,6 @@ export default class PYQSendScreen extends Component {
                             <XImage style={{marginLeft:10}} icon={require('../../../resource/common/right.png')} iconSize={17}/>
                         </View>
                     </YHTouchableOpacity>
-
                 </View>
             </View>
         );
