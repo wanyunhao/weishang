@@ -68,7 +68,7 @@ export default class PYQListScreen extends Component {
     _renderCell(item,index) {
         let imgs = [1,2,3,4,5,6,7];
         let xihuans = [1,2,3,4,5,6,7,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6];
-        const imgWidth = (Const.screenWidth - 65 - 6) /3
+        const imgWidth = (Const.screenWidth - 65 - 6) /3 -1;
         return (
             <View style={{flexDirection:'row',padding:10,backgroundColor: Colors.white}}>
                 <XImage icon={item.avatar} iconSize={38}/>
