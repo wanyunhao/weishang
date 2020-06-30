@@ -20,6 +20,8 @@
 		8B90E22AF0FCA83B2FA929F2 /* libPods-EasyApp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2E5F12B30EA33B5FE23292B /* libPods-EasyApp-tvOS.a */; };
 		958BDD138E65AB7965A609B1 /* libPods-EasyApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B80CF91350BE6224D293509 /* libPods-EasyApp-tvOSTests.a */; };
 		F92E2BD94A74E3DDB8429BA0 /* libPods-EasyApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8DCF0E2DD707AE66BB3CFD /* libPods-EasyApp.a */; };
+		08AA8A1B3B2D4B388AA97033 /* antfill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 078096C92A4040F2844D8541 /* antfill.ttf */; };
+		C75CE9F04547446282C84E98 /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5524F9164BC447689FC8C044 /* antoutline.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F5AAE28B035FC4986A5195E4 /* Pods-EasyApp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyApp-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-EasyApp-tvOS/Pods-EasyApp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		078096C92A4040F2844D8541 /* antfill.ttf */ = {isa = PBXFileReference; name = "antfill.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antfill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5524F9164BC447689FC8C044 /* antoutline.ttf */ = {isa = PBXFileReference; name = "antoutline.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antoutline.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				DB49F0D70ECD2EB4253301D6 /* Pods */,
+				7D0870C0928E4F69BFC2C3F1 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -196,6 +201,16 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		7D0870C0928E4F69BFC2C3F1 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				078096C92A4040F2844D8541 /* antfill.ttf */,
+				5524F9164BC447689FC8C044 /* antoutline.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -339,6 +354,8 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				08AA8A1B3B2D4B388AA97033 /* antfill.ttf in Resources */,
+				C75CE9F04547446282C84E98 /* antoutline.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
