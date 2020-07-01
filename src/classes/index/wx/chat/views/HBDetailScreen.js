@@ -14,12 +14,15 @@ export default class HBDetailScreen extends Component {
 
     render() {
         return (
-            <View style={[CommonStyles.container, {marginTop: INSETS.top,backgroundColor: Colors.white}]}>
+            <View style={[CommonStyles.container, {marginTop: Const.isIos ? 0 : INSETS.top,backgroundColor: Colors.white}]}>
                 <StatusBar backgroundColor="#F25542"
                            barStyle='light-content'
                            translucent={true}
                            hidden={false}
                            animated={true}/>
+                {Const.isIos ? (<View style={{width: Const.screenWidth,height: INSETS.top,backgroundColor:'#F25542'}}>
+
+                </View>) : null}
                <View style={{width:Const.screenWidth,height:88}} >
                    <XImage resizeMode='stretch' style={{width:Const.screenWidth,height:88,position:'absolute'}} icon={require('../../../../resource/index/chat/wx_hbxq_bg.png')}/>
                    <View style={{paddingHorizontal:10,flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:10}}>
