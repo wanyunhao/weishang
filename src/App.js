@@ -15,6 +15,7 @@ import PayScreen from "./classes/index/wx/me/pay/PayScreen";
 import WalletScreen from "./classes/index/wx/me/pay/WalletScreen";
 import BillsScreen from "./classes/index/wx/me/pay/BillsScreen";
 import PocketMoneyScreen from "./classes/index/wx/me/pay/PocketMoneyScreen";
+import TixianResultScreen from "./classes/index/wx/me/pay/TixianResultScreen";
 import TiXianScreen from "./classes/index/wx/me/pay/TiXianScreen";
 import AddBankCardScreen from "./classes/index/wx/me/pay/AddBankCardScreen";
 import PYQListScreen from "./classes/index/wx/discovery/PYQListScreen";
@@ -61,5 +62,6 @@ function ScreenList() {
         <Screen name='PYQSendScreen' component={PYQSendScreen}/>
         <Screen name='ChooseLocationScreen' component={ChooseLocationScreen}/>
         <Screen name='ContactScreen' component={ContactScreen}/>
+        <Screen name='TixianResultScreen' component={TixianResultScreen}/>
     </Navigator>;
 }

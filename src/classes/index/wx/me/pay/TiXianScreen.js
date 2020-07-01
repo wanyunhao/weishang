@@ -12,6 +12,7 @@ import {showToast} from "../../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Button, Label, Overlay, Theme} from "teaset";
+import PasswordInput from "./views/passwordInput";
 
 const {width} = Dimensions.get("window");
 
@@ -78,10 +79,26 @@ export default class TiXianScreen extends Component {
                 modal={modal}
                 ref={v => this.overlayPopView = v}
             >
-                <View style={{backgroundColor: Theme.defaultColor, minWidth: 260, minHeight: 180, borderRadius: 15, justifyContent: 'center', alignItems: 'center'}}>
-                    <Label type='title' size='xl' text={text} />
-                    {modal ? <View style={{height: 60}} /> : null}
-                    {modal ? <Button title='Close' onPress={() => this.overlayPopView && this.overlayPopView.close()} /> : null}
+                <View style={{backgroundColor: Theme.defaultColor, minWidth: 300, minHeight: 310, borderRadius: 8,  alignItems: 'center',padding:15}}>
+                    <Text style={{color:'#181818',fontSize:16}}>请输入支付密码</Text>
+                    <Text style={{color:'#181818',fontSize:16,marginTop:24}}>零钱提现</Text>
+                    <Text style={{color:'#181818',fontSize:39,marginTop:1}}>$1.00</Text>
+                    <YHDividingLine isBottom={false} top={154} left={15} right={15}/>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:30,width:270,}}>
+                        <Text style={{color:'#878787',fontSize:13}}>服务费</Text>
+                        <Text style={{color:'#000000',fontSize:13}}>$0.10</Text>
+                    </View>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:270,marginTop:13}}>
+                        <Text style={{color:'#878787',fontSize:13}}>费率</Text>
+                        <Text style={{color:'#000000',fontSize:13}}>0.10%(最低0.1)</Text>
+                    </View>
+                    <PasswordInput style={{marginTop:30,width:270}} maxLength={6} onChange={(text)=>{
+                        console.log(text);
+                        if (text.length == 6) {
+                            this.overlayPopView && this.overlayPopView.close()
+                            navigation.push('TixianResultScreen');
+                        }
+                    }}/>
                 </View>
             </Overlay.PopView>
         );
