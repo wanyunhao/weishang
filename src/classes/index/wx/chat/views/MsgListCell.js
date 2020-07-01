@@ -14,7 +14,7 @@ import {Colors} from "../../../../../common/storage/Const";
 export default class MsgListCell extends Component {
 
     render() {
-        const data = this.props.data;
+        const data = this.props.data || {};
         return (
             <YHTouchableOpacity style={styles.container} onPress={this.props.itemClick}>
                 <View style={{flexDirection: 'row', paddingVertical: 11, paddingHorizontal: 15, alignItems:'center'}}>

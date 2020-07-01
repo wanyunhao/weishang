@@ -7,13 +7,14 @@ import {
     ScrollView,
     TouchableOpacity,
     FlatList,
-    NativeModules,
+    NativeModules, StatusBar,
 } from 'react-native';
 import {Colors, CommonStyles, Const} from "../../../common/storage/Const";
 
 import {showToast} from '../../../common/widgets/Loading';
 import {XHttp, XView} from "react-native-easy-app";
 import {Api} from "../../../common/http/Api";
+import {WXNavigationBar} from "../../../common/widgets/WXNavigation";
 
 export default class IndexVC extends PureComponent {
     constructor() {
@@ -45,6 +46,11 @@ export default class IndexVC extends PureComponent {
     render() {
         return (
             <View style={[CommonStyles.container, {marginTop: INSETS.top}]}>
+                <StatusBar backgroundColor="#EDEDED"
+                           barStyle='dark-content'
+                           translucent={true}
+                           hidden={false}
+                           animated={true}/>
                 <TouchableOpacity onPress={()=>{
                     navigation.push('WX');
                 }}><Text>111111</Text></TouchableOpacity>

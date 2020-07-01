@@ -12,7 +12,7 @@ import {
     queryAllFromRealm,
     writeToRealm,
     WXConversationSchema,
-    WXConversationTableName, instance, MSGTableName, UsersTableName
+    WXConversationTableName, instance, MSGTableName, UsersTableName, queryFilterFromRealm
 } from "../../../../common/utils/RealmUtil";
 import {showMsg} from "react-native-debug-tool/lib/utils/DebugUtils";
 import {getNow} from "../../../../common/utils/DateUtils";
@@ -39,15 +39,17 @@ export default class ConversationScreen extends Component {
         var data = [];
         for (const objectsKey in objects) {
             let model = objects[objectsKey];
-            let user = this.realm.objects(UsersTableName).filtered('id=' + model.user_id);
-            if (user != null) {
-                model.userinfo = user[0];
-            }
-            data.push(model);
+            queryFilterFromRealm(UsersTableName,'id=' + model.df_user_id).then((user)=>{
+                if (user != null) {
+                    model.userinfo = user[0];
+                }
+                data.push(model);
+
+                this.setState({
+                    data:data,
+                })
+            })
         }
-        this.setState({
-            data:data,
-        })
     }
 
     componentWillUnmount() {
@@ -64,7 +66,7 @@ export default class ConversationScreen extends Component {
                         instance.create(WXConversationTableName, {
                             id: getNow(),
                             user_id: 1,
-                            df_user_id: 1,
+                            df_user_id: 9527,
                         }, Realm.UpdateMode.Never);
                     });
                     this.requestData();

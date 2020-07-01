@@ -11,6 +11,7 @@ import WXController from "./mainController/WXController";
 import LoginVC from "./classes/login/LoginVC";
 import RegisterVC from "./classes/login/RegisterVC";
 import ChattingScreen from "./classes/index/wx/chat/ChattingScreen";
+import SendRPScreen from "./classes/index/wx/chat/SendRPScreen";
 import PayScreen from "./classes/index/wx/me/pay/PayScreen";
 import WalletScreen from "./classes/index/wx/me/pay/WalletScreen";
 import BillsScreen from "./classes/index/wx/me/pay/BillsScreen";
@@ -63,5 +64,6 @@ function ScreenList() {
         <Screen name='ChooseLocationScreen' component={ChooseLocationScreen}/>
         <Screen name='ContactScreen' component={ContactScreen}/>
         <Screen name='TixianResultScreen' component={TixianResultScreen}/>
+        <Screen name='SendRPScreen' component={SendRPScreen}/>
     </Navigator>;
 }

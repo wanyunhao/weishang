@@ -48,6 +48,10 @@ export default class YHHongBaoPopView extends Component {
         this.animatedValue2 = new Animated.Value(0)
     }
 
+    componentDidMount() {
+        // this.spring();
+    }
+
     spring() {
         this.springValue.setValue(1.1)
         Animated.spring(
@@ -78,7 +82,9 @@ export default class YHHongBaoPopView extends Component {
                 duration: 500,
                 easing: Easing.linear
             }
-        ).start(() => this.finishAnimation())
+        ).start(() => {
+
+        })
     }
 
     finishAnimation() {
@@ -136,7 +142,7 @@ export default class YHHongBaoPopView extends Component {
                 justifyContent: 'center',
                 alignItems: 'center',
             }} onPress={() => {
-                this.spring();
+                this.props.closeClick();
             }}>
                 <View style={{alignItems: 'center'}}>
                     <Animated.View style={{width: 266.22, height: 440.44, transform: [{scale: this.springValue}]}}>

@@ -29,12 +29,13 @@ export default class HongBaoCell extends Component {
 
   render() {
 
+    const data = this.props.data;
     let isSelf = this.props.isSelf;
     let isReceived = this.props.isReceived;
     return (
       <YHTouchableOpacity style={styles.container} {...this.props}>
         <View style={{flexDirection: 'row', paddingTop: 11, paddingHorizontal: 11, alignItems:'center'}}>
-          {isSelf? null:(<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={require('../../../../resource/images/avatar.png')} iconSize={38}
+          {isSelf? null:(<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={data.userinfo.avatar} iconSize={38}
                                  onPress={() => {
                                  }}/>)}
           <View style={{flexDirection:'row',marginLeft:5,flex: 1,marginRight:5,justifyContent:isSelf ? 'flex-end' : 'flex-start' }}>
@@ -45,15 +46,15 @@ export default class HongBaoCell extends Component {
                      style={{width:221.62,height:81.52}}/>
               <Image source={isReceived ? require('../../../../resource/index/wx_hb_opened_icon.png') : require('../../../../resource/index/wx_hb_no_open_icon.png')} style={{width:30.12,height:37.68,position: 'absolute',left:23,top:12}}/>
               {isReceived ? (<View style={{position: 'absolute',left:62,top:13}}>
-                <Text style={{color:Colors.white,fontWeight:'bold',fontSize:14,}}>恭喜发财,大吉大利</Text>
+                <Text style={{color:Colors.white,fontWeight:'bold',fontSize:14,}}>{data.hongbaoText}</Text>
                 <Text style={{color:Colors.white,fontWeight:'bold',fontSize:11,}}>已领取</Text>
-              </View>) : (<Text style={{color:Colors.white,fontWeight:'bold',fontSize:14,position: 'absolute',left:62,top:21}}>恭喜发财,大吉大利</Text>)}
+              </View>) : (<Text style={{color:Colors.white,fontWeight:'bold',fontSize:14,position: 'absolute',left:62,top:21}}>{data.hongbaoText}</Text>)}
               <Text style={{color: isReceived ? '#FFF4E4' : '#FFAF54',fontSize:9,position: 'absolute',left:16,bottom:2}}>微信红包</Text>
               {isReceived ? null : <YHDividingLine left={15} line_color={'#FFAF54'} bottom={20} right={11}/>}
             </View>
           </View>
 
-          {isSelf ? (<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={require('../../../../resource/images/avatar.png')} iconSize={38}
+          {isSelf ? (<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={data.userinfo.avatar} iconSize={38}
                              onPress={() => {
                              }}/>): null}
         </View>

@@ -26,7 +26,7 @@ export const WXConversationSchema = {
 const SelfTableNameSchema = {
     name: SelfTableName,
     properties: {
-        user_id: 'int',
+        id: 'int',
         user_name: 'string',
         avatar: 'string',
     }
@@ -50,15 +50,23 @@ export const WXMSGSchema = {
         id: 'int',
         c_id: 'int',//会话id
         send_id : 'int',
-        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账
+        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
         user_name: 'string?',
         avatar: 'string?',
         text: 'string?',
         pic: 'string?',
         yuyin: 'string?',
         shipin: 'string?',
-        hongbao : 'string?',
-        zhuanzhang: 'string?',
+        hongbaoText : 'string?',
+        hongbaoMoney : 'string?',
+        hongbaoCount : 'int?',
+        hongbaoTime : 'int?',
+        zhuanzhangText : 'string?',
+        zhuanzhangMoney : 'string?',
+        xitongText:'string?',
+        xitongTextType:'int?',//1:纯文字 2:红包
+        hongbaoSendName : 'string?', //红包发送人姓名
+        hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
 
     }

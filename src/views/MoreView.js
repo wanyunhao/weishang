@@ -30,12 +30,16 @@ export default class MoreView extends Component {
     for (var i = 0; i < 2; i++) {
       var row = [];
       for (var j = 0; j < 4; j++) {
+        let indd = i * 4 + j;
         row.push(
           <Cell
+            itemClick={()=>{
+              this.props.itemClick(indd)
+            }}
             key={"row" + i + "col" + j}
             icon={icons[i * 4 + j]}
             text={iconTexts[i * 4 + j]}
-            index={i * 4 + j}
+            index={indd}
             sendImageMessage={this.props.sendImageMessage}
           />
         );
@@ -55,7 +59,7 @@ export default class MoreView extends Component {
 class Cell extends Component {
   render() {
     return (
-      <TouchableOpacity style={styles.cellContainer} activeOpacity={0.6} onPress={() => this.handleClick()}>
+      <TouchableOpacity style={styles.cellContainer} activeOpacity={0.6} onPress={this.props.itemClick}>
         <View style={styles.cellContainer}>
           <View style={styles.cellImgContainer}>
             <Image style={styles.cellImage} source={this.props.icon}/>
@@ -66,29 +70,6 @@ class Cell extends Component {
     );
   }
 
-  handleClick() {
-    let index = this.props.index;
-    switch (index) {
-      case 0:
-        this.chooseImage();
-        break;
-      default:
-    }
-  }
-
-  chooseImage() { // 从相册中选择图片发送
-    // ImagePicker.openPicker({
-    //   cropping: false
-    // }).then(image => {
-    //   if (this.props.sendImageMessage) {
-    //     let path = image.path;
-    //     if (!Utils.isEmpty(path)) {
-    //       let name = path.substring(path.lastIndexOf('/') + 1, path.length);
-    //       this.props.sendImageMessage(image);
-    //     }
-    //   }
-    // });
-  }
 }
 
 const styles = StyleSheet.create({
