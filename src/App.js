@@ -26,20 +26,20 @@ import ContactScreen from './classes/index/wx/contact/ContactScreen';
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
-export default function App() {
-    console.disableYellowBox = true;
-    return <SafeAreaProvider>
-        <NavigationContainer>
-            <ScreenList/>
-        </NavigationContainer>
-    </SafeAreaProvider>
-}
-
 // export default function App() {
-//     return (
-//         <TeaNavigator rootView={<TeasetExampleHome />} />
-//     )
+//     console.disableYellowBox = true;
+//     return <SafeAreaProvider>
+//         <NavigationContainer>
+//             <ScreenList/>
+//         </NavigationContainer>
+//     </SafeAreaProvider>
 // }
+
+export default function App() {
+    return (
+        <TeaNavigator rootView={<TeasetExampleHome />} />
+    )
+}
 
 function ScreenList() {
     global.INSETS = useSafeAreaInsets();

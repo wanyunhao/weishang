@@ -36,7 +36,11 @@ export default class ZhuanZhangDetailScreen extends Component {
         let statusText = ''
         if (this.state.caozuo_user_id == item.send_id) {
             if (item.isReceived) {
-                statusText = data.userinfo.user_name + '已收款';
+                if (item.received_id == this.state.caozuo_user_id) {
+                    statusText = '已收款';
+                } else {
+                    statusText = data.userinfo.user_name + '已收款';
+                }
             } else {
                 statusText = '待' + data.userinfo.user_name + '确认收款';
             }
@@ -66,7 +70,7 @@ export default class ZhuanZhangDetailScreen extends Component {
                     <XText style={{color:'#1A1A1A',fontSize:47}} text='$888.99'/>
                     {this.state.type == 2 ? (
                         <View>
-                            <XText style={{color:'#7F7F7F',fontSize:14}} text={item.send_id == this.state.caozuo_user_id ?'已存入对方零钱中':'已存入零钱中'}/>
+                            <XText style={{color:'#7F7F7F',fontSize:14}} text={(item.send_id == this.state.caozuo_user_id) ?(item.received_id ==this.state.caozuo_user_id)?'已存入零钱中':'已存入对方零钱中':'已存入零钱中'}/>
                         </View>
                     ) : (
                         <>

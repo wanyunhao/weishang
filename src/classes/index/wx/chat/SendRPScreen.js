@@ -41,7 +41,6 @@ export default class SendRPScreen extends Component {
                 <WXNavigationBar title={this.state.type == 2 ? '转账' : '发红包'} rightText='发送' clickRText={()=>{
 
                     if (isEmpty(this.state.hongbaoMoney) || this.state.hongbaoMoney <= 0) {
-                        console.log(this.state.hongbaoMoney);
                         showToast(this.state.type == 2 ?'转账金额不能低于0.01':'单个红包金额不能低于0.01');
                         return;
                     }

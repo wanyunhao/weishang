@@ -93,7 +93,6 @@ export default class TiXianScreen extends Component {
                         <Text style={{color:'#000000',fontSize:13}}>0.10%(最低0.1)</Text>
                     </View>
                     <PasswordInput style={{marginTop:30,width:270}} maxLength={6} onChange={(text)=>{
-                        console.log(text);
                         if (text.length == 6) {
                             this.overlayPopView && this.overlayPopView.close()
                             navigation.push('TixianResultScreen');

@@ -162,7 +162,6 @@ export function deepClone(data) {
     } else if (type === 'object') {
         for (const key in data) {
             obj[key] = deepClone(data[key]);
-            console.log('lailelaodi')
         }
     }
     return obj;

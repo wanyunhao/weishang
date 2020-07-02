@@ -15,7 +15,6 @@ export default class MsgSystemCell extends Component {
 
     render() {
         const data = this.props.data || {};
-        console.log(data);
         return (
             <YHTouchableOpacity style={styles.container}>
                 <View style={{alignItems:'center'}}>
