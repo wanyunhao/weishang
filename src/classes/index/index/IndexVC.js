@@ -46,7 +46,7 @@ export default class IndexVC extends PureComponent {
     render() {
         return (
             <View style={[CommonStyles.container, {marginTop: INSETS.top}]}>
-                <StatusBar backgroundColor="red"
+                <StatusBar backgroundColor="#EDEDED"
                            barStyle='dark-content'
                            translucent={true}
                            hidden={false}

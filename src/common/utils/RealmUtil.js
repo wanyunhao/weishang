@@ -68,6 +68,7 @@ export const WXMSGSchema = {
         hongbaoSendName : 'string?', //红包发送人姓名
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
+        received_id:'int?'
 
     }
 };

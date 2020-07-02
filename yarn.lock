@@ -5922,18 +5922,20 @@ react-native-collapsible@^1.4.0:
   dependencies:
     prop-types "^15.6.2"
 
-"react-native-debug-tool@https://github.com/chende008/react-native-debug-tool.git#master":
-  version "1.1.2"
-  resolved "https://github.com/chende008/react-native-debug-tool.git#358b33f2dca4f4b9d550f0fea2d382e6cece0cb5"
+react-native-debug-tool@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npm.taobao.org/react-native-debug-tool/download/react-native-debug-tool-1.1.3.tgz#6bd04f8acfdfe6201b2312cb1bf139054d902e4f"
+  integrity sha1-a9BPis/f5iAbIxLLG/E5BU2QLk8=
 
 react-native-device-info@^5.4.4:
   version "5.6.1"
   resolved "https://registry.npm.taobao.org/react-native-device-info/download/react-native-device-info-5.6.1.tgz#3ae88d8659b7b64d204dbfc39f69126b769363d4"
   integrity sha1-OuiNhlm3tk0gTb/Dn2kSa3aTY9Q=
 
-"react-native-easy-app@https://github.com/chende008/react-native-easy-app.git#master":
-  version "1.7.4"
-  resolved "https://github.com/chende008/react-native-easy-app.git#1b70862dbd98c165f56edbb683181e134846f574"
+react-native-easy-app@^1.7.6:
+  version "1.7.6"
+  resolved "https://registry.npm.taobao.org/react-native-easy-app/download/react-native-easy-app-1.7.6.tgz#6133180f2b6a506ced984aa02a9830a4363bc269"
+  integrity sha1-YTMYDytqUGztmEqgKpgwpDY7wmk=
 
 react-native-emoticons@^1.0.13:
   version "1.0.13"

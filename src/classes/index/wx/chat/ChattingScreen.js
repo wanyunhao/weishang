@@ -25,6 +25,8 @@ import YHHongBaoPopView from "./views/YHHongBaoPopView";
 import {Button, Label, Overlay, Theme} from "teaset";
 import HBDetailScreen from "./views/HBDetailScreen";
 import {getNow} from "../../../../common/utils/DateUtils";
+import MsgSystemCell from "./views/MsgSystemCell";
+import ZhuanZhangDetailScreen from "./views/ZhuanZhangDetailScreen";
 
 const { width } = Dimensions.get("window");
 
@@ -79,15 +81,19 @@ export default class ChattingScreen extends Component {
         this.chooseImage();
         break;
       case 4:
-        this.sendHB();
+        this.sendHB(1);
+        break;
+      case 5:
+        this.sendHB(2);
         break;
       default:
         break;
     }
   }
 
-  sendHB() {
-    navigation.push('SendRPScreen',{df_user_id:this.state.c_data.df_user_id,c_id:this.state.c_data.id,refreshList:()=>{
+  sendHB(type) {
+    // console.log(this.state.c_data.userinfo);
+    navigation.push('SendRPScreen',{type:type,df_user_info:this.state.c_data.userinfo,c_id:this.state.c_data.id,refreshList:()=>{
         this.queryChat();
       }});
 
@@ -122,6 +128,25 @@ export default class ChattingScreen extends Component {
             {/*<Label type='title' size='xl' text={text} />*/}
             {/*{modal ? <View style={{height: 60}} /> : null}*/}
             {/*{modal ? <Button title='Close' onPress={() => this.overlayPopView && this.overlayPopView.close()} /> : null}*/}
+          </View>
+        </Overlay.PopView>
+    );
+    Overlay.show(overlayView);
+  }
+
+  showZhuanZhangPop(type, modal, text, item) {
+    let overlayView = (
+        <Overlay.PopView
+            type={type}
+            modal={modal}
+            ref={v => this.overlayPopView2 = v}
+        >
+          <View style={{backgroundColor: Theme.defaultColor, minWidth: 260, minHeight: Const.screenHeight,padding:0}}>
+            <ZhuanZhangDetailScreen closeHB={()=>{
+              this.overlayPopView2 && this.overlayPopView2.close()
+            }} data={this.state.c_data} item={item} type={item.isReceived?2:1} refreshChat={()=>{
+              this.queryChat();
+            }}/>
           </View>
         </Overlay.PopView>
     );
@@ -206,12 +231,43 @@ export default class ChattingScreen extends Component {
                               //   showRP: true
                               // })
                               // console.log(item);
-                              this.showHB('zoomOut', false, 'Pop zoom out',item)
+                              if (!item.isReceived) {
+                                if (RNStorage.user_id == item.send_id) {
+
+                                  this.showPop('zoomOut', false, 'Pop zoom out')
+                                  let obj = {
+                                    id: item.id,
+                                    isReceived: true
+                                  };
+                                  writeToRealm(obj,MSGTableName).then(res=>{
+                                    writeToRealm({
+                                      id:getNow(),
+                                      c_id: this.state.c_data.id,//会话id
+                                      send_id : item.send_id,
+                                      type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                                      xitongTextType:2,
+                                      hongbaoReceiveName:item.userinfo.user_name,
+                                      hongbaoSendName:'你',
+                                    },MSGTableName)
+                                    this.queryChat();
+                                  });
+                                } else {
+                                  this.showHB('zoomOut', false, 'Pop zoom out',item)
+                                }
+                              } else {
+                                this.showPop('zoomOut', false, 'Pop zoom out')
+                              }
                             }}/>
                         )
                       case 6:
                         return (
-                            <ChatZhuanZhangListCell isSelf={RNStorage.user_id == item.send_id} isReceived={item.isReceived}/>
+                            <ChatZhuanZhangListCell data={item} isSelf={RNStorage.user_id == item.send_id} isReceived={item.isReceived} onPress={()=>{
+                              this.showZhuanZhangPop('zoomOut', false, 'Pop zoom out',item)
+                            }}/>
+                        )
+                      case 7:
+                        return (
+                            <MsgSystemCell data={item}/>
                         )
                       default:
                         break;
