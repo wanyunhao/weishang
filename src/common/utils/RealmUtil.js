@@ -50,12 +50,13 @@ export const WXMSGSchema = {
         id: 'int',
         c_id: 'int',//会话id
         send_id : 'int',
-        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
         user_name: 'string?',
         avatar: 'string?',
         text: 'string?',
         pic: 'string?',
         yuyin: 'string?',
+        yuyintonghua: 'string?',
         shipin: 'string?',
         hongbaoText : 'string?',
         hongbaoMoney : 'string?',

@@ -122,7 +122,7 @@ export default class ZhuanZhangDetailScreen extends Component {
                         </>
                     )}
                 </View>
-                <XText style={{color:'#7F7F7F',fontSize:14,position:'absolute',bottom:INSETS.bottom + 80,left:0,right:0,textAlign:'center'}} text='转账时间: 2020-01-27 14:00'/>
+                <XText style={{color:'#7F7F7F',fontSize:14,position:'absolute',bottom:80,left:0,right:0,textAlign:'center'}} text='转账时间: 2020-01-27 14:00'/>
             </View>
         );
     }
