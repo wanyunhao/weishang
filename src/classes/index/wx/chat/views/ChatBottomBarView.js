@@ -8,7 +8,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    Keyboard
 } from "react-native";
 import Utils from '../../../../../common/utils/WXUtils'
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
@@ -77,11 +78,19 @@ export default class ChatBottomBarView extends Component {
                         onChangeText={text => {
                             this.setState({inputMsg: text});
                         }}
+                        onFocus={()=>{
+                            this.props.tfonFocus();
+                        }}
                     />
                 </View>
                 <YHTouchableOpacity
                     onPress={() => {
                         //点击表情
+                        // 收起键盘方法
+                        // var dismissKeyboard = require('dismissKeyboard');
+                        // dismissKeyboard();
+                        Keyboard.dismiss()
+                        this.props.emojiClick();
                     }}
                 >
                     <Image
@@ -94,7 +103,8 @@ export default class ChatBottomBarView extends Component {
                     <YHTouchableOpacity
                         onPress={() => {
                             // 点击更多
-
+                            Keyboard.dismiss()
+                            this.props.moreClick();
                         }}
                     >
                         <Image

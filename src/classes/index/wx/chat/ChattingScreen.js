@@ -13,14 +13,14 @@ import ChatBottomBarView from "./views/ChatBottomBarView";
 import MoreView from "../../../../views/MoreView";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {
-    instance,
+    instance, MSGPicTableName,
     MSGTableName,
     queryFilterFromRealm,
     SelfTableName,
     UsersTableName, writeToRealm
 } from "../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../common/storage/AppStorage";
-import {isEmpty} from "../../../../common/utils/Utils";
+import {deepClone, isEmpty} from "../../../../common/utils/Utils";
 import YHHongBaoPopView from "./views/YHHongBaoPopView";
 import {Button, Label, Overlay, Theme, Wheel} from "teaset";
 import HBDetailScreen from "./views/HBDetailScreen";
@@ -33,6 +33,9 @@ import ChatYuyinCell from "./views/ChatYuyinCell";
 import {showActionSheet} from "../../../../compoments/YHUtils";
 import Wheel3View from "./views/Wheel3View";
 import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
+import ImagePicker from "react-native-image-picker";
+import ChatPicCell from "./views/ChatPicCell";
+// import Emoticons from "react-native-emoticons";
 
 const {width} = Dimensions.get("window");
 
@@ -48,6 +51,8 @@ export default class ChattingScreen extends Component {
             c_data: {},
             data: [],
             silderValue: 30,
+            inputType:1,// 1:文字 2:表情 3:更多
+            kebordHeight: 0,
         };
     }
 
@@ -78,14 +83,30 @@ export default class ChattingScreen extends Component {
         });
     }
 
-    componentWillMount() {
-    }
-
+    // componentWillMount() {
+    //     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
+    //     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
+    // }
+    //
+    // _keyboardDidShow(frames) {
+    //     let keyboardSpace = frames.endCoordinates.height;//获取键盘高度
+    //     this.setState({
+    //         kebordHeight: keyboardSpace
+    //     })
+    // }
+    //
+    // componentWillUnmount() {
+    //     this.keyboardDidShowListener.remove();
+    //     this.keyboardDidHideListener.remove();
+    // }
 
     handleClick(index) {
         switch (index) {
             case 0:
-                this.chooseImage();
+                this.chooseImage(0);
+                break;
+            case 1:
+                this.chooseImage(1);
                 break;
             case 2:
                 // this.showEdit('zoomOut', false, 'Pop zoom out');
@@ -97,7 +118,7 @@ export default class ChattingScreen extends Component {
                     },
                     {
                         title: '视频通话', onPress: () => {
-                            this.showTime('bottom', false, 'Pull from bottom',8)
+                            this.showTime('bottom', false, 'Pull from bottom',4)
                         }
                     },
                 ])
@@ -124,20 +145,64 @@ export default class ChattingScreen extends Component {
         });
     }
 
-    chooseImage() { // 从相册中选择图片发送
-        // ImagePicker.openPicker({
-        //   cropping: false
-        // }).then(image => {
-        //   if (this.props.sendImageMessage) {
-        //     let path = image.path;
-        //     if (!Utils.isEmpty(path)) {
-        //       let name = path.substring(path.lastIndexOf('/') + 1, path.length);
-        //       this.props.sendImageMessage(image);
-        //     }
-        //   }
-        // });
+    chooseImage(type) { // 从相册中选择图片发送
+        if (type == 1) {
+
+            const options = {
+                title: '拍照',
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                },
+            };
+            ImagePicker.launchCamera(options,(response => {
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                } else if (response.customButton) {
+                    console.log('User tapped custom button: ', response.customButton);
+                } else {
+                    this.writePicToRealm(response);
+                }
+            }))
+        } else {
+            const options = {
+                title: '库图',
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                },
+            };
+            ImagePicker.launchImageLibrary(options,(response => {
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (response.error) {
+                    console.log('ImagePicker Error: ', response.error);
+                } else if (response.customButton) {
+                    console.log('User tapped custom button: ', response.customButton);
+                } else {
+                    this.writePicToRealm(response);
+                }
+            }))
+        }
     }
 
+    writePicToRealm(response) {
+        // console.log(response);
+        writeToRealm({
+            id: getNow(),
+            c_id: this.state.c_data.id,//会话id
+            send_id: RNStorage.user_id,
+            type: 2,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+            pic: 'data:image/jpeg;base64,' + response.data,
+            width : response.width, //图片宽度
+            height : response.height, //图片高度
+            isVertical: response.isVertical,
+        }, MSGTableName).then(() => {
+            this.queryChat();
+        })
+    }
     showTime(side, modal, text,type) {
         let overlayView = (
             <Overlay.PullView side={side} modal={modal} ref={v => this.overlayPullView5 = v}>
@@ -283,17 +348,15 @@ export default class ChattingScreen extends Component {
         Overlay.show(overlayView);
     }
 
+    // _onEmoticonPress = data => {
+    //     // 选择了某个emoji表情，将该表情追加到输入框中
+    //     // this.refs.chatBottomBar.appendMsg(data.code);
+    // };
+    // _onBackspacePress = () => {};
     render() {
-        let data = ['1', '2', '3', 4, 1, 6, 7, 7, 1, 1, 1, 1]
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='消息'/>
-                {/*<NavigationBar title='消息' onBack={()=>{*/}
-                {/*  this.setState({*/}
-                {/*    showHongbao: !this.state.showHongbao*/}
-                {/*  })*/}
-                {/*}}/>*/}
-
                 <XFlatList data={this.state.data}
                            style={{marginBottom: 52}}
                            renderItem={({item, index}) => {
@@ -304,7 +367,7 @@ export default class ChattingScreen extends Component {
                                        )
                                    case 2:
                                        return (
-                                           <ChatListCell isSelf={RNStorage.user_id == item.send_id}/>
+                                           <ChatPicCell isSelf={RNStorage.user_id == item.send_id} data={item}/>
                                        )
                                    case 3:
                                        return (
@@ -372,23 +435,39 @@ export default class ChattingScreen extends Component {
                                }
                            }}
                 />
-                <ChatBottomBarView bottom={220} c_id={this.state.c_data.id} refrshChat={() => {
+                <ChatBottomBarView bottom={this.state.inputType == 1 ? 0 : 220} c_id={this.state.c_data.id} refrshChat={() => {
                     this.queryChat();
+                }} emojiClick={()=>{
+                    this.setState({
+                        inputType:2,
+                    })
+                }} moreClick={()=>{
+                    this.setState({
+                        inputType:3,
+                    })
+                }} tfonFocus={()=>{
+                    this.setState({
+                        inputType:1,
+                    })
                 }}/>
-                <MoreView itemClick={(index) => {
-                    this.handleClick(index);
-                }}/>
-                {/*{this.state.showRP ? (<YHHongBaoPopView closeClick={()=>{*/}
-                {/*  this.setState({*/}
-                {/*    showRP: false,*/}
-                {/*  })*/}
-                {/*}} finishAnimation={()=>{*/}
-                {/*  this.setState({*/}
-                {/*    showRP: false,*/}
-                {/*  },()=>{*/}
-                {/*    this.showPop('zoomOut', false, 'Pop zoom out')*/}
-                {/*  })*/}
-                {/*}}/>) : null}*/}
+                {this.state.inputType == 3 ? (
+                    <MoreView itemClick={(index) => {
+                        this.handleClick(index);
+                    }}/>
+                ): null}
+                {/*{this.state.inputType == 2 ? (*/}
+                {/*    <View style={{ height: 300,width:Const.screenWidth,backgroundColor: 'red' }}>*/}
+                {/*        /!* <EmojiView /> *!/*/}
+                {/*        <Emoticons*/}
+                {/*            onEmoticonPress={this._onEmoticonPress}*/}
+                {/*            onBackspacePress={this._onBackspacePress}*/}
+                {/*            show={true}*/}
+                {/*            concise={false}*/}
+                {/*            showHistoryBar={false}*/}
+                {/*            showPlusBar={false}*/}
+                {/*        />*/}
+                {/*    </View>*/}
+                {/*): null}*/}
             </View>
         );
     }

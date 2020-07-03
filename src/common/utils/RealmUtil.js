@@ -5,6 +5,7 @@ export const WXConversationTableName = 'WXConversation';
 export const SelfTableName = 'Self';
 export const UsersTableName = 'Users';
 export const MSGTableName = 'MSG';
+export const MSGPicTableName = 'MSGPicTableName';
 export const PYQListTableName = 'PYQListTableName';
 export const PYQListPicTableName = 'PYQListPicTableName';
 export const PYQListTalkTableName = 'PYQListTalkTableName';
@@ -55,6 +56,9 @@ export const WXMSGSchema = {
         avatar: 'string?',
         text: 'string?',
         pic: 'string?',
+        width : 'float?', //图片宽度
+        height : 'float?', //图片高度
+        isVertical: 'bool?',
         yuyin: 'string?',
         yuyintonghua: 'string?',
         shipin: 'string?',
@@ -69,7 +73,20 @@ export const WXMSGSchema = {
         hongbaoSendName : 'string?', //红包发送人姓名
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
-        received_id:'int?'
+        received_id:'int?',
+
+    }
+};
+//图片信息
+export const WXMSGPicSchema = {
+    name: MSGPicTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        father_id: 'int',//消息id
+        width : 'float?', //红包接收人姓名
+        height : 'float?', //红包接收人姓名
+        isVertical: 'bool?',
 
     }
 };
@@ -118,7 +135,8 @@ export const instance = new Realm({
         SelfTableNameSchema,
         PYQListSchema,
         PYQListPicSchema,
-        PYQListTalkSchema
+        PYQListTalkSchema,
+        // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,
     inMemory: false,

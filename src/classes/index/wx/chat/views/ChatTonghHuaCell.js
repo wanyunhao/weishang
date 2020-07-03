@@ -19,9 +19,9 @@ export default class ChatTonghHuaCell extends Component {
                                 <View style={{justifyContent:'center',minHeight:38,minWidth:75.45,backgroundColor:isSelf ? Colors.qipao_background_color : Colors.white,paddingHorizontal:9,paddingVertical:8,borderRadius:3,marginLeft:-0.5,marginRight:-0.5}}>
                                     {/*<Text style={{fontSize:16,color:Colors.black_text_color,maxWidth: Const.screenWidth - 38-22 - 20 - 18-38}}>{data.text}</Text>*/}
                                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:isSelf ? 'flex-end': 'flex-start'}}>
-                                        {isSelf?null:<XImage icon={require('../../../../resource/index/chat/bf_l.png')} style={{width:10.67,height:14.85,marginRight:5}}/>}
+                                        {isSelf?null:<XImage icon={data.type == 8? require('../../../../resource/index/chat/chat_list_th.png'):require('../../../../resource/index/chat/chat_list_lyj_r.png')} style={{width:48,height:20,marginRight:5}}/>}
                                         <Text style={{fontSize:13,color:Colors.black_text_color,maxWidth: Const.screenWidth - 38-22 - 20 - 18-38}}>聊天时长{ '  ' +data.yuyintonghua}</Text>
-                                        {isSelf?<XImage icon={require('../../../../resource/index/chat/bf_r.png')} style={{width:10.67,height:14.85,marginLeft:5}}/>:null}
+                                        {isSelf?<XImage icon={data.type == 8? require('../../../../resource/index/chat/chat_list_th.png'):require('../../../../resource/index/chat/chat_list_lyj_r.png')} style={{width:20,height:16,marginLeft:5}}/>:null}
 
                                     </View>
                                 </View>
