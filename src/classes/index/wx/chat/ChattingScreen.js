@@ -35,9 +35,8 @@ import Wheel3View from "./views/Wheel3View";
 import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 import ImagePicker from "react-native-image-picker";
 import ChatPicCell from "./views/ChatPicCell";
-// import Emoticons from "react-native-emoticons";
+import EmojiView from "./views/EmojiView";
 
-const {width} = Dimensions.get("window");
 
 export default class ChattingScreen extends Component {
 
@@ -53,6 +52,7 @@ export default class ChattingScreen extends Component {
             silderValue: 30,
             inputType:1,// 1:文字 2:表情 3:更多
             kebordHeight: 0,
+            emoji:''
         };
     }
 
@@ -455,19 +455,12 @@ export default class ChattingScreen extends Component {
                         this.handleClick(index);
                     }}/>
                 ): null}
-                {/*{this.state.inputType == 2 ? (*/}
-                {/*    <View style={{ height: 300,width:Const.screenWidth,backgroundColor: 'red' }}>*/}
-                {/*        /!* <EmojiView /> *!/*/}
-                {/*        <Emoticons*/}
-                {/*            onEmoticonPress={this._onEmoticonPress}*/}
-                {/*            onBackspacePress={this._onBackspacePress}*/}
-                {/*            show={true}*/}
-                {/*            concise={false}*/}
-                {/*            showHistoryBar={false}*/}
-                {/*            showPlusBar={false}*/}
-                {/*        />*/}
-                {/*    </View>*/}
-                {/*): null}*/}
+
+                {this.state.inputType == 2 ? (
+                    <View style={{ height: 220,width:Const.screenWidth }}>
+                    </View>
+                ): null}
+                <EmojiView/>
             </View>
         );
     }

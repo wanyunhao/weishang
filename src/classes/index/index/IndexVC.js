@@ -53,6 +53,7 @@ export default class IndexVC extends PureComponent {
                            animated={true}/>
                 <TouchableOpacity onPress={()=>{
                     navigation.push('WX');
+                    // navigation.push('ChatApp');
                 }}><Text>111111</Text></TouchableOpacity>
             </View>
         );
