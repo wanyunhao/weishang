@@ -32,6 +32,7 @@ import SliderView from "./views/SliderView";
 import ChatYuyinCell from "./views/ChatYuyinCell";
 import {showActionSheet} from "../../../../compoments/YHUtils";
 import Wheel3View from "./views/Wheel3View";
+import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 
 const {width} = Dimensions.get("window");
 
@@ -311,7 +312,7 @@ export default class ChattingScreen extends Component {
                                        )
                                    case 4:
                                        return (
-                                           <ChatZhuanZhangListCell isSelf={RNStorage.user_id == item.send_id}/>
+                                           <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id} data={item}/>
                                        )
                                    case 5:
                                        return (
@@ -361,6 +362,10 @@ export default class ChattingScreen extends Component {
                                    case 7:
                                        return (
                                            <MsgSystemCell data={item}/>
+                                       )
+                                   case 8:
+                                       return (
+                                           <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id} data={item}/>
                                        )
                                    default:
                                        break;

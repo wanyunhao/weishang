@@ -4,7 +4,7 @@ import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {XImage} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
 
-export default class ChatYuyinCell extends Component {
+export default class ChatTonghHuaCell extends Component {
     render() {
         const data = this.props.data;
         let isSelf = this.props.isSelf;
@@ -20,7 +20,7 @@ export default class ChatYuyinCell extends Component {
                                     {/*<Text style={{fontSize:16,color:Colors.black_text_color,maxWidth: Const.screenWidth - 38-22 - 20 - 18-38}}>{data.text}</Text>*/}
                                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:isSelf ? 'flex-end': 'flex-start'}}>
                                         {isSelf?null:<XImage icon={require('../../../../resource/index/chat/bf_l.png')} style={{width:10.67,height:14.85,marginRight:5}}/>}
-                                        <Text style={{fontSize:13,color:Colors.black_text_color,maxWidth: Const.screenWidth - 38-22 - 20 - 18-38}}>{data.yuyin}"</Text>
+                                        <Text style={{fontSize:13,color:Colors.black_text_color,maxWidth: Const.screenWidth - 38-22 - 20 - 18-38}}>聊天时长{ '  ' +data.yuyintonghua}</Text>
                                         {isSelf?<XImage icon={require('../../../../resource/index/chat/bf_r.png')} style={{width:10.67,height:14.85,marginLeft:5}}/>:null}
 
                                     </View>
