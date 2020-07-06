@@ -25,6 +25,7 @@ import PYQSendScreen from "./classes/index/wx/discovery/PYQSendScreen";
 import ChooseLocationScreen from "./classes/index/wx/discovery/ChooseLocationScreen";
 import ContactScreen from './classes/index/wx/contact/ContactScreen';
 import ChatDemo from './classes/index/wx/chat/src/ChatDemo';
+import YueIndex from './classes/index/zfb/five/yue/YueIndex';
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
@@ -70,5 +71,6 @@ function ScreenList() {
         <Screen name='SendRPScreen' component={SendRPScreen}/>
         <Screen name='ChatDemo' component={ChatDemo}/>
         <Screen name='ZFBController' component={ZFBController}/>
+        <Screen name='YueIndex' component={YueIndex}/>
     </Navigator>;
 }

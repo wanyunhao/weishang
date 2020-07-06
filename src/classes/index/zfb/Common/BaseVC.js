@@ -6,36 +6,31 @@ import {
     Image, StatusBar,
 } from 'react-native';
 import {Colors, Const} from "../../../../common/storage/Const";
+import {showToast} from "../../../../common/widgets/Loading";
 
 export default class BaseVC extends Component {
     constructor() {
         super();
         this.state = {
-            nav_color: Colors.zfb_theme_color,
             place_view_bg_color: Colors.zfb_theme_color
         }
     }
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor={this.state.nav_color}
+                <StatusBar backgroundColor={this.state.place_view_bg_color}
                            barStyle='light-content'
                            translucent={true}/>
-                <View style={{backgroundColor:Colors.zfb_theme_color,height:INSETS.top}}/>
+                <View style={{backgroundColor:this.state.place_view_bg_color,height:INSETS.top}}/>
                 {this._addSubView()}
             </View>
         );
     }
     _addSubView() {}
 
-    _setNavColor(color) {
-        this.setState({
-            nav_color: color,
-        })
-    }
-
     _setPlaceViewBackgroundColor(color) {
 
+        showToast('_setPlaceViewBackgroundColor')
         this.setState({
             place_view_bg_color: color,
         })
