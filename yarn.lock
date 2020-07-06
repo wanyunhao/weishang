@@ -2617,11 +2617,6 @@ emits@3.0.x:
   resolved "https://registry.npm.taobao.org/emits/download/emits-3.0.0.tgz#32752bba95e1707b219562384ab9bb8b1fd62f70"
   integrity sha1-MnUrupXhcHshlWI4Srm7ix/WL3A=
 
-emoji-datasource@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npm.taobao.org/emoji-datasource/download/emoji-datasource-5.0.1.tgz#31eaaff7caa6640929327b4f4ff66f2bf313df0a"
-  integrity sha1-Meqv98qmZAkpMntPT/ZvK/MT3wo=
-
 emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.npm.taobao.org/emoji-regex/download/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
@@ -5925,13 +5920,6 @@ react-native-easy-app@^1.7.6:
   resolved "https://registry.npm.taobao.org/react-native-easy-app/download/react-native-easy-app-1.7.6.tgz#6133180f2b6a506ced984aa02a9830a4363bc269"
   integrity sha1-YTMYDytqUGztmEqgKpgwpDY7wmk=
 
-react-native-emoji-selector@^0.1.9:
-  version "0.1.9"
-  resolved "https://registry.npm.taobao.org/react-native-emoji-selector/download/react-native-emoji-selector-0.1.9.tgz#b6305e952790736c89fe5ae45b2f8a9c6ec6d256"
-  integrity sha1-tjBelSeQc2yJ/lrkWy+KnG7G0lY=
-  dependencies:
-    emoji-datasource "^5.0.1"
-
 react-native-fs@^2.16.6:
   version "2.16.6"
   resolved "https://registry.npm.taobao.org/react-native-fs/download/react-native-fs-2.16.6.tgz#2901789a43210a35a0ef0a098019bbef3af395fd"
@@ -5980,6 +5968,14 @@ react-native-modal-popover@^0.0.12:
     "@types/prop-types" "^15.5.5"
     lodash.debounce "^4.0.8"
     prop-types "^15.6.2"
+
+react-native-modalbox@^1.6.0:
+  version "1.7.1"
+  resolved "https://registry.npm.taobao.org/react-native-modalbox/download/react-native-modalbox-1.7.1.tgz#cdb623ecd1cbe8699a450217c25b2d6666dc63e6"
+  integrity sha1-zbYj7NHL6GmaRQIXwlstZmbcY+Y=
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
 
 react-native-reanimated@^1.9.0:
   version "1.9.0"

@@ -12,7 +12,7 @@ import {
 import {Colors, CommonStyles, Const} from "../../../common/storage/Const";
 
 import {showToast} from '../../../common/widgets/Loading';
-import {XHttp, XView} from "react-native-easy-app";
+import {XHttp, XText, XView} from "react-native-easy-app";
 import {Api} from "../../../common/http/Api";
 import {WXNavigationBar} from "../../../common/widgets/WXNavigation";
 
@@ -53,8 +53,11 @@ export default class IndexVC extends PureComponent {
                            animated={true}/>
                 <TouchableOpacity onPress={()=>{
                     navigation.push('WX');
-                    // navigation.push('ChatApp');
+                    // navigation.push('ChatDemo');
                 }}><Text>111111</Text></TouchableOpacity>
+                <XText text='支付宝' onPress={()=>{
+                    
+                }}/>
             </View>
         );
     }

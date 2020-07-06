@@ -23,6 +23,7 @@ import PYQListScreen from "./classes/index/wx/discovery/PYQListScreen";
 import PYQSendScreen from "./classes/index/wx/discovery/PYQSendScreen";
 import ChooseLocationScreen from "./classes/index/wx/discovery/ChooseLocationScreen";
 import ContactScreen from './classes/index/wx/contact/ContactScreen';
+import ChatDemo from './classes/index/wx/chat/src/ChatDemo';
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
@@ -65,5 +66,6 @@ function ScreenList() {
         <Screen name='ContactScreen' component={ContactScreen}/>
         <Screen name='TixianResultScreen' component={TixianResultScreen}/>
         <Screen name='SendRPScreen' component={SendRPScreen}/>
+        <Screen name='ChatDemo' component={ChatDemo}/>
     </Navigator>;
 }
