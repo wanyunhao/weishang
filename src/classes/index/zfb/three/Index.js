@@ -12,6 +12,11 @@ import BaseVC from "../Common/BaseVC";
 export default class Index extends BaseVC {
     constructor() {
         super();
+        this.imgs = [
+            {img: require('../../../resource/zfb/one/home_zfb_btn_sys.png'), title: '生活号',subTitle:'余额宝收益到账…'},
+            {img: require('../../../resource/zfb/one/home_zfb_btn_fq.png'), title: '小程序',subTitle:'天天可领福利…'},
+            {img: require('../../../resource/zfb/one/home_zfb_btn_sq.png'), title: '生活圈',subTitle:'你有朋…更新动态'},
+        ]
     }
 
     _addSubView() {
