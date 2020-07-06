@@ -36,6 +36,7 @@ import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 import ImagePicker from "react-native-image-picker";
 import ChatPicCell from "./views/ChatPicCell";
 import EmojiView from "./views/EmojiView";
+import {showToast} from "../../../../common/widgets/Loading";
 
 
 export default class ChattingScreen extends Component {
@@ -51,8 +52,10 @@ export default class ChattingScreen extends Component {
             data: [],
             silderValue: 30,
             inputType:1,// 1:文字 2:表情 3:更多
+            inputBottom:220,// 1:文字 2:表情 3:更多
             kebordHeight: 0,
-            emoji:''
+            emoji:'',
+            senderId: RNStorage.user_id,
         };
     }
 
@@ -61,6 +64,7 @@ export default class ChattingScreen extends Component {
             c_data: this.props.route.params.data
         }, () => {
             this.queryChat();
+            console.log(this.state.c_data);
         })
     }
 
@@ -193,7 +197,7 @@ export default class ChattingScreen extends Component {
         writeToRealm({
             id: getNow(),
             c_id: this.state.c_data.id,//会话id
-            send_id: RNStorage.user_id,
+            send_id: this.state.senderId,
             type: 2,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
             pic: 'data:image/jpeg;base64,' + response.data,
             width : response.width, //图片宽度
@@ -217,7 +221,7 @@ export default class ChattingScreen extends Component {
                         writeToRealm({
                             id: getNow(),
                             c_id: this.state.c_data.id,//会话id
-                            send_id: RNStorage.user_id,
+                            send_id: this.state.senderId,
                             type: type,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
                             yuyintonghua: result,
                             shipin: result
@@ -269,7 +273,7 @@ export default class ChattingScreen extends Component {
                     writeToRealm({
                         id: getNow(),
                         c_id: this.state.c_data.id,//会话id
-                        send_id: RNStorage.user_id,
+                        send_id: this.state.senderId,
                         type: 3,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
                         yuyin: value + ''
                     }, MSGTableName).then(() => {
@@ -356,7 +360,19 @@ export default class ChattingScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <WXNavigationBar title='消息'/>
+                <WXNavigationBar title='消息' rightImage={require('../../../resource/common/wx_more.png')} clickRImage={()=>{
+                    if (this.state.senderId == RNStorage.user_id) {
+                        this.setState({
+                            senderId: this.state.c_data.df_user_id
+                        })
+                        showToast('切换到对方发送');
+                    } else {
+                        this.setState({
+                            senderId: RNStorage.user_id
+                        })
+                        showToast('自己发送');
+                    }
+                }}/>
                 <XFlatList data={this.state.data}
                            style={{marginBottom: 52}}
                            renderItem={({item, index}) => {
@@ -435,15 +451,17 @@ export default class ChattingScreen extends Component {
                                }
                            }}
                 />
-                <ChatBottomBarView bottom={this.state.inputType == 1 ? 0 : 220} c_id={this.state.c_data.id} refrshChat={() => {
+                <ChatBottomBarView senderId={this.state.senderId} bottom={this.state.inputType == 1 ? 0 : this.state.inputBottom} c_id={this.state.c_data.id} refrshChat={() => {
                     this.queryChat();
                 }} emojiClick={()=>{
                     this.setState({
                         inputType:2,
+                        inputBottom: 341 + INSETS.bottom,
                     })
                 }} moreClick={()=>{
                     this.setState({
                         inputType:3,
+                        inputBottom: 220,
                     })
                 }} tfonFocus={()=>{
                     this.setState({
@@ -457,10 +475,9 @@ export default class ChattingScreen extends Component {
                 ): null}
 
                 {this.state.inputType == 2 ? (
-                    <View style={{ height: 220,width:Const.screenWidth }}>
-                    </View>
+                    <EmojiView/>
                 ): null}
-                <EmojiView/>
+
             </View>
         );
     }

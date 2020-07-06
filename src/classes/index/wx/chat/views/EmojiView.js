@@ -9,13 +9,13 @@ import {
 import {XImage} from "react-native-easy-app";
 import {Const} from "../../../../../common/storage/Const";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
-
+import Smiley from '../uril/Smiley'
 export default class EmojiView extends Component {
 
     render() {
 
         return (
-            <View style={styles.container}>
+            <View style={[styles.container,{paddingBottom:INSETS.bottom,}]}>
                 <View style={{height: 57, backgroundColor: '#F7F7F7', flexDirection: 'row', alignItems: 'center'}}>
                     <XImage style={{marginLeft: 17}} icon={require('../../../../resource/index/chat/dd_icon1.png')}
                             iconSize={21.85}/>
@@ -34,16 +34,12 @@ export default class EmojiView extends Component {
                     </Text>
                     <View style={{marginTop: 15, flexDirection: 'row', flexWrap: 'wrap'}}>
                         {[12, 3, 4, 5, 6, 3, 3, 3].map((value, index) => {
-                            let ind = index + 1 + '';
-                            let rs = parseInt(ind);
-                            let src = '../../../../resource/index/chat/bq/bq' + 1 + '.png';
-                            console.log(src);
                             return (
                                 <YHTouchableOpacity style={{
                                     paddingRight: (index > 0 && index % 7 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
                                     paddingBottom: 15,
                                 }}>
-                                    <XImage icon={require(src)} iconSize={30}/>
+                                    <XImage icon={Smiley.data[index]} iconSize={30}/>
                                 </YHTouchableOpacity>
 
                             )
@@ -60,7 +56,7 @@ export default class EmojiView extends Component {
                                         paddingRight: (index > 0 && index % 7 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
                                         paddingBottom: 15,
                                     }}>
-                                        <XImage icon={require('../../../../resource/index/chat/bq/bq1.png')}
+                                        <XImage icon={Smiley.data[index]}
                                                 iconSize={30}/>
                                     </YHTouchableOpacity>
 
@@ -81,5 +77,6 @@ const styles = StyleSheet.create({
         height: 341,
         position: 'absolute',
         bottom: 0,
+
     },
 });

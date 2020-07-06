@@ -130,10 +130,11 @@ export default class ChatBottomBarView extends Component {
         // if (!Utils.isEmpty(onSendBtnClickListener)) {
         //   onSendBtnClickListener(this.state.inputMsg);
         // }
+        console.log(this.props.senderId);
         writeToRealm({
             id: getNow(),
             c_id: this.c_id,
-            send_id: RNStorage.user_id,
+            send_id: this.props.senderId,
             type: 1,
             text: this.state.inputMsg
         },MSGTableName)
