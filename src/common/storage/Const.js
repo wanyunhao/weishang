@@ -40,8 +40,10 @@ export const Colors = { //App通用颜色
     wx_black_text_color: '#1A1A1A',
     tabbar_normal_color: '#000000',
     tabbar_select_color: '#0ABF60',
+    zfb_tabbar_select_color: '#2080CA',
     qipao_background_color: '#95EC69',
     wx_line_color: '#EBEBEB',
+    zfb_theme_color: '#1B82D1',
 
 };
 

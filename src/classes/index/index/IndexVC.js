@@ -56,7 +56,8 @@ export default class IndexVC extends PureComponent {
                     // navigation.push('ChatDemo');
                 }}><Text>111111</Text></TouchableOpacity>
                 <XText text='支付宝' onPress={()=>{
-                    
+                    navigation.push('ZFBController');
+
                 }}/>
             </View>
         );

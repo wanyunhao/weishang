@@ -8,6 +8,7 @@ import {Assets} from "./common/http/Api";
 import LaunchController from "./mainController/LaunchController";
 import MainController from "./mainController/MainController";
 import WXController from "./mainController/WXController";
+import ZFBController from "./mainController/ZFBController";
 import LoginVC from "./classes/login/LoginVC";
 import RegisterVC from "./classes/login/RegisterVC";
 import ChattingScreen from "./classes/index/wx/chat/ChattingScreen";
@@ -27,6 +28,7 @@ import ChatDemo from './classes/index/wx/chat/src/ChatDemo';
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
+import {Const} from "./common/storage/Const";
 export default function App() {
     console.disableYellowBox = true;
     return <SafeAreaProvider>
@@ -67,5 +69,6 @@ function ScreenList() {
         <Screen name='TixianResultScreen' component={TixianResultScreen}/>
         <Screen name='SendRPScreen' component={SendRPScreen}/>
         <Screen name='ChatDemo' component={ChatDemo}/>
+        <Screen name='ZFBController' component={ZFBController}/>
     </Navigator>;
 }
