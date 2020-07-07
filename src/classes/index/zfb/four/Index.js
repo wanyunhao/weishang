@@ -24,7 +24,9 @@ export default class Index extends BaseVC {
             <View>
                 <View style={{height:46,backgroundColor:Colors.zfb_theme_color,flexDirection:'row',justifyContent:'flex-end',paddingHorizontal:15,alignItems:'center'}}>
                     <XImage style={{width:20.5,height:19.75,marginRight:20,}} icon={require('../../../resource/zfb/four/zfb_py_search.png')}/>
-                    <XImage style={{width: 23.19, height: 19.16,marginRight:20,}} icon={require('../../../resource/zfb/one/zfb_icon_txl.png')}/>
+                    <XImage style={{width: 23.19, height: 19.16,marginRight:20,}} icon={require('../../../resource/zfb/one/zfb_icon_txl.png')} onPress={()=>{
+                        navigation.push('ZFBContactIndex');
+                    }}/>
                     <XImage style={{width: 19.19, height: 19.19}} icon={require('../../../resource/zfb/one/zfb_btn_add.png')}/>
                 </View>
                 <View style={{flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:Colors.white,paddingTop:16,paddingBottom:12}}>

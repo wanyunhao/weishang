@@ -34,19 +34,19 @@ export default class ZFBController extends PureComponent {
     render() {
         return <Navigator>
             <Screen name='Home1'
-                    options={this.tabItemOption('首页', require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_s.png'))}
+                    options={this.tabItemOption('首页', require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_n.png'))}
                     component={OneController}/>
             <Screen name='Mine2'
-                    options={this.tabItemOption('理财', require('../classes/resource/zfb/common/zfb_tabbar_icon_cf_n.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_cf_n.png'))}
+                    options={this.tabItemOption('理财', require('../classes/resource/zfb/common/zfb_tabbar_icon_cf_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_cf_n.png'))}
                     component={TwoController}/>
             <Screen name='Mine3'
                     options={this.tabItemOption('口碑', require('../classes/resource/zfb/common/zfb_tabbar_icon_kb_n.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_kb_n.png'))}
                     component={ThreeController}/>
             <Screen name='Mine4'
-                    options={this.tabItemOption('朋友', require('../classes/resource/zfb/common/zfb_tabbar_icon_py_n.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_py_n.png'))}
+                    options={this.tabItemOption('朋友', require('../classes/resource/zfb/common/zfb_tabbar_icon_py_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_py_n.png'))}
                     component={FourController}/>
             <Screen name='Mine5'
-                    options={this.tabItemOption('我的', require('../classes/resource/zfb/common/zfb_tabbar_icon_wd_n.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_wd_n.png'))}
+                    options={this.tabItemOption('我的', require('../classes/resource/zfb/common/zfb_tabbar_icon_wd_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_wd_n.png'))}
                     component={FiveController}/>
         </Navigator>;
     }

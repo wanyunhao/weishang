@@ -12,14 +12,15 @@ export default class BaseVC extends Component {
     constructor() {
         super();
         this.state = {
-            place_view_bg_color: Colors.zfb_theme_color
+            place_view_bg_color: Colors.zfb_theme_color,
+            barStyle: 1,
         }
     }
     render() {
         return (
             <View style={styles.container}>
                 <StatusBar backgroundColor={this.state.place_view_bg_color}
-                           barStyle='light-content'
+                           barStyle={ this.state.barStyle == 1 ? 'light-content' : 'dark-content'}
                            translucent={true}/>
                 <View style={{backgroundColor:this.state.place_view_bg_color,height:INSETS.top}}/>
                 {this._addSubView()}
@@ -30,9 +31,14 @@ export default class BaseVC extends Component {
 
     _setPlaceViewBackgroundColor(color) {
 
-        showToast('_setPlaceViewBackgroundColor')
         this.setState({
             place_view_bg_color: color,
+        })
+    }
+    _setBarStyle(barStyle) {
+
+        this.setState({
+            barStyle: barStyle,
         })
     }
 }

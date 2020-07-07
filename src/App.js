@@ -26,6 +26,9 @@ import ChooseLocationScreen from "./classes/index/wx/discovery/ChooseLocationScr
 import ContactScreen from './classes/index/wx/contact/ContactScreen';
 import ChatDemo from './classes/index/wx/chat/src/ChatDemo';
 import YueIndex from './classes/index/zfb/five/yue/YueIndex';
+import YueBaoIndex from './classes/index/zfb/five/yuebao/YueBaoIndex';
+import ZZCIndex from './classes/index/zfb/five/zongzichan/ZZCIndex';
+import ZFBContactIndex from './classes/index/zfb/four/contact/ZFBContactIndex';
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
@@ -72,5 +75,8 @@ function ScreenList() {
         <Screen name='ChatDemo' component={ChatDemo}/>
         <Screen name='ZFBController' component={ZFBController}/>
         <Screen name='YueIndex' component={YueIndex}/>
+        <Screen name='YueBaoIndex' component={YueBaoIndex}/>
+        <Screen name='ZZCIndex' component={ZZCIndex}/>
+        <Screen name='ZFBContactIndex' component={ZFBContactIndex}/>
     </Navigator>;
 }

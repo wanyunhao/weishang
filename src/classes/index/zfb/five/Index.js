@@ -82,7 +82,7 @@ export default class Index extends BaseVC {
                         icon: require('../../../resource/zfb/five/zfb_me_btn2.png'),
                         rightText: '15个积分待领取',
                     }} itemClick={() => {
-                        super._setPlaceViewBackgroundColor('red')
+                        navigation.push('ZZCIndex');
                     }}/>
                     <ImgTitleCell hasLine data={{
                         title: '余额',
@@ -95,6 +95,7 @@ export default class Index extends BaseVC {
                         title: '余额宝',
                         icon: require('../../../resource/zfb/five/zfb_me_btn4.png'),
                     }} itemClick={() => {
+                        navigation.push('YueBaoIndex');
                     }}/>
                     <ImgTitleCell hasLine data={{
                         title: '花呗',

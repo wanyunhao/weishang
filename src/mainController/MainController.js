@@ -31,10 +31,10 @@ export default class MainController extends PureComponent {
     render() {
         return <Navigator>
             <Screen name='Home'
-                    options={this.tabItemOption('首页', 'home_sel.png', 'home_dis.png')}
+                    options={this.tabItemOption('制作截图', require('../classes/resource/index/index/tabbar_zzjt_s.png'), require('../classes/resource/index/index/tabbar_zzjt_n.png'))}
                     component={OneController}/>
             <Screen name='Mine'
-                    options={this.tabItemOption('我的', 'mine_sel.png', 'mine_dis.png')}
+                    options={this.tabItemOption('我的', require('../classes/resource/index/index/tabbar_me_s.png'), require('../classes/resource/index/index/tabbar_me_n.png'))}
                     component={FourController}/>
         </Navigator>;
     }
@@ -42,7 +42,7 @@ export default class MainController extends PureComponent {
     tabItemOption = (title, iconChecked, iconUnChecked) => {
         return {
             tabBarLabel: ({focused}) => {
-                return <XText text={title} style={{fontSize: 10, marginBottom: 3, fontWeight: focused ? 'bold' : 'normal', color: focused ? Colors.text_light : Colors.text_disable}}/>;
+                return <XText text={title} style={{fontSize: 10, marginBottom: 3, fontWeight: focused ? 'bold' : 'normal', color: focused ? '#00B1FF' : Colors.text_disable}}/>;
             },
             tabBarIcon: ({focused}) => {
                 return <XImage iconSize={24} icon={focused ? iconChecked : iconUnChecked}/>;
