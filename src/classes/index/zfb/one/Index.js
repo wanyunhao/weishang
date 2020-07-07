@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 import {Colors, CommonStyles, Const} from "../../../../common/storage/Const";
 import {XImage} from "react-native-easy-app";
+import BaseVC from "../Common/BaseVC";
 
-export default class Index extends Component {
+export default class Index extends BaseVC {
     constructor() {
         super();
         this.imgs = [
@@ -19,14 +20,10 @@ export default class Index extends Component {
         ]
     }
 
-    render() {
+    _addSubView() {
         return (
-            <View style={[CommonStyles.container, {marginTop: Const.isIos ? 0 : INSETS.top}]}>
-                <StatusBar backgroundColor={Colors.zfb_theme_color}
-                           barStyle='light-content'
-                           translucent={true}/>
+            <View>
                 <View style={{height: 119, backgroundColor: Colors.zfb_theme_color,}}>
-
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',

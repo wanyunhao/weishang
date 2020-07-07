@@ -13,9 +13,9 @@ export default class Index extends BaseVC {
     constructor() {
         super();
         this.imgs = [
-            {img: require('../../../resource/zfb/one/home_zfb_btn_sys.png'), title: '生活号',subTitle:'余额宝收益到账…'},
-            {img: require('../../../resource/zfb/one/home_zfb_btn_fq.png'), title: '小程序',subTitle:'天天可领福利…'},
-            {img: require('../../../resource/zfb/one/home_zfb_btn_sq.png'), title: '生活圈',subTitle:'你有朋…更新动态'},
+            {img: require('../../../resource/zfb/four/zfb_fw_icon_gzh.png'), title: '生活号',subTitle:'余额宝收益到账…'},
+            {img: require('../../../resource/zfb/four/zfb_fw_icon_xcx.png'), title: '小程序',subTitle:'天天可领福利…'},
+            {img: require('../../../resource/zfb/four/zfb_fw_icon_shq.png'), title: '生活圈',subTitle:'你有朋…更新动态'},
         ]
     }
 
@@ -27,11 +27,14 @@ export default class Index extends BaseVC {
                     <XImage style={{width: 23.19, height: 19.16,marginRight:20,}} icon={require('../../../resource/zfb/one/zfb_icon_txl.png')}/>
                     <XImage style={{width: 19.19, height: 19.19}} icon={require('../../../resource/zfb/one/zfb_btn_add.png')}/>
                 </View>
-                <View>
+                <View style={{flexDirection:'row',justifyContent:'space-around',alignItems:'center',backgroundColor:Colors.white,paddingTop:16,paddingBottom:12}}>
                     {this.imgs.map(value => {
-                        return(
-                            <View>
 
+                        return (
+                            <View style={{alignItems:'center'}}>
+                                <XImage icon={value.img} iconSize={41.77}/>
+                                <Text style={{color:'#333333',fontSize:16}}>{value.title}</Text>
+                                <Text style={{color:'#999999',fontSize:13}}>{value.subTitle}</Text>
                             </View>
                         )
                     })}
