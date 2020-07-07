@@ -31,7 +31,7 @@ export default class Index extends BaseVC {
                     {this.imgs.map(value => {
                         return(
                             <View>
-                                
+
                             </View>
                         )
                     })}
