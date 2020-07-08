@@ -6,19 +6,25 @@ import DiscoveryListCell from "./view/DiscoveryListCell";
 import {PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
+import WXBaseVC from "../../zfb/Common/WXBaseVC";
 var RNFS = require('react-native-fs');
 const {width} = Dimensions.get("window");
 
-export default class DiscoveryScreen extends BaseVC {
+export default class DiscoveryScreen extends WXBaseVC {
 
     constructor(props) {
         super(props);
         this.state = {};
     }
 
+    // _yhcomponentDidMount() {
+    //     super._yhcomponentDidMount();
+    // }
+
     componentDidMount() {
-        this._setBarStyle(2);
-        this._setPlaceViewBackgroundColor('#EDEDED')
+        super.componentDidMount();
+        // this._setBarStyle(2);
+        // this._setPlaceViewBackgroundColor('#EDEDED')
     }
 
 

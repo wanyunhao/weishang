@@ -147,16 +147,16 @@
     <orderEntry type="library" name="Gradle: com.facebook.fresco:nativeimagefilters:2.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.fresco:nativeimagetranscoder:2.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.webkit:android-jsc:r245459@aar" level="project" />
-    <orderEntry type="module" module-name="react-native-image-picker-android-react-native-image-picker" />
-    <orderEntry type="module" module-name="node_modules-react-native-fs-android-react-native-fs" />
-    <orderEntry type="module" module-name="@react-native-community-async-storage-android-react-native-community_async-storage~1" />
-    <orderEntry type="module" module-name="@react-native-community-masked-view-android-react-native-community_masked-view~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-device-info-android-react-native-device-info~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-gesture-handler-android-react-native-gesture-handler~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-reanimated-android-react-native-reanimated~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-safe-area-context-android-react-native-safe-area-context~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-screens-android-react-native-screens~1" />
-    <orderEntry type="module" module-name="node_modules-react-native-webview-android-react-native-webview~1" />
-    <orderEntry type="module" module-name="node_modules-realm-android-realm" />
+    <orderEntry type="module" module-name="node_modules-react-native-image-picker-android-react-native-image-picker" />
+    <orderEntry type="module" module-name="node_modules-react-native-fs-android-react-native-fs~1" />
+    <orderEntry type="module" module-name="@react-native-community-async-storage-android-react-native-community_async-storage~2" />
+    <orderEntry type="module" module-name="@react-native-community-masked-view-android-react-native-community_masked-view~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-device-info-android-react-native-device-info~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-gesture-handler-android-react-native-gesture-handler~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-reanimated-android-react-native-reanimated~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-safe-area-context-android-react-native-safe-area-context~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-screens-android-react-native-screens~2" />
+    <orderEntry type="module" module-name="node_modules-react-native-webview-android-react-native-webview~2" />
+    <orderEntry type="module" module-name="node_modules-realm-android-realm~1" />
   </component>
 </module>

@@ -15,8 +15,9 @@ import {RNStorage} from "../../../../common/storage/AppStorage";
 import {isEmpty} from "../../../../common/utils/Utils";
 import {showToast} from "../../../../common/widgets/Loading";
 import BaseVC from "../../zfb/Common/BaseVC";
+import WXBaseVC from "../../zfb/Common/WXBaseVC";
 
-export default class SendRPScreen extends BaseVC {
+export default class SendRPScreen extends WXBaseVC {
     constructor() {
         super();
         this.state = {
@@ -29,6 +30,7 @@ export default class SendRPScreen extends BaseVC {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         this.c_id = this.props.route.params.c_id;
         this.setState({
             type: this.props.route.params.type,

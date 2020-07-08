@@ -37,10 +37,11 @@ import ImagePicker from "react-native-image-picker";
 import ChatPicCell from "./views/ChatPicCell";
 import EmojiView from "./views/EmojiView";
 import {showToast} from "../../../../common/widgets/Loading";
+import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import BaseVC from "../../zfb/Common/BaseVC";
 
 
-export default class ChattingScreen extends BaseVC {
+export default class ChattingScreen extends WXBaseVC {
 
     constructor(props) {
         super(props);
@@ -60,14 +61,24 @@ export default class ChattingScreen extends BaseVC {
         };
     }
 
+    // componentDidMount() {
+    //     // super.componentDidMount();
+    //     this.setState({
+    //         c_data: this.props.route.params.data
+    //     }, () => {
+    //         this.queryChat();
+    //         console.log(this.state.c_data);
+    //     })
+    // }
     componentDidMount() {
+        super.componentDidMount();
         this.setState({
             c_data: this.props.route.params.data
         }, () => {
             this.queryChat();
-            console.log(this.state.c_data);
         })
     }
+
 
     queryChat() {
         queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {

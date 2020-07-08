@@ -12,10 +12,11 @@ import {
 } from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
+import WXBaseVC from "../../zfb/Common/WXBaseVC";
 
 const {width} = Dimensions.get("window");
 const Realm = require('realm');
-export default class ConversationScreen extends BaseVC {
+export default class ConversationScreen extends WXBaseVC {
 
     constructor(props) {
         super(props);
@@ -25,13 +26,8 @@ export default class ConversationScreen extends BaseVC {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         this.requestData();
-        this.changeStatus();
-    }
-
-    changeStatus() {
-        super._setBarStyle(2);
-        super._setPlaceViewBackgroundColor('#EDEDED')
     }
 
     requestData() {
