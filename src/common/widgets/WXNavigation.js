@@ -11,7 +11,7 @@ export function WXNavigationBar({onBack, clickRText, clickRImage, ...props}) {
     let {title, hideBack = false, rightImage, rightText, noLine = false,nav_bg_color,left_img,left_img_size} = props;
     let lineStyle = noLine ? {} : CommonStyles.bottomLine;
     return <XView style={{backgroundColor: nav_bg_color != null ? nav_bg_color : '#EDEDED',}}>
-        <XView style={[styles.titleBarParent, lineStyle,{marginTop: INSETS.top,backgroundColor: nav_bg_color != null ? nav_bg_color : '#EDEDED'}]}>
+        <XView style={[styles.titleBarParent, lineStyle,{backgroundColor: nav_bg_color != null ? nav_bg_color : '#EDEDED'}]}>
             {!isEmpty(title) && <XText style={[styles.titleText,{marginLeft:hideBack ? 13 : 36}]} numberOfLines={1} text={title}/>}
             {!hideBack && <XImage style={styles.leftImage} icon={left_img || ImageRes.wx_back} iconSize={left_img_size || 16} onPress={() => onBack && onBack()}/>}
             {rightText && <XText style={[styles.rightText]} text={rightText} onPress={() => clickRText && clickRText()}/>}

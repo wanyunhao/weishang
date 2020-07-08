@@ -10,17 +10,18 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import {XImage, XText} from "react-native-easy-app";
 import ChangYongView from "./views/ChangYongView";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
 const {width} = Dimensions.get("window");
 
-export default class PocketMoneyScreen extends Component {
+export default class PocketMoneyScreen extends BaseVC {
 
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar nav_bg_color={Colors.white} rightText='零钱明细' noLine clickRText={()=>{

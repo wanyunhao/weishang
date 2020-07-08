@@ -14,8 +14,9 @@ import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import {XImage} from "react-native-easy-app";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
-export default class PayScreen extends Component {
+export default class PayScreen extends BaseVC {
 
   constructor(props) {
     super(props);
@@ -96,7 +97,7 @@ export default class PayScreen extends Component {
     )
   }
 
-  render() {
+  _addSubView() {
     return (
       <View style={styles.container}>
         <WXNavigationBar title="支付"/>

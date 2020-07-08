@@ -13,10 +13,11 @@ import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Button, Label, Overlay, Theme} from "teaset";
 import PasswordInput from "./views/passwordInput";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
 const {width} = Dimensions.get("window");
 
-export default class TiXianScreen extends Component {
+export default class TiXianScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -103,7 +104,7 @@ export default class TiXianScreen extends Component {
         );
         Overlay.show(overlayView);
     }
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='零钱提现' rightImage={require('../../../../resource/common/wx_more.png')} clickRImage={()=>{

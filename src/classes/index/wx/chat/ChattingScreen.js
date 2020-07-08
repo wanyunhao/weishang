@@ -37,9 +37,10 @@ import ImagePicker from "react-native-image-picker";
 import ChatPicCell from "./views/ChatPicCell";
 import EmojiView from "./views/EmojiView";
 import {showToast} from "../../../../common/widgets/Loading";
+import BaseVC from "../../zfb/Common/BaseVC";
 
 
-export default class ChattingScreen extends Component {
+export default class ChattingScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -252,9 +253,6 @@ export default class ChattingScreen extends Component {
                         this.overlayPopView1 && this.overlayPopView1.close()
                         this.overlayPopView && this.overlayPopView.close()
                     }}/>
-                    {/*<Label type='title' size='xl' text={text} />*/}
-                    {/*{modal ? <View style={{height: 60}} /> : null}*/}
-                    {/*{modal ? <Button title='Close' onPress={() => this.overlayPopView && this.overlayPopView.close()} /> : null}*/}
                 </View>
             </Overlay.PopView>
         );
@@ -323,9 +321,6 @@ export default class ChattingScreen extends Component {
             >
                 <View style={{minWidth: 260, minHeight: Const.screenHeight, padding: 0}}>
                     <YHHongBaoPopView closeClick={() => {
-                        // this.setState({
-                        //   showRP: false,
-                        // })
                         this.overlayPopView1 && this.overlayPopView1.close()
                     }} finishAnimation={() => {
                         this.showPop('zoomOut', false, 'Pop zoom out')
@@ -357,7 +352,8 @@ export default class ChattingScreen extends Component {
     //     // this.refs.chatBottomBar.appendMsg(data.code);
     // };
     // _onBackspacePress = () => {};
-    render() {
+
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='消息' rightImage={require('../../../resource/common/wx_more.png')} clickRImage={()=>{
@@ -417,7 +413,7 @@ export default class ChattingScreen extends Component {
                                                                send_id: item.send_id,
                                                                type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
                                                                xitongTextType: 2,
-                                                               hongbaoReceiveName: item.userinfo.user_name,
+                                                               hongbaoReceiveName: this.state.c_data.userinfo.user_name,
                                                                hongbaoSendName: '你',
                                                            }, MSGTableName)
                                                            this.queryChat();

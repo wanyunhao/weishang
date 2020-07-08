@@ -1,28 +1,28 @@
-import React, {Component} from "react";
-// import UserInfoUtil from "../utils/UserInfoUtil";
-// import CountEmitter from "../event/CountEmitter";
-// import TabConfig from "../configs/TabNavConfigs";
-
-import {Dimensions, StyleSheet, View,ScrollView} from "react-native";
+import React from "react";
+import {Dimensions, ScrollView, StyleSheet, View} from "react-native";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {Colors} from "../../../../common/storage/Const";
-import MsgListCell from "../chat/views/MsgListCell";
-import {XFlatList} from "react-native-easy-app";
 import DiscoveryListCell from "./view/DiscoveryListCell";
-import {instance, PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
+import {PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
-import {showToast} from "../../../../common/widgets/Loading";
+import BaseVC from "../../zfb/Common/BaseVC";
 var RNFS = require('react-native-fs');
 const {width} = Dimensions.get("window");
 
-export default class DiscoveryScreen extends Component {
+export default class DiscoveryScreen extends BaseVC {
 
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    render() {
+    componentDidMount() {
+        this._setBarStyle(2);
+        this._setPlaceViewBackgroundColor('#EDEDED')
+    }
+
+
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='发现' hideBack={true}/>

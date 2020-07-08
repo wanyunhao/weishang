@@ -11,8 +11,9 @@ import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
 import {PYQListPicTableName, PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {showToast} from "../../../../common/widgets/Loading";
+import BaseVC from "../../zfb/Common/BaseVC";
 
-export default class PYQSendScreen extends Component {
+export default class PYQSendScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -28,8 +29,12 @@ export default class PYQSendScreen extends Component {
         this.imgWidth = (Const.screenWidth - 38) / 4 -1;
     }
 
+    componentDidMount() {
+        this._setBarStyle(2);
+        this._setPlaceViewBackgroundColor(Colors.white)
+    }
 
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar noLine nav_bg_color={Colors.white} rightText='完成' clickRText={()=>{

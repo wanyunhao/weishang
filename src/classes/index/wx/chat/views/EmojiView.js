@@ -12,6 +12,14 @@ import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import Smiley from '../uril/Smiley'
 export default class EmojiView extends Component {
 
+    constructor() {
+        super();
+        this.emojis = [];
+        for (let i = 0; i < 113; i++) {
+            this.emojis.push(i);
+        }
+    }
+
     render() {
 
         return (
@@ -36,7 +44,7 @@ export default class EmojiView extends Component {
                         {[12, 3, 4, 5, 6, 3, 3, 3].map((value, index) => {
                             return (
                                 <YHTouchableOpacity style={{
-                                    paddingRight: (index > 0 && index % 7 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
+                                    paddingRight: (index > 0 && (index +1) % 8 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
                                     paddingBottom: 15,
                                 }}>
                                     <XImage icon={Smiley.data[index]} iconSize={30}/>
@@ -50,10 +58,10 @@ export default class EmojiView extends Component {
                     </Text>
                     <View style={{marginTop: 15, flexDirection: 'row', flexWrap: 'wrap'}}>
                         {
-                            [12, 3, 4, 5, 6, 3, 3, 3, 3].map((value, index) => {
+                            this.emojis.map((value, index) => {
                                 return (
                                     <YHTouchableOpacity style={{
-                                        paddingRight: (index > 0 && index % 7 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
+                                        paddingRight: (index > 0 && (index +1) % 8 == 0) ? 0 : ((Const.screenWidth - 270) / 7 - 1),
                                         paddingBottom: 15,
                                     }}>
                                         <XImage icon={Smiley.data[index]}

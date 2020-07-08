@@ -27,10 +27,11 @@ import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {queryAllFromRealm, UsersTableName} from "../../../../common/utils/RealmUtil";
 import {XImage} from "react-native-easy-app";
+import BaseVC from "../../zfb/Common/BaseVC";
 
 const { width } = Dimensions.get("window");
 
-export default class ContactScreen extends Component {
+export default class ContactScreen extends BaseVC {
 
   constructor(props) {
     super(props);
@@ -42,6 +43,9 @@ export default class ContactScreen extends Component {
   }
 
   componentDidMount() {
+
+    this._setBarStyle(2);
+    this._setPlaceViewBackgroundColor('#EDEDED')
     queryAllFromRealm(UsersTableName).then((data)=>{
       this.setState({
         contactData:data,
@@ -158,7 +162,8 @@ export default class ContactScreen extends Component {
     };
   };
 
-  render() {
+
+  _addSubView() {
     var listData = [];
     var headerListData = [];
     var headerImages = [

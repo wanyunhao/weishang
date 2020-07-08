@@ -14,8 +14,9 @@ import {getNow} from "../../../../common/utils/DateUtils";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {isEmpty} from "../../../../common/utils/Utils";
 import {showToast} from "../../../../common/widgets/Loading";
+import BaseVC from "../../zfb/Common/BaseVC";
 
-export default class SendRPScreen extends Component {
+export default class SendRPScreen extends BaseVC {
     constructor() {
         super();
         this.state = {
@@ -35,7 +36,8 @@ export default class SendRPScreen extends Component {
         })
     }
 
-    render() {
+
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title={this.state.type == 2 ? '转账' : '发红包'} rightText='发送' clickRText={() => {

@@ -116,6 +116,7 @@ export default class IndexVC extends BaseVC {
                     <View style={{paddingHorizontal:21,paddingVertical:15,backgroundColor:Colors.white,marginTop:10}}>
                         <XView onPress={()=>{
                             navigation.push('WX')
+                            // this._setBarStyle(2);
                         }} style={{flexDirection:'row',justifyContent: 'space-between',alignItems: 'center'}}>
                             <XImage icon={require('../../resource/index/index/xw.png')} iconSize={38.8}/>
                             <XImage icon={require('../../resource/index/index/more.png')} iconSize={13.85}/>

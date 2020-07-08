@@ -7,17 +7,18 @@ import {Dimensions, StyleSheet, View,ScrollView,Text} from "react-native";
 import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import DiscoveryListCell from "../../discovery/view/DiscoveryListCell";
 import {Colors, Const} from "../../../../../common/storage/Const";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
 const {width} = Dimensions.get("window");
 
-export default class WalletScreen extends Component {
+export default class WalletScreen extends BaseVC {
 
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='钱包' rightText='账单' clickRText={()=>{

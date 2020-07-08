@@ -12,10 +12,11 @@ import {showToast} from "../../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import TitleAndSubCell from "./views/TitleAndSubCell";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
 const {width} = Dimensions.get("window");
 
-export default class AddBankCardScreen extends Component {
+export default class AddBankCardScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -24,7 +25,7 @@ export default class AddBankCardScreen extends Component {
         };
     }
 
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='新增银行卡' rightText='完成' clickRText={()=>{

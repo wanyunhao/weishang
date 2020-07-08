@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
+import BaseVC from "../../zfb/Common/BaseVC";
 
-export default class ChooseLocationScreen extends Component {
+export default class ChooseLocationScreen extends BaseVC {
     constructor() {
         super();
         this.state = {
@@ -21,9 +22,12 @@ export default class ChooseLocationScreen extends Component {
             city: this.props.route.params.city,
             detail: this.props.route.params.didian,
         })
+
+        this._setBarStyle(2);
+        this._setPlaceViewBackgroundColor('#EDEDED')
     }
 
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='朋友圈位置' rightText='完成' clickRText={()=>{

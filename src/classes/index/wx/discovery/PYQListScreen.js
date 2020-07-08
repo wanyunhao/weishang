@@ -18,8 +18,9 @@ import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import TalkBottomBarView from "./view/TalkBottomBarView";
 import {ActionPopover, Button, Label, Popover} from "teaset";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
+import BaseVC from "../../zfb/Common/BaseVC";
 
-export default class PYQListScreen extends Component {
+export default class PYQListScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -39,6 +40,9 @@ export default class PYQListScreen extends Component {
 
     componentDidMount() {
         this._requestData();
+        this._setBarStyle(1);
+        this._setPlaceViewBackgroundColor('transparent')
+        this._setTopSafeView(true);
     }
 
     _requestData() {
@@ -66,7 +70,8 @@ export default class PYQListScreen extends Component {
                 }
             })
     }
-    render() {
+
+    _addSubView() {
         return (
             <View style={styles.container}>
 
@@ -247,6 +252,6 @@ export default class PYQListScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.page_bg,
+        backgroundColor: Colors.white,
     },
 });

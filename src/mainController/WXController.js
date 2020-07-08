@@ -1,24 +1,13 @@
 import React, {PureComponent} from 'react';
-import {BackHandler, Alert} from 'react-native';
-
-import {DebugManager} from 'react-native-debug-tool';
-import {showToast} from '../common/widgets/Loading';
-import {Manager} from 'react-native-root-toast';
-import DeviceInfo from 'react-native-device-info';
-import {Notify} from '../common/events/Notify';
-import {XImage, XText, XWidget} from 'react-native-easy-app';
+import {XImage, XText} from 'react-native-easy-app';
 import {Colors} from '../common/storage/Const';
-import {Assets} from '../common/http/Api';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HttpConfig from '../common/http/HttpConfig';
-
 // import OneController from '../classes/index/wx/chat/ChattingScreen';
 import FourController from '../classes/index/wx/me/MeScreen';
 import ConversationScreen from '../classes/index/wx/chat/ConversationScreen';
 import ContactScreen from '../classes/index/wx/contact/ContactScreen';
 import DiscoveryScreen from '../classes/index/wx/discovery/DiscoveryScreen';
-
-
+import { DeviceEventEmitter } from 'react-native';
 
 let lastClickTime = (new Date()).valueOf();
 const {Navigator, Screen} = createBottomTabNavigator();

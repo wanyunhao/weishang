@@ -1,31 +1,15 @@
-import React, { Component } from "react";
-import ListItem from "../../../../views/ListItem";
+import React from "react";
 import Global from "../../../../common/utils/Global";
-import Utils from "../../../../common/utils/WXUtils";
-// import UserInfoUtil from "../utils/UserInfoUtil";
-// import CountEmitter from "../event/CountEmitter";
-// import TabConfig from "../configs/TabNavConfigs";
-import ListItemDivider from "../../../../views/ListItemDivider";
-import ImageAdapter from "../../../../views/ImageAdapter";
 
-import {
-  Dimensions,
-  Image,
-  PixelRatio,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
-import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
+import {Dimensions, PixelRatio, ScrollView, StyleSheet, Text, View,} from "react-native";
 import {Colors} from "../../../../common/storage/Const";
 import {XImage} from "react-native-easy-app";
 import DiscoveryListCell from "../discovery/view/DiscoveryListCell";
+import BaseVC from "../../zfb/Common/BaseVC";
 
 const { width } = Dimensions.get("window");
 
-export default class MeScreen extends Component {
+export default class MeScreen extends BaseVC {
 
   constructor(props) {
     super(props);
@@ -33,6 +17,11 @@ export default class MeScreen extends Component {
       userInfo: {},
       // avatar: UserInfoUtil.getUserAvatar()
     };
+  }
+
+  componentDidMount() {
+    this._setBarStyle(2);
+    this._setPlaceViewBackgroundColor(Colors.white)
   }
 
   refreshUserInfo() {
@@ -59,12 +48,13 @@ export default class MeScreen extends Component {
     // this.refreshUserInfo();
   };
 
-  render() {
+
+  _addSubView() {
     return (
       <View style={styles.container}>
         <ScrollView>
           <View style={{backgroundColor: Colors.white}}>
-            <View style={{marginTop: INSETS.top,height:161.71}}>
+            <View style={{height:161.71}}>
               <XImage icon={require('../../../resource/images/avatar.png')} iconSize={58} style={{position:'absolute',left:24,top:65}}/>
               <Text style={{position:'absolute',left:98,top:65,fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>用户名</Text>
               <XImage icon={require('../../../resource/index/wx/me/xiagnj.png')} style={{position:'absolute',right:16,top:16,width:18.5,height:15}}/>

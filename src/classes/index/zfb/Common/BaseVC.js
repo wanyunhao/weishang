@@ -14,15 +14,16 @@ export default class BaseVC extends Component {
         this.state = {
             place_view_bg_color: Colors.zfb_theme_color,
             barStyle: 1,
+            hiddenSafe: false,
         }
     }
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar backgroundColor={this.state.place_view_bg_color}
+                <StatusBar backgroundColor={'transparent'}
                            barStyle={ this.state.barStyle == 1 ? 'light-content' : 'dark-content'}
                            translucent={true}/>
-                <View style={{backgroundColor:this.state.place_view_bg_color,height:INSETS.top}}/>
+                {this.state.hiddenSafe ? null : <View style={{backgroundColor:this.state.place_view_bg_color,height:INSETS.top}}/>}
                 {this._addSubView()}
             </View>
         );
@@ -39,6 +40,11 @@ export default class BaseVC extends Component {
 
         this.setState({
             barStyle: barStyle,
+        })
+    }
+    _setTopSafeView(isHidden) {
+        this.setState({
+            hiddenSafe: isHidden,
         })
     }
 }

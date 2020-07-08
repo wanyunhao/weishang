@@ -9,9 +9,11 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import {XText} from "react-native-easy-app";
+import BaseVC from "../../../zfb/Common/BaseVC";
 
-export default class TixianResultScreen extends Component {
-    render() {
+export default class TixianResultScreen extends BaseVC {
+
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='零钱提现' nav_bg_color={Colors.white}/>

@@ -1,26 +1,21 @@
-import React, {Component} from "react";
-import Global from "../../../../common/utils/Global";
-import {Dimensions, Keyboard, PixelRatio, StyleSheet, View,} from "react-native";
-import {NavigationBar} from "../../../../common/widgets/WidgetNavigation";
-import HongBaoCell from "./views/HongBaoCell";
+import React from "react";
+import {Dimensions, StyleSheet, View,DeviceEventEmitter } from "react-native";
 import {XFlatList} from "react-native-easy-app";
 import MsgListCell from "./views/MsgListCell";
 import {Colors} from "../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {
-    WXMSGSchema,
-    queryAllFromRealm,
-    writeToRealm,
-    WXConversationSchema,
-    WXConversationTableName, instance, MSGTableName, UsersTableName, queryFilterFromRealm
+    instance,
+    queryFilterFromRealm,
+    UsersTableName,
+    WXConversationTableName
 } from "../../../../common/utils/RealmUtil";
-import {showMsg} from "react-native-debug-tool/lib/utils/DebugUtils";
 import {getNow} from "../../../../common/utils/DateUtils";
-import {RNStorage} from "../../../../common/storage/AppStorage";
+import BaseVC from "../../zfb/Common/BaseVC";
 
 const {width} = Dimensions.get("window");
 const Realm = require('realm');
-export default class ConversationScreen extends Component {
+export default class ConversationScreen extends BaseVC {
 
     constructor(props) {
         super(props);
@@ -31,6 +26,12 @@ export default class ConversationScreen extends Component {
 
     componentDidMount() {
         this.requestData();
+        this.changeStatus();
+    }
+
+    changeStatus() {
+        super._setBarStyle(2);
+        super._setPlaceViewBackgroundColor('#EDEDED')
     }
 
     requestData() {
@@ -52,13 +53,7 @@ export default class ConversationScreen extends Component {
         }
     }
 
-    componentWillUnmount() {
-        // if (this.realm !== null && !this.realm.isClosed) {
-        //     this.realm.close();
-        // }
-    }
-
-    render() {
+    _addSubView() {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={()=>{
