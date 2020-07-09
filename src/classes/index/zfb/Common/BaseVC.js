@@ -17,6 +17,9 @@ export default class BaseVC extends Component {
             hiddenSafe: false,
         }
     }
+    _requestData() {
+
+    }
     render() {
         return (
             <View style={styles.container}>

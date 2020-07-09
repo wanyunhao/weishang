@@ -25,9 +25,18 @@ import SideBar from "./views/SideBar";
 import {showToast} from "../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
-import {queryAllFromRealm, UsersTableName} from "../../../../common/utils/RealmUtil";
+import {
+  queryAllFromRealm,
+  queryFilterFromRealm,
+  UsersTableName, writeToRealm,
+  WXConversationTableName
+} from "../../../../common/utils/RealmUtil";
 import {XImage} from "react-native-easy-app";
 import BaseVC from "../../zfb/Common/BaseVC";
+import {isEmpty} from "../../../../common/utils/Utils";
+import {getNow} from "../../../../common/utils/DateUtils";
+import {RNStorage} from "../../../../common/storage/AppStorage";
+import {Notify} from "../../../../common/events/Notify";
 
 const { width } = Dimensions.get("window");
 
@@ -46,11 +55,7 @@ export default class ContactScreen extends BaseVC {
 
     this._setBarStyle(2);
     this._setPlaceViewBackgroundColor('#EDEDED')
-    queryAllFromRealm(UsersTableName).then((data)=>{
-      this.setState({
-        contactData:data,
-      })
-    })
+    this._requestData()
     if (this.props.route.params != null) {
 
       this.setState({
@@ -58,6 +63,14 @@ export default class ContactScreen extends BaseVC {
       })
       this.chooseItem = this.props.route.params.chooseItem;
     }
+  }
+
+  _requestData() {
+    queryAllFromRealm(UsersTableName).then((data)=>{
+      this.setState({
+        contactData:data,
+      })
+    })
   }
 
   _renderItem = item => {
@@ -138,12 +151,34 @@ export default class ContactScreen extends BaseVC {
       //   title: "新的朋友",
       //   data: item.item
       // });
+      navigation.push('WXNewFriendScreen',{refreshList:()=>{
+        this._requestData()
+        }});
     } else if (index >= 1 && index <= 3) {
       showToast("没东西")
     } else {
       if (this.chooseItem != null) {
         this.chooseItem(item.item);
         navigation.goBack();
+      } else {
+        queryFilterFromRealm(WXConversationTableName,'df_user_id=' + item.item.id).then((res)=>{
+          if (isEmpty(res)) {
+
+            let pra_id = getNow();
+            writeToRealm({
+              id: pra_id,
+              type: 1,//1 单聊 2 群聊
+              user_id: RNStorage.user_id,
+              df_user_id: item.item.id,
+              last_time:pra_id,
+            },WXConversationTableName).then((res)=>{
+              navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
+              Notify.Refresh_conversation_list.sendEvent({})
+            })
+          } else {
+            navigation.push('ChattingScreen',{c_id:res[0].id});//1594277045186,
+          }
+        })
       }
       // this.props.navigation.navigate("ContactDetail", {
       //   title: "详细资料",
@@ -207,6 +242,7 @@ export default class ContactScreen extends BaseVC {
         icon: icon,
         title: item.user_name,
         nick: name,
+        id:item.id,
         pinyin: pinyin,
         firstLetter: firstLetter,
         sectionStart: false

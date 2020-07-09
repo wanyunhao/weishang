@@ -17,7 +17,7 @@ import {
     MSGTableName,
     queryFilterFromRealm,
     SelfTableName,
-    UsersTableName, writeToRealm
+    UsersTableName, writeToRealm, WXConversationTableName
 } from "../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {deepClone, isEmpty} from "../../../../common/utils/Utils";
@@ -71,11 +71,14 @@ export default class ChattingScreen extends WXBaseVC {
     //     })
     // }
     componentDidMount() {
+
         super.componentDidMount();
-        this.setState({
-            c_data: this.props.route.params.data
-        }, () => {
-            this.queryChat();
+        queryFilterFromRealm(WXConversationTableName,'id='+ this.props.route.params.c_id).then(data=>{
+            this.setState({
+                c_data: data[0] || {}
+            }, () => {
+                this.queryChat();
+            })
         })
     }
 

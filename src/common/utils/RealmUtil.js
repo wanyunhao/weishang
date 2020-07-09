@@ -9,6 +9,7 @@ export const MSGPicTableName = 'MSGPicTableName';
 export const PYQListTableName = 'PYQListTableName';
 export const PYQListPicTableName = 'PYQListPicTableName';
 export const PYQListTalkTableName = 'PYQListTalkTableName';
+export const WXNewFriendTableName = 'WXNewFriendTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -16,9 +17,10 @@ export const WXConversationSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
+        type: 'int',//1 单聊 2 群聊
         user_id: 'int',
         df_user_id: 'int',
-        last_time: 'string?',
+        last_time: 'int',
         last_type: 'string?',
     }
 };
@@ -40,7 +42,6 @@ const UsersSchema = {
         id: 'int',
         user_name: 'string',
         avatar: 'string',
-
     }
 };
 //消息
@@ -126,6 +127,17 @@ export const PYQListTalkSchema = {
         text: 'string?',
     }
 };
+//新的朋友
+export const WXNewFriendSchema = {
+    name: WXNewFriendTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        user_name: 'string?',
+        father_name: 'string?',
+        text: 'string?',
+    }
+};
 
 export const instance = new Realm({
     schema: [
@@ -136,6 +148,7 @@ export const instance = new Realm({
         PYQListSchema,
         PYQListPicSchema,
         PYQListTalkSchema,
+        WXNewFriendSchema,
         // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Base_URL = 'http://api.wnkj.co';
+const Base_URL = 'http://117.24.14.55:3210';
 export const Api = {
-    register_mobile: Base_URL + '/register/mobile',// 注册
+    Usercenter_getUserlist: Base_URL + '/Api/Usercenter/getUserlist',// 随机获取用户信息
     register_captcha: Base_URL + '/register/captcha',// 发送注册验证码
     login_captcha: Base_URL + '/login/captcha',// 发送登录验证码
     user_pwd_captcha: Base_URL + '/user/pwd/captcha',// 发送修改密码用的短信验证码
@@ -22,13 +22,6 @@ export const Api = {
     course_discuss: Base_URL + '/course/discuss',// 课程大纲页的讨论（按列表显示帖子，不显示评论，点击帖子进入帖子详情才显示评论）
     course_content_posting: Base_URL + '/course/content/posting',// 帖子详情页（单个帖子及其所有评论，评论倒叙排列）
 
-
-
-
-    animalImageList: 'https://api.jikan.moe/v3/character/1/pictures',//获取动画图片列表
-    queryCitiesAmount: 'http://www.webxml.com.cn/WebServices/MobileCodeWS.asmx/getDatabaseInfo',//查询各城市Mobile服务数量
-    queryAnimations: 'https://api.jikan.moe/v3/search/anime?q=Fate/Zero',//动漫列表
-    queryMembers: 'https://api.jikan.moe/v3/club/1/members',//查询成员列表
 };
 
 export const Assets = 'https://react-native-easy-app.oss-cn-beijing.aliyuncs.com/demo/';

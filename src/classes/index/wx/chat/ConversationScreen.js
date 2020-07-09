@@ -1,5 +1,5 @@
 import React from "react";
-import {Dimensions, StyleSheet, View,DeviceEventEmitter } from "react-native";
+import {Dimensions, StyleSheet, View, DeviceEventEmitter, FlatList, Alert} from "react-native";
 import {XFlatList} from "react-native-easy-app";
 import MsgListCell from "./views/MsgListCell";
 import {Colors} from "../../../../common/storage/Const";
@@ -13,6 +13,7 @@ import {
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
+import {Notify} from "../../../../common/events/Notify";
 
 const {width} = Dimensions.get("window");
 const Realm = require('realm');
@@ -28,11 +29,18 @@ export default class ConversationScreen extends WXBaseVC {
     componentDidMount() {
         super.componentDidMount();
         this.requestData();
+        Notify.Refresh_conversation_list.register(this.refreshList);
+    }
+    componentWillUnmount() {
+        Notify.Refresh_conversation_list.unRegister(this.refreshList);
     }
 
+    refreshList = () => {
+        this.requestData();
+    };
     requestData() {
         this.realm = instance;
-        var objects = this.realm.objects(WXConversationTableName);
+        var objects = this.realm.objects(WXConversationTableName).sorted('last_time',true);
         var data = [];
         for (const objectsKey in objects) {
             let model = objects[objectsKey];
@@ -64,10 +72,10 @@ export default class ConversationScreen extends WXBaseVC {
 
                 }}/>
 
-                <XFlatList data={this.state.data}
+                <FlatList data={this.state.data}
                            style={{backgroundColor: Colors.white}}
                            renderItem={({item, index}) => <MsgListCell data={item} itemClick={() => {
-                               navigation.push('ChattingScreen',{data:item});
+                               navigation.push('ChattingScreen',{c_id:item.id});
                            }}/>}
                 />
             </View>
