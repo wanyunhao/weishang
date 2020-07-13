@@ -8,6 +8,7 @@ import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import DiscoveryListCell from "../../discovery/view/DiscoveryListCell";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import BaseVC from "../../../zfb/Common/BaseVC";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
 
 const {width} = Dimensions.get("window");
 
@@ -16,6 +17,11 @@ export default class WalletScreen extends BaseVC {
     constructor(props) {
         super(props);
         this.state = {};
+    }
+
+    componentDidMount() {
+        this._setBarStyle(2);
+        this._setPlaceViewBackgroundColor('#EDEDED')
     }
 
     _addSubView() {
@@ -28,12 +34,13 @@ export default class WalletScreen extends BaseVC {
                     <DiscoveryListCell hasLine data={{
                         title: '零钱',
                         icon: require('../../../../resource/index/wx/me/pay/wallet/qb_icon_lq.png'),
-                        rightText: '$12345'
+                        rightText: RNStorage.wx_lq
                     }} itemClick={() => {
                         navigation.push('PocketMoneyScreen')
                     }}/>
                     <DiscoveryListCell hasLine data={{
                         title: '零钱通',
+                        rightText: RNStorage.wx_lqt,
                         icon: require('../../../../resource/index/wx/me/pay/wallet/qb_icon_lqt.png'),
                     }} itemClick={() => {
 

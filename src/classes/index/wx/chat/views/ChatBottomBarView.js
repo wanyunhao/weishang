@@ -14,9 +14,10 @@ import {
 import Utils from '../../../../../common/utils/WXUtils'
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Colors, Const} from "../../../../../common/storage/Const";
-import {instance, MSGTableName, writeToRealm} from "../../../../../common/utils/RealmUtil";
+import {instance, MSGTableName, writeToRealm, WXConversationTableName} from "../../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {getNow} from "../../../../../common/utils/DateUtils";
+import {Notify} from "../../../../../common/events/Notify";
 
 
 const BAR_STATE_SHOW_KEYBOARD = 1;
@@ -137,8 +138,12 @@ export default class ChatBottomBarView extends Component {
             send_id: this.props.senderId,
             type: 1,
             text: this.state.inputMsg
-        },MSGTableName)
-        this.setState({inputMsg: ""},this.props.refrshChat);
+        },MSGTableName).then((res)=>{
+            writeToRealm({id:this.c_id,last_type:this.state.inputMsg,last_time:getNow()},WXConversationTableName).then((res)=>{
+                Notify.Refresh_conversation_list.sendEvent({});
+            })
+            this.setState({inputMsg: ""},this.props.refrshChat);
+        })
     }
 
     renderRecorderView() {

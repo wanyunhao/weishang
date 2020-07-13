@@ -97,6 +97,12 @@ export default class PayScreen extends BaseVC {
     )
   }
 
+
+  componentDidMount() {
+    this._setBarStyle(2);
+    this._setPlaceViewBackgroundColor('#EDEDED')
+  }
+
   _addSubView() {
     return (
       <View style={styles.container}>

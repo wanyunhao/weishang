@@ -39,6 +39,7 @@ import EmojiView from "./views/EmojiView";
 import {showToast} from "../../../../common/widgets/Loading";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import BaseVC from "../../zfb/Common/BaseVC";
+import {Notify} from "../../../../common/events/Notify";
 
 
 export default class ChattingScreen extends WXBaseVC {
@@ -160,6 +161,10 @@ export default class ChattingScreen extends WXBaseVC {
         navigation.push('SendRPScreen', {
             type: type, df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
                 this.queryChat();
+
+                writeToRealm({id:this.state.c_data.id,last_type:type == 1? '[微信红包]恭喜发财,大吉大利':'[转账]请你确认收款',last_time:getNow()},WXConversationTableName).then((res)=>{
+                    Notify.Refresh_conversation_list.sendEvent({});
+                })
             }
         });
     }
@@ -220,6 +225,9 @@ export default class ChattingScreen extends WXBaseVC {
             isVertical: response.isVertical,
         }, MSGTableName).then(() => {
             this.queryChat();
+            writeToRealm({id:this.state.c_data.id,last_type:'[图片]',last_time:getNow()},WXConversationTableName).then((res)=>{
+                Notify.Refresh_conversation_list.sendEvent({});
+            })
         })
     }
     showTime(side, modal, text,type) {
@@ -242,6 +250,10 @@ export default class ChattingScreen extends WXBaseVC {
                             shipin: result
                         }, MSGTableName).then(() => {
                             this.queryChat();
+
+                            writeToRealm({id:this.state.c_data.id,last_type:type == 4?'[视频通话]':'[语音通话]',last_time:getNow()},WXConversationTableName).then((res)=>{
+                                Notify.Refresh_conversation_list.sendEvent({});
+                            })
                         })
                     }}/>
                 </View>
@@ -290,6 +302,10 @@ export default class ChattingScreen extends WXBaseVC {
                         yuyin: value + ''
                     }, MSGTableName).then(() => {
                         this.queryChat();
+
+                        writeToRealm({id:this.state.c_data.id,last_type:'[语音]',last_time:getNow()},WXConversationTableName).then((res)=>{
+                            Notify.Refresh_conversation_list.sendEvent({});
+                        })
                     })
 
                     this.overlayPopView3 && this.overlayPopView3.close()
@@ -351,8 +367,9 @@ export default class ChattingScreen extends WXBaseVC {
                                 xitongTextType: 2,
                                 hongbaoSendName: item.userinfo.user_name,
                                 hongbaoReceiveName: '你',
-                            }, MSGTableName)
-                            this.queryChat();
+                            }, MSGTableName).then((res)=>{
+                                this.queryChat();
+                            })
                         });
                     }}/>
                 </View>

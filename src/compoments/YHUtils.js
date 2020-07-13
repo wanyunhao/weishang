@@ -3,8 +3,21 @@
  */
 import React from 'react';
 import {ActionSheet} from "teaset";
+import {XHttp} from "react-native-easy-app";
+import {Api} from "../common/http/Api";
+import {
+    Modal,
+} from '@ant-design/react-native';
 
-
+export function getPeople(count,successBlock) {
+    XHttp().url(Api.Usercenter_getUserlist)
+        .param({token: '123456',nums:count || 20})
+        .post((success, json) => {
+            if (success) {
+                successBlock(json.data || [])
+            }
+        })
+}
 export function showActionSheet(array) {
     // let items = [
     //     {title: 'Say hello', onPress: () => alert('Hello')},
@@ -14,6 +27,24 @@ export function showActionSheet(array) {
     let items = array;
     let cancelItem = {title: '取消'};
     ActionSheet.show(items, cancelItem,);
+}
+export function showModalOperation(array) {
+    // [
+    //     { text: '标为未读', onPress: () => console.log('标为未读被点击了') },
+    //     { text: '置顶聊天', onPress: () => console.log('置顶聊天被点击了') },
+    // ]
+    Modal.operation(array);
+}
+
+export function showModalPrompt(title,msg,callBlock,placeholder) {
+    Modal.prompt(
+        title,
+        msg,
+         callBlock,
+        'default',
+        null,
+        [placeholder]
+    );
 }
 
 export function dealImage(base64, w, callback) {

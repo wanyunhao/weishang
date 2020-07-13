@@ -6,6 +6,8 @@ export const RNStorage = {//持久化数据列表
     user_id: undefined,
     token: undefined,
     avatarUrl: undefined,
+    wx_lq: undefined,//微信零钱
+    wx_lqt: undefined,//微信零钱通
     customerId: undefined,//客户ID
     accessToken: undefined,//OAuth2.0 accessToken
     refreshToken: undefined,//OAuth2.0 refreshToken

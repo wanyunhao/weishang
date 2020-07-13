@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 
 import {Image, StyleSheet, Text, View,findNodeHandle,
-    UIManager} from "react-native";
+    FlatList} from "react-native";
 import {Colors, Const} from "../../../../common/storage/Const";
 import {XFlatList, XImage, XText} from "react-native-easy-app";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {
-    clearRowFromRealm,
+    clearRowFromRealm, clearRowFromRealmFiltered,
     PYQListPicTableName,
     PYQListTableName,
     PYQListTalkTableName,
     queryAllFromRealm,
-    queryFilterFromRealm
+    queryFilterFromRealm, writeToRealm
 } from "../../../../common/utils/RealmUtil";
 import {isEmpty} from "../../../../common/utils/Utils";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
@@ -19,6 +19,8 @@ import TalkBottomBarView from "./view/TalkBottomBarView";
 import {ActionPopover, Button, Label, Popover} from "teaset";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import BaseVC from "../../zfb/Common/BaseVC";
+import {getPeople, showActionSheet, showModalOperation, showModalPrompt} from "../../../../compoments/YHUtils";
+import {Provider} from "@ant-design/react-native";
 
 export default class PYQListScreen extends BaseVC {
 
@@ -73,9 +75,10 @@ export default class PYQListScreen extends BaseVC {
 
     _addSubView() {
         return (
+            <Provider>
             <View style={styles.container}>
 
-                <XFlatList
+                <FlatList
                     data={this.state.data}
                     ListHeaderComponent={() => {
                         return this._renderHeader();
@@ -89,7 +92,9 @@ export default class PYQListScreen extends BaseVC {
                         navigation.goBack();
                     }}/>
                     <XImage style={{width:18.7,height:14.85}} icon={require('../../../resource/index/wx/fx/pyq_pz.png')} onPress={()=>{
-                        navigation.push('PYQSendScreen');
+                        navigation.push('PYQSendScreen',{refreshList:()=>{
+                            this._requestData();
+                            }});
                     }}/>
                 </View>
                 {this.state.showBottom ? (<TalkBottomBarView bottom={0} talk_info={{avatar:this.state.avatar,father_name:this.state.father_name,user_name:this.state.user_name}} changeAvatar={()=>{
@@ -110,6 +115,7 @@ export default class PYQListScreen extends BaseVC {
                     this._requestData();
                 }}/>): null}
             </View>
+            </Provider>
         );
     }
 
@@ -139,25 +145,23 @@ export default class PYQListScreen extends BaseVC {
             ActionPopover.show({x: pageX, y: pageY, width, height}, items);
         });
     }
-    showTalk(view,id) {
-        view.measure((x, y, width, height, pageX, pageY) => {
-            let items = [
-                {title: '点赞', onPress: () => {
-
-                }},
-                {title: '评论', onPress: () => {
-                        this.setState({
-                            pyq_id:id,
-                            showBottom:true,
-                        })
-                }},
-            ];
-            ActionPopover.show({x: pageX - 50, y: pageY, width, height}, items);
-        });
-    }
+    // showTalk(view,id) {
+    //     view.measure((x, y, width, height, pageX, pageY) => {
+    //         let items = [
+    //             {title: '点赞', onPress: () => {
+    //
+    //             }},
+    //             {title: '评论', onPress: () => {
+    //                     this.setState({
+    //                         pyq_id:id,
+    //                         showBottom:true,
+    //                     })
+    //             }},
+    //         ];
+    //         ActionPopover.show({x: pageX - 50, y: pageY, width, height}, items);
+    //     });
+    // }
     _renderCell(item,index) {
-        let imgs = [1,2,3,4,5,6,7];
-        let xihuans = [1,2,3,4,5,6,7,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6,2,3,4,5,6];
         const imgWidth = (Const.screenWidth - 65 - 6) /3 -1;
 
         let btnRefs = [];
@@ -184,64 +188,124 @@ export default class PYQListScreen extends BaseVC {
 
                             }}/>: null}
                         </View>
-                        <TouchableOpacity ref={ref=>{
-                            if (ref != null) {
-                                this.moreRefArr[index] = ref;
-                            }
-                        }} onPress={()=>{
-                            this.showTalk(this.moreRefArr[index],item.id);
-                        }}>
-                            <XImage style={{width:29.92,height:18.78}} icon={require('../../../resource/index/wx/fx/pyqbg.png')}/>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity ref={ref=>{*/}
+                        {/*    if (ref != null) {*/}
+                        {/*        this.moreRefArr[index] = ref;*/}
+                        {/*    }*/}
+                        {/*}} onPress={()=>{*/}
+                        {/*    this.showTalk(this.moreRefArr[index],item.id);*/}
+                        {/*}}>*/}
+                        {/*</TouchableOpacity>*/}
 
-                    </View>
-                    <View style={{backgroundColor: '#F7F7F7',paddingHorizontal:7,paddingVertical:12,marginTop:8, }}>
-                        {/*点赞*/}
-                        <View style={{flexDirection:'row',flexWrap: 'wrap'}}>
-                            <XImage style={{width:11.3,height:10.66,marginTop:4,marginRight:2}} icon={require('../../../resource/index/wx/fx/pyq_yz.png')}/>
-                            {xihuans.map((value)=>{
-                                return (
-                                    <Text style={{color:'#5C6A8D',fontSize:14}}>{value+ ','}</Text>
-                                )
-                            })}
-                        </View>
-                        {/*评论*/}
-                        <YHTouchableOpacity  style={{marginTop:10,}}>
-                            {
-                                item.talks.map((value,index)=>{
-                                return (
-                                    <TouchableOpacity ref={ref=>{
-                                        btnRefs.push(ref);
-                                    }} activeOpacity={0.5} onLongPress={()=>{
-                                        this.opreation_talk_id = value.id;
-                                        this.show(btnRefs[index]);
-                                    }} onPress={()=>{
+                        <XImage style={{width:29.92,height:18.78}} icon={require('../../../resource/index/wx/fx/pyqbg.png')} onPress={()=>{
+                            let items = [
+                                {text: '添加点赞', onPress: () => {
+                                        showModalPrompt('添加点赞','',(text)=>{
+                                            if (!isEmpty(text) && parseInt(text)>0) {
+                                                getPeople(text,(data)=>{
+                                                    let users = [];
+                                                    for (const dataKey in data) {
+                                                        let model = data[dataKey];
+                                                        users.push(model.name);
+                                                    }
+                                                    var string = users.join('，');
+                                                    writeToRealm({
+                                                        id:item.id,
+                                                        dianzanText: isEmpty(item.dianzanText)?string: (item.dianzanText + '，' + string),//点赞
+                                                    },PYQListTableName).then(()=>{
+                                                        this._requestData();
+                                                    })
+                                                })
+                                            }
+                                        },'请输入个数')
+                                    // getPeople()
+                                }},
+                                {text: '添加评论', onPress: () => {
                                         this.setState({
                                             pyq_id:item.id,
-                                            father_name: value.user_name,
                                             showBottom:true,
                                         })
-                                    }}>
-                                        {isEmpty(value.father_name)? (
-                                            <Text style={{color:'#181818',fontSize:14,lineHeight:20,}}><Text style={{color:'#5C6A8D',fontSize:14}}>{value.user_name + ': '}</Text>{value.text}</Text>
+                                    }},
+                                {text: '自己点赞', onPress: () => {
+                                        // writeToRealm({
+                                        //     id:item.id,
+                                        //     dianzanText: isEmpty(item.dianzanText)?string: (item.dianzanText + '，' + string),//点赞
+                                        // },PYQListTableName).then(()=>{
+                                        //     this._requestData();
+                                        // })
+                                    }},
+                                {text: '清空点赞', onPress: () => {
+                                        writeToRealm({
+                                            id:item.id,
+                                            dianzanText: '',//点赞
+                                        },PYQListTableName).then(()=>{
+                                            this._requestData();
+                                        })
+                                    }},
+                                {text: '清空评论', onPress: () => {
+                                        clearRowFromRealmFiltered(PYQListTalkTableName,'pyq_id='+item.id).then(()=>{
+                                            this._requestData();
+                                        })
+                                    }},
+                                {text: '删除', onPress: () => {
+                                        clearRowFromRealmFiltered(PYQListTableName,'id='+item.id).then(()=>{
+                                            this._requestData();
+                                        })
+                                    }},
+                            ];
+                            showModalOperation(items);
+                        }}/>
 
-                                        ): (
-                                            <Text style={{color:'#181818',fontSize:14,lineHeight:20,}}>
-                                                <Text style={{color:'#5C6A8D',fontSize:14}}>{value.user_name}</Text>
-                                                <Text>回复</Text>
-                                                <Text style={{color:'#5C6A8D',fontSize:14}}>{value.father_name + ': '}</Text>
-                                                <Text>{value.text}</Text>
-                                            </Text>
-                                        )}
-
-                                    </TouchableOpacity>
-
-                                )
-
-                            })}
-
-                        </YHTouchableOpacity>
                     </View>
+                    {isEmpty(item.dianzanText) && isEmpty(item.talks) ? null : (
+                        <View style={{backgroundColor: '#F7F7F7',paddingHorizontal:7,paddingVertical:12,marginTop:8, }}>
+                            {/*点赞*/}
+                            {isEmpty(item.dianzanText) ? null:(
+                                <View style={{flexDirection:'row',flexWrap: 'wrap'}}>
+                                    <XImage style={{width:11.3,height:10.66,marginTop:4,marginRight:2,position:'absolute'}} icon={require('../../../resource/index/wx/fx/pyq_yz.png')}/>
+                                    <XText style={{color:'#5C6A8D',fontSize:14}} text={'    '+item.dianzanText}/>
+                                </View>
+                            )}
+                            {/*评论*/}
+                            {isEmpty(item.talks) ? null : (
+                                <YHTouchableOpacity  style={{marginTop:10,}}>
+                                    {
+                                        item.talks.map((value,index)=>{
+                                            return (
+                                                <TouchableOpacity ref={ref=>{
+                                                    btnRefs.push(ref);
+                                                }} activeOpacity={0.5} onLongPress={()=>{
+                                                    this.opreation_talk_id = value.id;
+                                                    this.show(btnRefs[index]);
+                                                }} onPress={()=>{
+                                                    this.setState({
+                                                        pyq_id:item.id,
+                                                        father_name: value.user_name,
+                                                        showBottom:true,
+                                                    })
+                                                }}>
+                                                    {isEmpty(value.father_name)? (
+                                                        <Text style={{color:'#181818',fontSize:14,lineHeight:20,}}><Text style={{color:'#5C6A8D',fontSize:14}}>{value.user_name + ': '}</Text>{value.text}</Text>
+
+                                                    ): (
+                                                        <Text style={{color:'#181818',fontSize:14,lineHeight:20,}}>
+                                                            <Text style={{color:'#5C6A8D',fontSize:14}}>{value.user_name}</Text>
+                                                            <Text>回复</Text>
+                                                            <Text style={{color:'#5C6A8D',fontSize:14}}>{value.father_name + ': '}</Text>
+                                                            <Text>{value.text}</Text>
+                                                        </Text>
+                                                    )}
+
+                                                </TouchableOpacity>
+
+                                            )
+
+                                        })}
+
+                                </YHTouchableOpacity>
+                            )}
+                        </View>
+                    )}
                 </View>
             </View>
         )

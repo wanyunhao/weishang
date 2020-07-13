@@ -19,6 +19,7 @@ import {UsersTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {Button, Label, Menu, Overlay} from "teaset";
 import {showToast} from "../../../../common/widgets/Loading";
+import {getPeople} from "../../../../compoments/YHUtils";
 
 export default class WXNewFriendScreen extends WXBaseVC {
 
@@ -35,15 +36,21 @@ export default class WXNewFriendScreen extends WXBaseVC {
     }
 
     _requestData(type) {
-        XHttp().url(Api.Usercenter_getUserlist)
-            .param({token: '123456'})
-            .post((success, json) => {
-                if (success) {
-                    this.setState({
-                        data: json.data || []
-                    })
-                }
+        getPeople(20,(data)=>{
+            this.setState({
+                data
             })
+        })
+
+        // XHttp().url(Api.Usercenter_getUserlist)
+        //     .param({token: '123456'})
+        //     .post((success, json) => {
+        //         if (success) {
+        //             this.setState({
+        //                 data: json.data || []
+        //             })
+        //         }
+        //     })
     }
 
 

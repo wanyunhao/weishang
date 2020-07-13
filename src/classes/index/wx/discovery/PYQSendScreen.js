@@ -50,17 +50,26 @@ export default class PYQSendScreen extends BaseVC {
                         text: this.state.text,//文字
                         time: this.state.time,//时间
                         location: this.state.city + ' · ' + this.state.didian,//地点
-                    },PYQListTableName)
+                    },PYQListTableName).then(()=>{
 
-                    if (!isEmpty(this.state.pics)) {
-                        for (const picIndex in this.state.pics) {
-                            const data = this.state.pics[picIndex];
-                            writeToRealm({
-                                pyq_id: pyqid,
-                                pic: data,
-                            },PYQListPicTableName)
+                        if (!isEmpty(this.state.pics)) {
+                            for (const picIndex in this.state.pics) {
+                                const data = this.state.pics[picIndex];
+                                writeToRealm({
+                                    pyq_id: pyqid,
+                                    pic: data,
+                                },PYQListPicTableName).then(()=>{
+
+                                    this.props.route.params.refreshList();
+                                    navigation.goBack();
+                                })
+                            }
+                        } else {
+                            this.props.route.params.refreshList();
+                            navigation.goBack();
                         }
-                    }
+                    })
+
 
                 }}/>
                 <View style={{paddingHorizontal:15,marginTop:20}}>

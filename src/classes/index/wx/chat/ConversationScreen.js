@@ -61,14 +61,6 @@ export default class ConversationScreen extends WXBaseVC {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={()=>{
-                    instance.write(() => {
-                        instance.create(WXConversationTableName, {
-                            id: getNow(),
-                            user_id: 1,
-                            df_user_id: 9527,
-                        }, Realm.UpdateMode.Never);
-                    });
-                    this.requestData();
 
                 }}/>
 

@@ -10,9 +10,10 @@ import {XFlatList, XImage, XText} from "react-native-easy-app";
 import {Colors, CommonStyles, Const} from "../../../../../common/storage/Const";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
-import {MSGTableName, writeToRealm} from "../../../../../common/utils/RealmUtil";
+import {MSGTableName, writeToRealm, WXConversationTableName} from "../../../../../common/utils/RealmUtil";
 import {deepClone, isEmpty} from "../../../../../common/utils/Utils";
 import {getNow} from "../../../../../common/utils/DateUtils";
+import {Notify} from "../../../../../common/events/Notify";
 
 export default class ZhuanZhangDetailScreen extends Component {
 
@@ -101,6 +102,7 @@ export default class ZhuanZhangDetailScreen extends Component {
                                             };
                                             writeToRealm(obj,MSGTableName).then(()=>{
                                                 this.props.refreshChat();
+
                                             })
                                         })
 

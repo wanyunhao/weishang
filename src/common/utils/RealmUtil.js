@@ -10,6 +10,7 @@ export const PYQListTableName = 'PYQListTableName';
 export const PYQListPicTableName = 'PYQListPicTableName';
 export const PYQListTalkTableName = 'PYQListTalkTableName';
 export const WXNewFriendTableName = 'WXNewFriendTableName';
+export const WXQB_BankTableName = 'WXQB_BankTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -20,8 +21,8 @@ export const WXConversationSchema = {
         type: 'int',//1 单聊 2 群聊
         user_id: 'int',
         df_user_id: 'int',
-        last_time: 'int',
-        last_type: 'string?',
+        last_time: 'int?',
+        last_type: 'string?',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
     }
 };
 
@@ -32,6 +33,8 @@ const SelfTableNameSchema = {
         id: 'int',
         user_name: 'string',
         avatar: 'string',
+        wx_lq: {type:'float?',default:0},
+        wx_lqt: {type:'float?',default:0},
     }
 };
 //用户
@@ -139,6 +142,17 @@ export const WXNewFriendSchema = {
     }
 };
 
+//朋友圈消息
+export const WXQB_BankSchema = {
+    name: WXQB_BankTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        bank_name: 'string?',
+        bank_num: 'string?',
+        bank_icon: 'string?',
+    }
+};
 export const instance = new Realm({
     schema: [
         WXConversationSchema,
@@ -149,6 +163,7 @@ export const instance = new Realm({
         PYQListPicSchema,
         PYQListTalkSchema,
         WXNewFriendSchema,
+        WXQB_BankSchema,
         // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,
@@ -207,6 +222,16 @@ export function clearRowFromRealm(id,tabName) {
         instance.write(() => {
             let arrays = instance.objects(tabName);
             let row = arrays.filtered('id==' + id);
+            instance.delete(row);
+            resolve(true)
+        })
+    })
+}
+export function clearRowFromRealmFiltered(tabName,filter) {
+    return new Promise((resolve, reject) => {
+        instance.write(() => {
+            let arrays = instance.objects(tabName);
+            let row = arrays.filtered(filter);
             instance.delete(row);
             resolve(true)
         })
