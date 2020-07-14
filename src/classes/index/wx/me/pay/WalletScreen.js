@@ -9,6 +9,7 @@ import DiscoveryListCell from "../../discovery/view/DiscoveryListCell";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import BaseVC from "../../../zfb/Common/BaseVC";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
+import {Notify} from "../../../../../common/events/Notify";
 
 const {width} = Dimensions.get("window");
 
@@ -16,13 +17,24 @@ export default class WalletScreen extends BaseVC {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            refresh:false,
+        };
     }
 
     componentDidMount() {
         this._setBarStyle(2);
         this._setPlaceViewBackgroundColor('#EDEDED')
+        Notify.Refresh_WX_LQ.register(this.refreshMoney)
     }
+    componentWillUnmount() {
+        Notify.Refresh_WX_LQ.unRegister(this.refreshMoney);
+    }
+    refreshMoney = ({}) => {
+        this.setState({
+            refresh:!this.state.refresh
+        })
+    };
 
     _addSubView() {
         return (

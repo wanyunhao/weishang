@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   PixelRatio,
@@ -15,12 +16,15 @@ import {XImage} from "react-native-easy-app";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import BaseVC from "../../../zfb/Common/BaseVC";
+import {Notify} from "../../../../../common/events/Notify";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
 
 export default class PayScreen extends BaseVC {
 
   constructor(props) {
     super(props);
     this.state = {
+      refresh:false,
     };
     this.fuwuData = [
       {
@@ -101,8 +105,17 @@ export default class PayScreen extends BaseVC {
   componentDidMount() {
     this._setBarStyle(2);
     this._setPlaceViewBackgroundColor('#EDEDED')
+    Notify.Refresh_WX_LQ.register(this.refreshMoney)
+  }
+  componentWillUnmount() {
+    Notify.Refresh_WX_LQ.unRegister(this.refreshMoney);
   }
 
+  refreshMoney = ({}) => {
+    this.setState({
+      refresh:!this.state.refresh
+    })
+  };
   _addSubView() {
     return (
       <View style={styles.container}>
@@ -118,7 +131,7 @@ export default class PayScreen extends BaseVC {
             }}>
               <XImage icon={require('../../../../resource/index/wx/me/pay/zf_icon_qb.png')} style={{width:31,height:25}}/>
               <Text style={{color:Colors.white,fontSize:16,marginTop:14}}>钱包</Text>
-              <Text style={{color:'#9AD6B2',fontSize:13,marginTop:0,}}>￥2312000.88</Text>
+              <Text style={{color:'#9AD6B2',fontSize:13,marginTop:0,}}>￥{RNStorage.wx_lq}</Text>
             </YHTouchableOpacity>
           </View>
 

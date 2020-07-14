@@ -16,6 +16,7 @@ import {Provider} from "@ant-design/react-native";
 import {getPeople, showModalPrompt} from "../../../../../compoments/YHUtils";
 import {isEmpty} from "../../../../../common/utils/Utils";
 import {PYQListTableName, writeToRealm} from "../../../../../common/utils/RealmUtil";
+import {Notify} from "../../../../../common/events/Notify";
 
 const {width} = Dimensions.get("window");
 
@@ -31,7 +32,16 @@ export default class PocketMoneyScreen extends BaseVC {
     componentDidMount() {
         this._setBarStyle(2);
         this._setPlaceViewBackgroundColor(Colors.white)
+        Notify.Refresh_WX_LQ.register(this.refreshMoney)
     }
+    componentWillUnmount() {
+        Notify.Refresh_WX_LQ.unRegister(this.refreshMoney);
+    }
+    refreshMoney = ({}) => {
+        this.setState({
+            refresh:!this.state.refresh
+        })
+    };
     _addSubView() {
         return (
             <Provider>
@@ -46,11 +56,13 @@ export default class PocketMoneyScreen extends BaseVC {
                     <Text style={{fontSize:13,color:'#E6A259'}}>免费开通零钱通给自己加加薪</Text>
                     <XText onPress={()=>{
                         showModalPrompt('充值','',(text)=>{
-                            if (!isEmpty(text) && parseInt(text)>0) {
-                                RNStorage.wx_lq = text;
-                                this.setState({
-                                    refresh: true,
-                                })
+                            if (!isEmpty(text) && parseFloat(text)>0) {
+                                RNStorage.wx_lq = (parseFloat(RNStorage.wx_lq ) + parseFloat(text)).toFixed(2);
+                                // this.setState({
+                                //     refresh: true,
+                                // })
+
+                                Notify.Refresh_WX_LQ.sendEvent({})
                             }
                         },'请输入金额')
                     }} text='充值' style={{width:173,height:38,backgroundColor: '#07C160',marginTop:200,color:Colors.white,borderRadius:5,fontSize:16,fontWeight:'bold',textAlign:'center',lineHeight:38}}/>

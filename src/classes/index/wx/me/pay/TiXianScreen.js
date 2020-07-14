@@ -17,6 +17,8 @@ import BaseVC from "../../../zfb/Common/BaseVC";
 import {queryAllFromRealm, WXQB_BankTableName} from "../../../../../common/utils/RealmUtil";
 import {isEmpty} from "../../../../../common/utils/Utils";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
+import SecurityKeyboard from "../../../../../compoments/yhkeyborder/component/securityKeyboardBase";
+import {Notify} from "../../../../../common/events/Notify";
 
 const {width} = Dimensions.get("window");
 
@@ -108,6 +110,12 @@ export default class TiXianScreen extends BaseVC {
     }
 
     showPop(type, modal, text) {
+        let fwf = (this.state.inputMsg * 0.001).toFixed(2)
+        if (fwf < 0.1) {
+            fwf = 0.1;
+        }
+        let jine = (this.state.inputMsg - fwf).toFixed(2);
+
         let overlayView = (
             <Overlay.PopView
                 style={{alignItems: 'center', justifyContent: 'center'}}
@@ -125,7 +133,7 @@ export default class TiXianScreen extends BaseVC {
                 }}>
                     <Text style={{color: '#181818', fontSize: 16}}>请输入支付密码</Text>
                     <Text style={{color: '#181818', fontSize: 16, marginTop: 24}}>零钱提现</Text>
-                    <Text style={{color: '#181818', fontSize: 39, marginTop: 1}}>$1.00</Text>
+                    <Text style={{color: '#181818', fontSize: 39, marginTop: 1}}>￥{jine}</Text>
                     <YHDividingLine isBottom={false} top={154} left={15} right={15}/>
                     <View style={{
                         flexDirection: 'row',
@@ -135,7 +143,7 @@ export default class TiXianScreen extends BaseVC {
                         width: 270,
                     }}>
                         <Text style={{color: '#878787', fontSize: 13}}>服务费</Text>
-                        <Text style={{color: '#000000', fontSize: 13}}>$0.10</Text>
+                        <Text style={{color: '#000000', fontSize: 13}}>￥{fwf}</Text>
                     </View>
                     <View style={{
                         flexDirection: 'row',
@@ -145,12 +153,14 @@ export default class TiXianScreen extends BaseVC {
                         marginTop: 13
                     }}>
                         <Text style={{color: '#878787', fontSize: 13}}>费率</Text>
-                        <Text style={{color: '#000000', fontSize: 13}}>0.10%(最低0.1)</Text>
+                        <Text style={{color: '#000000', fontSize: 13}}>0.10%(最低0.10)</Text>
                     </View>
                     <PasswordInput style={{marginTop: 30, width: 270}} maxLength={6} onChange={(text) => {
                         if (text.length == 6) {
                             this.overlayPopView && this.overlayPopView.close()
-                            navigation.push('TixianResultScreen');
+                            navigation.push('TixianResultScreen',{jine:jine,fwf:fwf,select_bank:this.state.select_bank});
+                            RNStorage.wx_lq = (RNStorage.wx_lq - this.state.inputMsg).toFixed(2);
+                            Notify.Refresh_WX_LQ.sendEvent({})
                         }
                     }}/>
                 </View>
@@ -158,10 +168,37 @@ export default class TiXianScreen extends BaseVC {
         );
         Overlay.show(overlayView);
     }
-
+    parsePrice(obj) {
+        //必须保证第一位为数字而不是.
+        obj = obj.replace(/[^\d.]/g, "");
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/^\./g, "");
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace(/\.{2,}/g, ".");
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        //只能输入两个小数
+        obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        return obj;
+    }
     _addSubView() {
         return (
             <View style={styles.container}>
+                {/*<SecurityKeyboard*/}
+                {/*    placeholder={"手动输入金额"}*/}
+                {/*    placeholderTextColor={'#E0E0E0'}*/}
+                {/*    onChangeText={(text)=>{*/}
+                {/*        console.log(text);*/}
+                {/*    }}*/}
+                {/*    onFocus={()=>{*/}
+                {/*        console.log('onFocus');*/}
+                {/*    }}*/}
+                {/*    // style={styles.XXX}*/}
+                {/*    // valueStyle={styles.XXXX}*/}
+                {/*    ref={$moneyInput=>{*/}
+                {/*        this.$moneyInput = $moneyInput;*/}
+                {/*    }}*/}
+                {/*    // regs={this.XXX.bind(this)}*/}
+                {/*/>*/}
                 <WXNavigationBar title='零钱提现' rightImage={require('../../../../resource/common/wx_more.png')}
                                  clickRImage={() => {
 
@@ -195,11 +232,23 @@ export default class TiXianScreen extends BaseVC {
                     paddingVertical: 15
                 }}>
                     <XText text='提现金额' style={{fontSize: 13, color: '#000000',}}/>
-                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10,}}>
+                    <View style={{flexDirection: 'row', alignItems: 'flex-start', marginTop: 10,height:65}}>
                         <Text style={{color: '#1A1A1A', fontSize: 31, fontWeight: 'bold', width: 31}}>￥</Text>
+                        {/*<SecurityKeyboard*/}
+                        {/*    style={{height: 60, width: Const.screenWidth - 86 - 31 }}*/}
+                        {/*    value={this.state.inputMsg}*/}
+                        {/*    valueStyle={{fontSize: 46, fontWeight: 'bold',lineHeight:60}}*/}
+                        {/*    onChangeText={(text)=>{*/}
+                        {/*        this.setState({*/}
+                        {/*            inputMsg:text*/}
+                        {/*        })*/}
+                        {/*    }}*/}
+                        {/*    placeholder={' '}*/}
+                        {/*    regs={this.parsePrice.bind(this)}*/}
+                        {/*/>*/}
                         <TextInput
                             keyboardType="numeric"
-                            style={{height: 60, width: Const.screenWidth - 86 - 31, fontSize: 31, fontWeight: 'bold'}}
+                            style={{width: Const.screenWidth - 86 - 31, fontSize: 43, fontWeight: 'bold'}}
                             value={this.state.inputMsg}
                             onChangeText={text => {
                                 this.setState({inputMsg: text});

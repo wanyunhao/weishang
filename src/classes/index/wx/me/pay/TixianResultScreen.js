@@ -10,8 +10,15 @@ import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import {XText} from "react-native-easy-app";
 import BaseVC from "../../../zfb/Common/BaseVC";
+import moment from 'moment';
+import {getNow} from "../../../../../common/utils/DateUtils";
 
 export default class TixianResultScreen extends BaseVC {
+
+    componentDidMount() {
+        this._setBarStyle(2);
+        this._setPlaceViewBackgroundColor(Colors.white)
+    }
 
     _addSubView() {
         return (
@@ -24,7 +31,7 @@ export default class TixianResultScreen extends BaseVC {
                             <Text style={{color:'#7F7F7F',fontSize:17}}>发起提现申请</Text>
                             <View>
                                 <Text style={{color:'#191919',fontSize:17}}>银行处理中</Text>
-                                <Text style={{color:'#7F7F7F',fontSize:13}}>预计2020-01-30 17:12到账</Text>
+                                <Text style={{color:'#7F7F7F',fontSize:13}}>预计{moment(getNow() + 1000 *60*120).format('YYYY-MM-DD HH:mm')}前到账</Text>
                             </View>
                             <Text style={{color:'#B2B2B2',fontSize:17}}>到账成功</Text>
                         </View>
@@ -34,15 +41,15 @@ export default class TixianResultScreen extends BaseVC {
                     <View>
                         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
                             <Text style={{color:'#909090',fontSize:14}}>提现金额</Text>
-                            <Text style={{color:'#000000',fontSize:14}}>0.10%(最低0.1)</Text>
+                            <Text style={{color:'#000000',fontSize:14}}>{this.props.route.params.jine}</Text>
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
                             <Text style={{color:'#909090',fontSize:14}}>到账银行卡</Text>
-                            <Text style={{color:'#000000',fontSize:14}}>0.10%(最低0.1)</Text>
+                            <Text style={{color:'#000000',fontSize:14}}>{this.props.route.params.select_bank.bank_name + ' 尾号' + this.props.route.params.select_bank.bank_num}</Text>
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
                             <Text style={{color:'#909090',fontSize:14}}>服务费</Text>
-                            <Text style={{color:'#000000',fontSize:14}}>0.10%(最低0.1)</Text>
+                            <Text style={{color:'#000000',fontSize:14}}>{this.props.route.params.fwf}</Text>
                         </View>
                     </View>
                 </View>
