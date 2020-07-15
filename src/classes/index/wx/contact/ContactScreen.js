@@ -163,12 +163,13 @@ export default class ContactScreen extends BaseVC {
       } else {
         queryFilterFromRealm(WXConversationTableName,'df_user_id=' + item.item.id).then((res)=>{
           if (isEmpty(res)) {
-
+            console.log(RNStorage.user_id);
+            console.log(item.item.id);
             let pra_id = getNow();
             writeToRealm({
               id: pra_id,
               type: 1,//1 单聊 2 群聊
-              user_id: RNStorage.user_id,
+              user_id: parseInt(RNStorage.user_id),
               df_user_id: item.item.id,
               last_time:pra_id,
             },WXConversationTableName).then((res)=>{

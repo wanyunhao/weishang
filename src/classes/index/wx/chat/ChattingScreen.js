@@ -75,10 +75,17 @@ export default class ChattingScreen extends WXBaseVC {
 
         super.componentDidMount();
         queryFilterFromRealm(WXConversationTableName,'id='+ this.props.route.params.c_id).then(data=>{
-            this.setState({
-                c_data: data[0] || {}
-            }, () => {
-                this.queryChat();
+            queryFilterFromRealm( UsersTableName, 'id=' + data[0].df_user_id).then((data1) => {
+                if (!isEmpty(data1)) {
+                    let model = data[0];
+                    model.userinfo = data1[0];
+                    this.setState({
+                        c_data: model
+                    }, () => {
+                        this.queryChat();
+                    })
+                }
+
             })
         })
     }
@@ -158,6 +165,7 @@ export default class ChattingScreen extends WXBaseVC {
     }
 
     sendHB(type) {
+        console.log(this.state.c_data.userinfo);
         navigation.push('SendRPScreen', {
             type: type, df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
                 this.queryChat();

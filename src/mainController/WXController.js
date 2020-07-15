@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {XImage, XText} from 'react-native-easy-app';
+import {BackHandler, Alert} from 'react-native';
 import {Colors} from '../common/storage/Const';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import OneController from '../classes/index/wx/chat/ChattingScreen';
@@ -48,43 +49,21 @@ export default class WXController extends PureComponent {
         };
     };
 
-    // componentDidMount() {
-    //     this.listener = this.backListener();
-    //     Notify.TOKEN_EXPIRED.register(this.tokenExpired);
-    // }
-    //
-    // componentWillUnmount() {
-    //     this.listener && this.listener.remove();
-    //     Notify.TOKEN_EXPIRED.unRegister(this.tokenExpired);
-    // }
-    //
-    // initConfig = () => {
-    //     HttpConfig.initHttpConfig();
-    //     DebugManager.initDeviceInfo(DeviceInfo);
-    //     DebugManager.showFloat(Manager);
-    // };
-    //
-    // backListener = () => {
-    //     return BackHandler.addEventListener('hardwareBackPress', () => {
-    //         const {state} = tabNavigator.dangerouslyGetState().routes[0];
-    //         if (state && state.index !== 0) {// 若不是第一个Tab，则切换到第一个Tab
-    //             tabNavigator.navigate('Home');
-    //             return true;
-    //         }
-    //         if (navigation.canGoBack()) {// 若能返回，则不拦截
-    //             return false;
-    //         } else {
-    //             let nowTime = (new Date()).valueOf();
-    //             if (nowTime - lastClickTime < 1000) {//间隔时间小于1秒才能退出
-    //                 BackHandler.exitApp();
-    //             } else {
-    //                 showToast('再按一次，退出应用');
-    //                 lastClickTime = nowTime;
-    //             }
-    //             return true;
-    //         }
-    //     });
-    // };
+    componentDidMount() {
+        this.listener = this.backListener();
+        // Notify.TOKEN_EXPIRED.register(this.tokenExpired);
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
+        // Notify.TOKEN_EXPIRED.unRegister(this.tokenExpired);
+    }
+    backListener = () => {
+        return BackHandler.addEventListener('hardwareBackPress', () => {
+            navigation.goBack();
+            return true;
+        });
+    };
     //
     // tokenExpired = ({message}) => { // token 过期需要处理的逻辑
     //     Alert.alert('Token 过期 ', message);

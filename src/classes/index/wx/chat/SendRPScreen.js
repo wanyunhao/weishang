@@ -35,6 +35,9 @@ export default class SendRPScreen extends WXBaseVC {
         this.setState({
             type: this.props.route.params.type,
             df_user_info: this.props.route.params.df_user_info,
+        },()=>{
+
+            console.log(this.state.df_user_info);
         })
     }
 
