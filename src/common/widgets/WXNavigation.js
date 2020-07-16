@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     titleBarParent: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: Const.isIos ? 44 : 50,
+        height: 44,
 
     },
     leftImage: {

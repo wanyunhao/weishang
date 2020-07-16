@@ -17,7 +17,7 @@ import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import {Notify} from "../../../../common/events/Notify";
 import {getPeople, showModalOperation, showModalPrompt, showOverlayModal} from "../../../../compoments/YHUtils";
-import NewPersonView from "./views/NewPersonView";
+import NewPersonView, {TwoInputView} from "./views/NewPersonView";
 import Overlay from "teaset/components/Overlay/Overlay";
 import {isEmpty} from "../../../../common/utils/Utils";
 import {Provider} from "@ant-design/react-native";
@@ -105,7 +105,29 @@ export default class ConversationScreen extends WXBaseVC {
                             },
                             {
                                 text: '创建群聊', onPress: () => {
+                                    const key = showOverlayModal('zoomOut', true, <TwoInputView cancelClick={() => {
+                                        Overlay.hide(key);
+                                    }} confirmClick={(value) => {
 
+                                        // let pra_id = getNow();
+                                        // writeToRealm({
+                                        //     id: pra_id,
+                                        //     user_name: value.name,
+                                        //     avatar: value.icon,
+                                        // }, UsersTableName).then((res) => {
+                                        //     writeToRealm({
+                                        //         id: pra_id,
+                                        //         type: 1,//1 单聊 2 群聊
+                                        //         user_id: parseInt(RNStorage.user_id),
+                                        //         df_user_id: pra_id,
+                                        //         last_time:pra_id,
+                                        //     },WXConversationTableName).then((res)=>{
+                                        //         navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
+                                        //         Notify.Refresh_conversation_list.sendEvent({})
+                                        //     })
+                                        // })
+                                        Overlay.hide(key);
+                                    }}/>);
                                 }
                             },
                             {

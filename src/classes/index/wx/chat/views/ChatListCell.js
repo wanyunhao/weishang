@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image,Clipboard} from 'react-native';
 import {XImage} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
+import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class ChatListCell extends Component {
     render() {
@@ -12,26 +13,33 @@ export default class ChatListCell extends Component {
         return (
             <TouchableOpacity style={styles.container} ref={ref => {
                 this.ref = ref;
-            }} onLongPress={() => {
+            }} onLongPress={this.props.drag != null ? this.props.drag : () => {
                 let items = [
-                    {
-                        title: '修改', onPress: () => {
-
-                        }
-                    },
+                    // {
+                    //     title: '修改', onPress: () => {
+                    //
+                    //     }
+                    // },
                     {
                         title: '复制', onPress: () => {
-
+                            Clipboard.setString(data.text);
                         }
                     },
                     {
                         title: '删除', onPress: () => {
-
+                            clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                                this.props.refreshChat()
+                            })
                         }
                     },
                     {
                         title: '切换角色', onPress: () => {
-
+                            this.props.changeUser()
+                        }
+                    },
+                    {
+                        title: '排序', onPress: () => {
+                            this.props.orderClick();
                         }
                     },
                 ];

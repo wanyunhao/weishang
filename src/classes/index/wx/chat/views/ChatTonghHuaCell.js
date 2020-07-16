@@ -3,13 +3,36 @@ import {StyleSheet, Text, View,Image} from 'react-native';
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {XImage} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
+import {showOperationItems} from "../../../../../compoments/YHUtils";
+import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 
 export default class ChatTonghHuaCell extends Component {
     render() {
         const data = this.props.data;
         let isSelf = this.props.isSelf;
         return (
-            <YHTouchableOpacity style={styles.container}>
+            <TouchableOpacity style={styles.container} ref={ref => {
+                this.ref = ref;
+            }} onLongPress={this.props.drag != null ? this.props.drag : () => {
+                let items = [
+                    {
+                        title: '删除', onPress: () => {
+
+                        }
+                    },
+                    {
+                        title: '切换角色', onPress: () => {
+
+                        }
+                    },
+                    {
+                        title: '排序', onPress: () => {
+                            this.props.orderClick();
+                        }
+                    },
+                ];
+                showOperationItems(this.ref, items)
+            }}>
                 <View style={{flexDirection: 'row', paddingTop: 11, paddingHorizontal: 11, alignItems:'center'}}>
                     {isSelf? null:(<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={{uri:data.userinfo.avatar}} iconSize={38}
                                            onPress={() => {
@@ -33,7 +56,7 @@ export default class ChatTonghHuaCell extends Component {
                                        onPress={() => {
                                        }}/>): null}
                 </View>
-            </YHTouchableOpacity>
+            </TouchableOpacity>
         );
     }
 }

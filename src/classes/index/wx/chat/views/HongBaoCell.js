@@ -17,6 +17,8 @@ import {Colors} from "../../../../../common/storage/Const";
 import YHHongBaoPopView from "./YHHongBaoPopView";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
+import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
+import {showOperationItems} from "../../../../../compoments/YHUtils";
 
 export default class HongBaoCell extends Component {
 
@@ -33,7 +35,28 @@ export default class HongBaoCell extends Component {
     let isSelf = this.props.isSelf;
     let isReceived = this.props.isReceived;
     return (
-      <YHTouchableOpacity style={styles.container} {...this.props}>
+      <TouchableOpacity style={styles.container} {...this.props} ref={ref => {
+        this.ref = ref;
+      }} onLongPress={this.props.drag != null ? this.props.drag : () => {
+        let items = [
+          {
+            title: '删除', onPress: () => {
+
+            }
+          },
+          {
+            title: '切换角色', onPress: () => {
+
+            }
+          },
+          {
+            title: '排序', onPress: () => {
+              this.props.orderClick();
+            }
+          },
+        ];
+        showOperationItems(this.ref, items)
+      }}>
         <View style={{flexDirection: 'row', paddingTop: 11, paddingHorizontal: 11, alignItems:'center'}}>
           {isSelf? null:(<XImage style={{borderRadius: 5,alignSelf:'flex-start'}} icon={data.userinfo.avatar} iconSize={38}
                                  onPress={() => {
@@ -60,7 +83,7 @@ export default class HongBaoCell extends Component {
         </View>
 
         {/*<YHHongBaoPopView finishAnimation={this.props.finishAnimation}/>*/}
-      </YHTouchableOpacity>
+      </TouchableOpacity>
     );
   }
 

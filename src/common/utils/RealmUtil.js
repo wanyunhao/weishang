@@ -11,6 +11,7 @@ export const PYQListPicTableName = 'PYQListPicTableName';
 export const PYQListTalkTableName = 'PYQListTalkTableName';
 export const WXNewFriendTableName = 'WXNewFriendTableName';
 export const WXQB_BankTableName = 'WXQB_BankTableName';
+export const WXGroupMemberTableName = 'WXGroupMemberTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -19,13 +20,29 @@ export const WXConversationSchema = {
     properties: {
         id: 'int',
         type: 'int',//1 单聊 2 群聊
-        user_id: 'int',
-        df_user_id: 'int',
+        user_id: 'int?',
+        df_user_id: 'int?',
+        group_name: 'string?',//群聊名称
+        group_count: 'int?',//群聊人数
+        group_gonggao: 'string?',//群聊公告
         last_time: 'int?',
         last_type: 'string?',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
     }
 };
 
+//微信群聊关系
+export const WXGroupMemberSchema = {
+    name: WXGroupMemberTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        group_id: 'int',//
+        user_id: 'int?',//用户id
+        user_name: 'string?',//名称
+        user_avatar: 'string?',//用户头像
+
+    }
+};
 //自己信息
 const SelfTableNameSchema = {
     name: SelfTableName,
@@ -163,6 +180,7 @@ export const instance = new Realm({
         PYQListTalkSchema,
         WXNewFriendSchema,
         WXQB_BankSchema,
+        WXGroupMemberSchema,
         // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,
