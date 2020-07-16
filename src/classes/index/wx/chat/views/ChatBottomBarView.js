@@ -135,7 +135,7 @@ export default class ChatBottomBarView extends Component {
         writeToRealm({
             id: getNow(),
             c_id: this.c_id,
-            send_id: this.props.senderId,
+            send_id: parseInt(this.props.senderId),
             type: 1,
             text: this.state.inputMsg
         },MSGTableName).then((res)=>{

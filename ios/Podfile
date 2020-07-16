@@ -81,7 +81,6 @@ target 'EasyApp' do
 
   pod 'RealmJS', :path => '../node_modules/realm'
 
-  pod 'RNFS', :path => '../node_modules/react-native-fs'
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 

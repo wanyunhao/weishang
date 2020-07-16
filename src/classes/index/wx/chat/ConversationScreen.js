@@ -5,15 +5,23 @@ import MsgListCell from "./views/MsgListCell";
 import {Colors} from "../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {
-    instance,
+    clearAllFromRealm,
+    clearRowFromRealmFiltered,
+    instance, MSGTableName, PYQListTableName, PYQListTalkTableName,
     queryFilterFromRealm,
-    UsersTableName,
+    UsersTableName, writeToRealm,
     WXConversationTableName
 } from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import {Notify} from "../../../../common/events/Notify";
+import {getPeople, showModalOperation, showModalPrompt, showOverlayModal} from "../../../../compoments/YHUtils";
+import NewPersonView from "./views/NewPersonView";
+import Overlay from "teaset/components/Overlay/Overlay";
+import {isEmpty} from "../../../../common/utils/Utils";
+import {Provider} from "@ant-design/react-native";
+import {RNStorage} from "../../../../common/storage/AppStorage";
 
 const {width} = Dimensions.get("window");
 const Realm = require('realm');
@@ -22,7 +30,7 @@ export default class ConversationScreen extends WXBaseVC {
     constructor(props) {
         super(props);
         this.state = {
-            data:[],
+            data: [],
         };
     }
 
@@ -31,6 +39,7 @@ export default class ConversationScreen extends WXBaseVC {
         this.requestData();
         Notify.Refresh_conversation_list.register(this.refreshList);
     }
+
     componentWillUnmount() {
         Notify.Refresh_conversation_list.unRegister(this.refreshList);
     }
@@ -38,20 +47,24 @@ export default class ConversationScreen extends WXBaseVC {
     refreshList = () => {
         this.requestData();
     };
+
     requestData() {
         this.realm = instance;
-        var objects = this.realm.objects(WXConversationTableName).sorted('last_time',true);
+        var objects = this.realm.objects(WXConversationTableName).sorted('last_time', true);
         var data = [];
+        this.setState({
+            data: [],
+        })
         for (const objectsKey in objects) {
             let model = objects[objectsKey];
-            queryFilterFromRealm(UsersTableName,'id=' + model.df_user_id).then((user)=>{
+            queryFilterFromRealm(UsersTableName, 'id=' + model.df_user_id).then((user) => {
                 if (user != null) {
                     model.userinfo = user[0];
                 }
                 data.push(model);
 
                 this.setState({
-                    data:data,
+                    data: data,
                 })
             })
         }
@@ -59,18 +72,91 @@ export default class ConversationScreen extends WXBaseVC {
 
     _addSubView() {
         return (
-            <View style={styles.container}>
-                <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={()=>{
+            <Provider>
+                <View style={styles.container}>
+                    <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={() => {
+                        let items = [
+                            {
+                                text: '创建单聊', onPress: () => {
+                                    const key = showOverlayModal('zoomOut', true, <NewPersonView cancelClick={() => {
+                                        Overlay.hide(key);
+                                    }} confirmClick={(value) => {
 
-                }}/>
+                                        let pra_id = getNow();
+                                        writeToRealm({
+                                            id: pra_id,
+                                            user_name: value.name,
+                                            avatar: value.icon,
+                                        }, UsersTableName).then((res) => {
+                                            writeToRealm({
+                                                id: pra_id,
+                                                type: 1,//1 单聊 2 群聊
+                                                user_id: parseInt(RNStorage.user_id),
+                                                df_user_id: pra_id,
+                                                last_time:pra_id,
+                                            },WXConversationTableName).then((res)=>{
+                                                navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
+                                                Notify.Refresh_conversation_list.sendEvent({})
+                                            })
+                                        })
+                                        Overlay.hide(key);
+                                    }}/>);
+                                }
+                            },
+                            {
+                                text: '创建群聊', onPress: () => {
 
-                <FlatList data={this.state.data}
-                           style={{backgroundColor: Colors.white}}
-                           renderItem={({item, index}) => <MsgListCell data={item} itemClick={() => {
-                               navigation.push('ChattingScreen',{c_id:item.id});
-                           }}/>}
-                />
-            </View>
+                                }
+                            },
+                            {
+                                text: '通讯录选择好友聊天', onPress: () => {
+                                    navigation.push('ContactScreen',{fromChoose:true,chooseItem:(item)=>{
+                                            queryFilterFromRealm(WXConversationTableName,'df_user_id=' + item.id).then((res)=>{
+                                                if (isEmpty(res)) {
+                                                    let pra_id = getNow();
+                                                    writeToRealm({
+                                                        id: pra_id,
+                                                        type: 1,//1 单聊 2 群聊
+                                                        user_id: parseInt(RNStorage.user_id),
+                                                        df_user_id: item.id,
+                                                        last_time:pra_id,
+                                                    },WXConversationTableName).then((res)=>{
+                                                        navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
+                                                        Notify.Refresh_conversation_list.sendEvent({})
+                                                    })
+                                                } else {
+                                                    navigation.push('ChattingScreen',{c_id:res[0].id});//1594277045186,
+                                                }
+                                            })
+                                        }})
+                                }
+                            },
+                            {
+                                text: '清空聊天列表', onPress: () => {
+                                    clearAllFromRealm(WXConversationTableName).then(()=>{
+                                        this.requestData();
+                                        clearAllFromRealm(MSGTableName)
+                                    })
+                                }
+                            },
+                            {
+                                text: '退出小微', onPress: () => {
+                                    navigation.goBack();
+                                }
+                            },
+                        ];
+                        showModalOperation(items);
+
+                    }}/>
+
+                    <FlatList data={this.state.data}
+                              style={{backgroundColor: Colors.white}}
+                              renderItem={({item, index}) => <MsgListCell data={item} itemClick={() => {
+                                  navigation.push('ChattingScreen', {c_id: item.id});
+                              }}/>}
+                    />
+                </View>
+            </Provider>
         );
     }
 }

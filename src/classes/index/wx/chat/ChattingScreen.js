@@ -25,12 +25,12 @@ import YHHongBaoPopView from "./views/YHHongBaoPopView";
 import {Button, Label, Overlay, Theme, Wheel} from "teaset";
 import HBDetailScreen from "./views/HBDetailScreen";
 import {getNow} from "../../../../common/utils/DateUtils";
-import MsgSystemCell from "./views/MsgSystemCell";
+import MsgSystemCell, {MsgSystemDefaultCell} from "./views/MsgSystemCell";
 import ZhuanZhangDetailScreen from "./views/ZhuanZhangDetailScreen";
 import SliderAntm from "@ant-design/react-native/es/slider";
 import SliderView from "./views/SliderView";
 import ChatYuyinCell from "./views/ChatYuyinCell";
-import {showActionSheet} from "../../../../compoments/YHUtils";
+import {showActionSheet, showOverlayModal, showOverlayPull} from "../../../../compoments/YHUtils";
 import Wheel3View from "./views/Wheel3View";
 import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 import ImagePicker from "react-native-image-picker";
@@ -40,7 +40,8 @@ import {showToast} from "../../../../common/widgets/Loading";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import BaseVC from "../../zfb/Common/BaseVC";
 import {Notify} from "../../../../common/events/Notify";
-
+import { DatePickerView, Provider } from '@ant-design/react-native';
+import YHDatePicker from "./views/YHDatePicker";
 
 export default class ChattingScreen extends WXBaseVC {
 
@@ -59,6 +60,7 @@ export default class ChattingScreen extends WXBaseVC {
             kebordHeight: 0,
             emoji:'',
             senderId: RNStorage.user_id,
+            time:new Date(),
         };
     }
 
@@ -110,23 +112,6 @@ export default class ChattingScreen extends WXBaseVC {
         });
     }
 
-    // componentWillMount() {
-    //     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow.bind(this));
-    //     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide.bind(this));
-    // }
-    //
-    // _keyboardDidShow(frames) {
-    //     let keyboardSpace = frames.endCoordinates.height;//获取键盘高度
-    //     this.setState({
-    //         kebordHeight: keyboardSpace
-    //     })
-    // }
-    //
-    // componentWillUnmount() {
-    //     this.keyboardDidShowListener.remove();
-    //     this.keyboardDidHideListener.remove();
-    // }
-
     handleClick(index) {
         switch (index) {
             case 0:
@@ -150,6 +135,25 @@ export default class ChattingScreen extends WXBaseVC {
                     },
                 ])
                 break;
+            case 3:
+                const view = showOverlayPull('bottom',false,(<YHDatePicker confirmDate={(value)=>{
+                    Overlay.hide(view);
+                    writeToRealm({
+                        id: getNow(),
+                        c_id: this.state.c_data.id,//会话id
+                        send_id : parseInt(this.state.senderId),
+                        type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
+                        xitongText:value.getTime() + "",
+                        xitongTextType:1,//1:纯文字 2:红包
+                    },MSGTableName).then(()=>{
+
+                        writeToRealm({id:this.state.c_data.id,last_time:getNow()},WXConversationTableName).then((res)=>{
+                            Notify.Refresh_conversation_list.sendEvent({});
+                        })
+                        this.queryChat();
+                    })
+                }}/>))
+                break;
             case 4:
                 this.sendHB(1);
                 break;
@@ -165,7 +169,6 @@ export default class ChattingScreen extends WXBaseVC {
     }
 
     sendHB(type) {
-        console.log(this.state.c_data.userinfo);
         navigation.push('SendRPScreen', {
             type: type, df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
                 this.queryChat();
@@ -394,6 +397,7 @@ export default class ChattingScreen extends WXBaseVC {
 
     _addSubView() {
         return (
+            // <Provider>
             <View style={styles.container}>
                 <WXNavigationBar title='消息' rightImage={require('../../../resource/common/wx_more.png')} clickRImage={()=>{
                     if (this.state.senderId == RNStorage.user_id) {
@@ -474,9 +478,20 @@ export default class ChattingScreen extends WXBaseVC {
                                            }}/>
                                        )
                                    case 7:
-                                       return (
-                                           <MsgSystemCell data={item}/>
-                                       )
+                                   {
+                                       if (item.xitongTextType == 1) {
+
+                                           return (
+                                               <MsgSystemDefaultCell data={item}/>
+                                           )
+                                       }
+                                       if (item.xitongTextType == 2) {
+
+                                           return (
+                                               <MsgSystemCell data={item}/>
+                                           )
+                                       }
+                                   }
                                    case 8:
                                        return (
                                            <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id} data={item}/>
@@ -514,6 +529,7 @@ export default class ChattingScreen extends WXBaseVC {
                 ): null}
 
             </View>
+    // </Provider>
         );
     }
 }

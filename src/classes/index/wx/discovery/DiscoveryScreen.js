@@ -7,7 +7,6 @@ import {PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
-var RNFS = require('react-native-fs');
 const {width} = Dimensions.get("window");
 
 export default class DiscoveryScreen extends WXBaseVC {

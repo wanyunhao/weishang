@@ -11,6 +11,7 @@ import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import moment from 'moment';
+import {_getTimeStringAutoShort2} from "../../../../../common/utils/YHTimeUtil";
 export default class MsgListCell extends Component {
 
     render() {
@@ -25,7 +26,8 @@ export default class MsgListCell extends Component {
                     </View>
                     <Text style={{position:'absolute',right:17,top:13,color:Colors.gray_text_color,fontSize:11}}>{
                         // moment(data.last_time).startOf('hour').fromNow()
-                        moment(data.last_time).format('a h:mm')
+                        // moment(data.last_time).format('a h:mm')
+                        _getTimeStringAutoShort2(data.last_time,false)
                     }</Text>
                 </View>
                 <YHDividingLine left={78}/>

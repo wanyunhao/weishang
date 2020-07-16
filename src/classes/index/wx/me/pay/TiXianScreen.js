@@ -274,6 +274,11 @@ export default class TiXianScreen extends BaseVC {
                         color: isEmpty(this.state.inputMsg) ? Colors.black_text_color : Colors.white,
                     }} onPress={() => {
                         if (isEmpty(this.state.inputMsg)) {
+                            showToast('请输入金额')
+                            return;
+                        }
+                        if (isEmpty(this.state.select_bank)) {
+                            showToast('请选择银行')
                             return;
                         }
                         this.showPop('zoomIn', false, 'Pop zoom in')

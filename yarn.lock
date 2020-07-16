@@ -1797,11 +1797,6 @@ balanced-match@^1.0.0:
   resolved "https://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base-64@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npm.taobao.org/base-64/download/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
-  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
-
 base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.1"
   resolved "https://registry.npm.taobao.org/base64-js/download/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
@@ -5925,14 +5920,6 @@ react-native-easy-app@^1.7.6:
   resolved "https://registry.npm.taobao.org/react-native-easy-app/download/react-native-easy-app-1.7.6.tgz#6133180f2b6a506ced984aa02a9830a4363bc269"
   integrity sha1-YTMYDytqUGztmEqgKpgwpDY7wmk=
 
-react-native-fs@^2.16.6:
-  version "2.16.6"
-  resolved "https://registry.npm.taobao.org/react-native-fs/download/react-native-fs-2.16.6.tgz#2901789a43210a35a0ef0a098019bbef3af395fd"
-  integrity sha1-KQF4mkMhCjWg7woJgBm77zrzlf0=
-  dependencies:
-    base-64 "^0.1.0"
-    utf8 "^3.0.0"
-
 react-native-gesture-handler@^1.6.1:
   version "1.6.1"
   resolved "https://registry.npm.taobao.org/react-native-gesture-handler/download/react-native-gesture-handler-1.6.1.tgz#678e2dce250ed66e93af409759be22cd6375dd17"
@@ -6030,6 +6017,11 @@ react-native-swipeout@^2.3.6:
     create-react-class "^15.6.0"
     prop-types "^15.5.10"
     react-tween-state "^0.1.5"
+
+react-native-syan-image-picker@^0.4.9:
+  version "0.4.9"
+  resolved "https://registry.npm.taobao.org/react-native-syan-image-picker/download/react-native-syan-image-picker-0.4.9.tgz#d70301e45cc434ce34d78dcd090397a6a087ebd5"
+  integrity sha1-1wMB5FzENM40143NCQOXpqCH69U=
 
 react-native-webview@8.2.1:
   version "8.2.1"
@@ -7381,11 +7373,6 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha1-1QyMrHmhn7wg8pEfVuuXP04QBw8=
-
-utf8@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.npm.taobao.org/utf8/download/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
-  integrity sha1-8FLu0TZNaW52nvBYsYPfiMh/adE=
 
 util-deprecate@~1.0.1:
   version "1.0.2"
