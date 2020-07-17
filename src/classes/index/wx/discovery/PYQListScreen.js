@@ -75,7 +75,6 @@ export default class PYQListScreen extends BaseVC {
 
     _addSubView() {
         return (
-            <Provider>
             <View style={styles.container}>
 
                 <FlatList
@@ -115,7 +114,6 @@ export default class PYQListScreen extends BaseVC {
                     this._requestData();
                 }}/>): null}
             </View>
-            </Provider>
         );
     }
 

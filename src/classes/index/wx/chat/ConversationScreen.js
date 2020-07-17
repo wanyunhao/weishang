@@ -10,7 +10,7 @@ import {
     instance, MSGTableName, PYQListTableName, PYQListTalkTableName,
     queryFilterFromRealm,
     UsersTableName, writeToRealm,
-    WXConversationTableName
+    WXConversationTableName, WXGroupMemberTableName
 } from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import BaseVC from "../../zfb/Common/BaseVC";
@@ -57,22 +57,31 @@ export default class ConversationScreen extends WXBaseVC {
         })
         for (const objectsKey in objects) {
             let model = objects[objectsKey];
-            queryFilterFromRealm(UsersTableName, 'id=' + model.df_user_id).then((user) => {
-                if (user != null) {
-                    model.userinfo = user[0];
-                }
-                data.push(model);
-
-                this.setState({
-                    data: data,
+            if (model.type == 1) {
+                queryFilterFromRealm(UsersTableName, 'id=' + model.df_user_id).then((user) => {
+                    if (user != null) {
+                        model.userinfo = user[0];
+                    }
+                    data.push(model);
+                    this.setState({
+                        data: data,
+                    })
                 })
-            })
+            } else {
+                queryFilterFromRealm(WXGroupMemberTableName,'group_id=' + model.id).then((res)=>{
+                    model.group_info = res;
+                    data.push(model);
+                    this.setState({
+                        data: data,
+                    })
+                })
+            }
+
         }
     }
 
     _addSubView() {
         return (
-            <Provider>
                 <View style={styles.container}>
                     <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={() => {
                         let items = [
@@ -109,23 +118,27 @@ export default class ConversationScreen extends WXBaseVC {
                                         Overlay.hide(key);
                                     }} confirmClick={(value) => {
 
-                                        // let pra_id = getNow();
-                                        // writeToRealm({
-                                        //     id: pra_id,
-                                        //     user_name: value.name,
-                                        //     avatar: value.icon,
-                                        // }, UsersTableName).then((res) => {
-                                        //     writeToRealm({
-                                        //         id: pra_id,
-                                        //         type: 1,//1 单聊 2 群聊
-                                        //         user_id: parseInt(RNStorage.user_id),
-                                        //         df_user_id: pra_id,
-                                        //         last_time:pra_id,
-                                        //     },WXConversationTableName).then((res)=>{
-                                        //         navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
-                                        //         Notify.Refresh_conversation_list.sendEvent({})
-                                        //     })
-                                        // })
+                                        let pra_id = getNow();
+                                        writeToRealm({
+                                            id: pra_id,
+                                            type: 2,//1 单聊 2 群聊
+                                            group_name:value.group_name,
+                                            group_count:parseInt(value.group_count),
+                                            user_id:parseInt(RNStorage.user_id),
+                                            last_time:pra_id,
+                                        },WXConversationTableName).then((res)=>{
+                                            writeToRealm({
+                                                id: pra_id,
+                                                group_id: pra_id,//
+                                                user_id: parseInt(RNStorage.user_id),//用户id
+                                                user_name: RNStorage.user_name,//名称
+                                                user_avatar: RNStorage.avatarUrl,//用户头像
+
+                                            },WXGroupMemberTableName).then(()=>{
+                                                navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,
+                                                Notify.Refresh_conversation_list.sendEvent({})
+                                            })
+                                        })
                                         Overlay.hide(key);
                                     }}/>);
                                 }
@@ -178,7 +191,6 @@ export default class ConversationScreen extends WXBaseVC {
                               }}/>}
                     />
                 </View>
-            </Provider>
         );
     }
 }

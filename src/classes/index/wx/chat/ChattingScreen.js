@@ -17,7 +17,7 @@ import {
     MSGTableName,
     queryFilterFromRealm,
     SelfTableName,
-    UsersTableName, writeToRealm, WXConversationTableName
+    UsersTableName, writeToRealm, WXConversationTableName, WXGroupMemberTableName
 } from "../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {deepClone, isEmpty} from "../../../../common/utils/Utils";
@@ -52,7 +52,11 @@ export default class ChattingScreen extends WXBaseVC {
             showHongbao: false,
             showEmojiView: false,
             showMoreView: false,
-            c_data: {},
+            c_data: {
+                userinfo:{
+                    user_name:''
+                }
+            },
             data: [],
             silderValue: 30,
             inputType: 1,// 1:文字 2:表情 3:更多
@@ -65,34 +69,53 @@ export default class ChattingScreen extends WXBaseVC {
         };
     }
 
-    // componentDidMount() {
-    //     // super.componentDidMount();
-    //     this.setState({
-    //         c_data: this.props.route.params.data
-    //     }, () => {
-    //         this.queryChat();
-    //         console.log(this.state.c_data);
-    //     })
-    // }
+
+
+    componentWillUnmount() {
+        Notify.Refresh_conversation_list.unRegister(this.refreshList);
+    }
+
+    refreshList = () => {
+        this._requestData();
+    };
+
     componentDidMount() {
 
         super.componentDidMount();
+        Notify.Refresh_conversation_list.register(this.refreshList);
+        this._requestData();
+    }
+
+
+    _requestData() {
+        console.log(this.props.route.params.c_id);
         queryFilterFromRealm(WXConversationTableName, 'id=' + this.props.route.params.c_id).then(data => {
-            queryFilterFromRealm(UsersTableName, 'id=' + data[0].df_user_id).then((data1) => {
-                if (!isEmpty(data1)) {
+
+            if (data[0].type == 1) {
+                queryFilterFromRealm(UsersTableName, 'id=' + data[0].df_user_id).then((data1) => {
+                    if (!isEmpty(data1)) {
+                        let model = data[0];
+                        model.userinfo = data1[0];
+                        this.setState({
+                            c_data: model
+                        }, () => {
+                            this.queryChat();
+                        })
+                    }
+                })
+            } else {
+                queryFilterFromRealm(WXGroupMemberTableName,'group_id='+this.props.route.params.c_id).then((data1)=>{
                     let model = data[0];
-                    model.userinfo = data1[0];
+                    model.members = data1;
                     this.setState({
                         c_data: model
                     }, () => {
                         this.queryChat();
                     })
-                }
-
-            })
+                })
+            }
         })
     }
-
 
     queryChat() {
         queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
@@ -423,22 +446,23 @@ export default class ChattingScreen extends WXBaseVC {
     // _onBackspacePress = () => {};
 
     _addSubView() {
+
         return (
-            // <Provider>
             <View style={styles.container}>
-                <WXNavigationBar title='消息' rightImage={require('../../../resource/common/wx_more.png')}
+                <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):this.state.c_data.group_name} rightImage={require('../../../resource/common/wx_more.png')}
                                  clickRImage={() => {
-                                     if (this.state.senderId == RNStorage.user_id) {
-                                         this.setState({
-                                             senderId: this.state.c_data.df_user_id
-                                         })
-                                         showToast('切换到对方发送');
-                                     } else {
-                                         this.setState({
-                                             senderId: RNStorage.user_id
-                                         })
-                                         showToast('自己发送');
-                                     }
+                                     navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
+                                     // if (this.state.senderId == RNStorage.user_id) {
+                                     //     this.setState({
+                                     //         senderId: this.state.c_data.df_user_id
+                                     //     })
+                                     //     showToast('切换到对方发送');
+                                     // } else {
+                                     //     this.setState({
+                                     //         senderId: RNStorage.user_id
+                                     //     })
+                                     //     showToast('自己发送');
+                                     // }
                                  }}/>
                 <DraggableFlatList data={this.state.data}
                                    style={{marginBottom: 52}}

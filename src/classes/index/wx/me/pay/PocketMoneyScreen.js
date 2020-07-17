@@ -44,7 +44,6 @@ export default class PocketMoneyScreen extends BaseVC {
     };
     _addSubView() {
         return (
-            <Provider>
             <View style={styles.container}>
                 <WXNavigationBar nav_bg_color={Colors.white} rightText='零钱明细' noLine clickRText={()=>{
 
@@ -77,7 +76,6 @@ export default class PocketMoneyScreen extends BaseVC {
                 </View>
                 <ChangYongView/>
             </View>
-            </Provider>
         );
     }
 

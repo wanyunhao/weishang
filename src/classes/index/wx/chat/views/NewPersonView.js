@@ -119,14 +119,14 @@ export class TwoInputView extends Component {
                     size='md'
                     value={this.state.group_name}
                     placeholder='请输入群名称'
-                    onChangeText={text => this.setState({name: text})}
+                    onChangeText={text => this.setState({group_name: text})}
                 />
                 <Input
                     style={{width: 200, marginTop: 10,}}
                     size='md'
                     value={this.state.group_count}
                     placeholder='请输入群人数'
-                    onChangeText={text => this.setState({name: text})}
+                    onChangeText={text => this.setState({group_count: text})}
                 />
 
                 <ConfirmCancelView cancelClick={this.props.cancelClick} confirmClick={()=>{
