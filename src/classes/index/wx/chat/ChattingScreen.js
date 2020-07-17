@@ -449,7 +449,7 @@ export default class ChattingScreen extends WXBaseVC {
 
         return (
             <View style={styles.container}>
-                <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):this.state.c_data.group_name} rightImage={require('../../../resource/common/wx_more.png')}
+                <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):(this.state.c_data.group_name + '(' +this.state.c_data.group_count + ')')} rightImage={require('../../../resource/common/wx_more.png')}
                                  clickRImage={() => {
                                      navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
                                      // if (this.state.senderId == RNStorage.user_id) {
