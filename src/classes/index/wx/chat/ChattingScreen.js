@@ -451,18 +451,23 @@ export default class ChattingScreen extends WXBaseVC {
             <View style={styles.container}>
                 <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):(this.state.c_data.group_name + '(' +this.state.c_data.group_count + ')')} rightImage={require('../../../resource/common/wx_more.png')}
                                  clickRImage={() => {
-                                     navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
-                                     // if (this.state.senderId == RNStorage.user_id) {
-                                     //     this.setState({
-                                     //         senderId: this.state.c_data.df_user_id
-                                     //     })
-                                     //     showToast('切换到对方发送');
-                                     // } else {
-                                     //     this.setState({
-                                     //         senderId: RNStorage.user_id
-                                     //     })
-                                     //     showToast('自己发送');
-                                     // }
+                                     if (this.state.data.type == 2) {
+
+                                         navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
+                                     } else {
+
+                                         if (this.state.senderId == RNStorage.user_id) {
+                                             this.setState({
+                                                 senderId: this.state.c_data.df_user_id
+                                             })
+                                             showToast('切换到对方发送');
+                                         } else {
+                                             this.setState({
+                                                 senderId: RNStorage.user_id
+                                             })
+                                             showToast('自己发送');
+                                         }
+                                     }
                                  }}/>
                 <DraggableFlatList data={this.state.data}
                                    style={{marginBottom: 52}}
