@@ -39,7 +39,7 @@ export default class MsgListCell extends Component {
                         <XImage style={{borderRadius: 5}} icon={{uri: data.userinfo.avatar}} iconSize={45}/> : (
                             <View style={styles.avatarF}>
                                 {data.group_info.map((value, index) => {
-                                    return (<XImage style={this.computedAvatar(data.group_info)} icon={value.user_avatar}/>)
+                                    return (<XImage style={this.computedAvatar(data.group_info)} icon={value.avatar}/>)
                                 })}
                             </View>
                         )}

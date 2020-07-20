@@ -3,7 +3,12 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import BaseVC from "../../zfb/Common/BaseVC";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {Colors} from "../../../../common/storage/Const";
-import {clearRowFromRealm, queryFilterFromRealm, WXGroupMemberTableName} from "../../../../common/utils/RealmUtil";
+import {
+    clearRowFromRealm,
+    clearRowFromRealmFiltered, instance, MSGTableName,
+    queryFilterFromRealm,
+    WXGroupMemberTableName
+} from "../../../../common/utils/RealmUtil";
 import MsgListCell from "./views/MsgListCell";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {XImage, XText, XView} from "react-native-easy-app";
@@ -41,7 +46,30 @@ export default class GroupUserDelScreen extends BaseVC {
                     for (const dataKey in this.state.data) {
                         let model = this.state.data[dataKey];
                         if (model.sel) {
+                            // console.log(1)
+                            // instance.write(() => {
+                            //     let arrays1 = instance.objects(MSGTableName);
+                            //     let row1 = arrays1.filtered('send_id=' + model.user_id);
+                            //     instance.delete(row1);
+                            //
+                            //     console.log(3)
+                            // })
+                            // instance.write(() => {
+                            //     let arrays = instance.objects(WXGroupMemberTableName);
+                            //     let row = arrays.filtered('id=' + model.id);
+                            //     instance.delete(row);
+                            //     console.log(2)
+                            // })
+                            // console.log(4)
                             clearRowFromRealm(model.id,WXGroupMemberTableName).then(this.props.route.params.refreshList)
+                            // clearRowFromRealmFiltered(MSGTableName,'send_id='+ model.user_id).then(()=>{
+                            //     console.log('删消息成功')
+                            //     clearRowFromRealm(model.id,WXGroupMemberTableName).then(()=>{
+                            //         console.log('删ren 成功')
+                            //         this.props.route.params.refreshList();
+                            //         navigation.goBack();
+                            //     })
+                            // });
                         }
                     }
                     navigation.goBack();
@@ -75,7 +103,7 @@ export default class GroupUserDelScreen extends BaseVC {
                 justifyContent: 'space-between'
             }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <XImage icon={item.user_avatar} iconSize={40}/>
+                    <XImage icon={item.avatar} iconSize={40}/>
                     <XText style={{marginLeft: 10,}} text={item.user_name}/>
                 </View>
 

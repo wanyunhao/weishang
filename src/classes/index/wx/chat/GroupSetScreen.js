@@ -14,6 +14,7 @@ import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
 import {getPeople, showModalPrompt} from "../../../../compoments/YHUtils";
 import {isEmpty} from "../../../../common/utils/Utils";
 import {
+    instance,
     PYQListTableName,
     queryFilterFromRealm, UsersTableName,
     writeToRealm, WXConversationTableName,
@@ -28,17 +29,16 @@ export default class GroupSetScreen extends BaseVC {
         super();
         this.op_items = [
             {
-                user_name: '通讯录添加', user_avatar: require('../../../resource/index/chat/group_tel.png'), onPress: () => {
+                user_name: '通讯录添加', avatar: require('../../../resource/index/chat/group_tel.png'), onPress: () => {
                     navigation.push('ContactScreen', {
                         fromChoose: true, chooseItem: (item) => {
-                            console.log(item);
                             let p_id = getNow();
                             writeToRealm({
                                 id: p_id,
                                 group_id: this.state.data.id,//
                                 user_id: parseInt(item.id),//用户id
                                 user_name: item.nick,//名称
-                                user_avatar: item.icon,//用户头像
+                                avatar: item.icon,//用户头像
                             }, WXGroupMemberTableName).then(() => {
                                 Notify.Refresh_conversation_list.sendEvent({})
                                 this._requestData();
@@ -49,7 +49,7 @@ export default class GroupSetScreen extends BaseVC {
                 }
             },
             {
-                user_name: '自动获取', user_avatar: require('../../../resource/index/chat/group_auto.png'), onPress: () => {
+                user_name: '自动获取', avatar: require('../../../resource/index/chat/group_auto.png'), onPress: () => {
                     showModalPrompt('添加人数', '', (text) => {
                         if (!isEmpty(text) && parseInt(text) > 0) {
                             let p_id = getNow();
@@ -59,9 +59,9 @@ export default class GroupSetScreen extends BaseVC {
                                     writeToRealm({
                                         id: parseInt(p_id + dataKey),
                                         group_id: this.state.data.id,//
-                                        user_id: parseInt((p_id / 10 + dataKey) + ""),//用户id
+                                        user_id: parseInt((p_id * 10 + dataKey) + ""),//用户id
                                         user_name: model.name,//名称
-                                        user_avatar: model.img,//用户头像
+                                        avatar: model.img,//用户头像
 
                                     }, WXGroupMemberTableName).then(() => {
                                         Notify.Refresh_conversation_list.sendEvent({})
@@ -74,11 +74,11 @@ export default class GroupSetScreen extends BaseVC {
                 }
             },
             {
-                user_name: '删除成员', user_avatar: require('../../../resource/index/chat/gourp_del.png'), onPress: () => {
+                user_name: '删除成员', avatar: require('../../../resource/index/chat/gourp_del.png'), onPress: () => {
                     navigation.push('GroupUserDelScreen', {
                         group_id: this.props.route.params.c_id, refreshList: () => {
-                            Notify.Refresh_conversation_list.sendEvent({})
                             this._requestData()
+                            Notify.Refresh_conversation_list.sendEvent({})
                         }
                     })
                 }
@@ -139,7 +139,7 @@ export default class GroupSetScreen extends BaseVC {
                                     marginTop: index > 4 ? 10 : 0
                                 }}>
                                     <XImage style={{borderRadius: 4}}
-                                            icon={value.user_avatar} iconSize={itemW}/>
+                                            icon={value.avatar} iconSize={itemW}/>
                                     <Text style={{
                                         color: Colors.gray_text_color,
                                         marginTop: 3,

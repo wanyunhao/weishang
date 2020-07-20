@@ -10,6 +10,7 @@ import {
 } from '@ant-design/react-native';
 import {View} from "react-native";
 import {clearRowFromRealm, PYQListTalkTableName} from "../common/utils/RealmUtil";
+import {Const} from "../common/storage/Const";
 
 export function getPeople(count,successBlock) {
     XHttp().url(Api.Usercenter_getUserlist)
@@ -54,6 +55,14 @@ export function showOverlayPull(side, modal,view) {
             <View style={{backgroundColor: Theme.defaultColor, minWidth: 300, minHeight: 260, justifyContent: 'center', alignItems: 'center'}}>
                 {view}
             </View>
+        </Overlay.PullView>
+    );
+    return Overlay.show(overlayView);
+}
+export function showOverlayPull1(side, modal,view) {
+    let overlayView = (
+        <Overlay.PullView side={side} modal={modal} containerStyle={{height:Const.screenWidth,bottom:INSETS.bottom,left:0,position:'absolute'}}>
+            {view}
         </Overlay.PullView>
     );
     return Overlay.show(overlayView);

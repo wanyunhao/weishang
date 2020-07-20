@@ -56,10 +56,10 @@ export default class LaunchController extends PureComponent {
     };
 
     printLog = (data) => {
-        data.map(([keyStr, value]) => {
-            let [, key] = keyStr.split('#');
-            XLog.log('持久化数据变更:', key, '<###>', value);
-        })
+        // data.map(([keyStr, value]) => {
+        //     let [, key] = keyStr.split('#');
+        //     XLog.log('持久化数据变更:', key, '<###>', value);
+        // })
     };
 
 

@@ -39,7 +39,7 @@ export const WXGroupMemberSchema = {
         group_id: 'int',//
         user_id: 'int?',//用户id
         user_name: 'string?',//名称
-        user_avatar: 'string?',//用户头像
+        avatar: 'string?',//用户头像
 
     }
 };

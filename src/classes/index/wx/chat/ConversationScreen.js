@@ -132,7 +132,7 @@ export default class ConversationScreen extends WXBaseVC {
                                                 group_id: pra_id,//
                                                 user_id: parseInt(RNStorage.user_id),//用户id
                                                 user_name: RNStorage.user_name,//名称
-                                                user_avatar: RNStorage.avatarUrl,//用户头像
+                                                avatar: RNStorage.avatarUrl,//用户头像
 
                                             },WXGroupMemberTableName).then(()=>{
                                                 navigation.push('ChattingScreen',{c_id:pra_id});//1594277045186,

@@ -30,7 +30,7 @@ import ZhuanZhangDetailScreen from "./views/ZhuanZhangDetailScreen";
 import SliderAntm from "@ant-design/react-native/es/slider";
 import SliderView from "./views/SliderView";
 import ChatYuyinCell from "./views/ChatYuyinCell";
-import {showActionSheet, showOverlayModal, showOverlayPull} from "../../../../compoments/YHUtils";
+import {showActionSheet, showOverlayModal, showOverlayPull, showOverlayPull1} from "../../../../compoments/YHUtils";
 import Wheel3View from "./views/Wheel3View";
 import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 import ImagePicker from "react-native-image-picker";
@@ -42,6 +42,7 @@ import BaseVC from "../../zfb/Common/BaseVC";
 import {Notify} from "../../../../common/events/Notify";
 import YHDatePicker from "./views/YHDatePicker";
 import DraggableFlatList from 'react-native-draggable-flatlist'
+import ChooseMemberView from "./views/ChooseMemberView";
 
 export default class ChattingScreen extends WXBaseVC {
 
@@ -66,6 +67,7 @@ export default class ChattingScreen extends WXBaseVC {
             senderId: RNStorage.user_id,
             time: new Date(),
             isDrag: false,
+            showChoosePeople: false,
         };
     }
 
@@ -88,7 +90,6 @@ export default class ChattingScreen extends WXBaseVC {
 
 
     _requestData() {
-        console.log(this.props.route.params.c_id);
         queryFilterFromRealm(WXConversationTableName, 'id=' + this.props.route.params.c_id).then(data => {
 
             if (data[0].type == 1) {
@@ -118,22 +119,44 @@ export default class ChattingScreen extends WXBaseVC {
     }
 
     queryChat() {
-        queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
-            let dataArray = [];
-            for (const dataKey in data) {
-                let model = data[dataKey];
-                queryFilterFromRealm(model.send_id == RNStorage.user_id ? SelfTableName : UsersTableName, 'id=' + model.send_id).then((data1) => {
-                    if (!isEmpty(data1)) {
-                        model.userinfo = data1[0];
-                        dataArray.push(model);
-                        this.setState({
-                            data: dataArray
-                        })
-                    }
+        if (this.state.c_data.type == 1) {
+            console.log('来单聊了')
+            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
+                let dataArray = [];
+                for (const dataKey in data) {
+                    let model = data[dataKey];
+                    queryFilterFromRealm(model.send_id == RNStorage.user_id ? SelfTableName : UsersTableName, 'id=' + model.send_id).then((data1) => {
+                        if (!isEmpty(data1)) {
+                            model.userinfo = data1[0];
+                            dataArray.push(model);
+                            this.setState({
+                                data: dataArray
+                            })
+                        }
 
-                })
-            }
-        });
+                    })
+                }
+            });
+        } else {
+
+            console.log('来群聊了');
+            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
+                let dataArray = [];
+                for (const dataKey in data) {
+                    let model = data[dataKey];
+                    queryFilterFromRealm(WXGroupMemberTableName, 'user_id=' + model.send_id).then((data1) => {
+                        if (!isEmpty(data1)) {
+                            model.userinfo = data1[0];
+                            dataArray.push(model);
+                            this.setState({
+                                data: dataArray
+                            })
+                        }
+
+                    })
+                }
+            });
+        }
     }
 
     handleClick(index) {
@@ -450,10 +473,11 @@ export default class ChattingScreen extends WXBaseVC {
         return (
             <View style={styles.container}>
                 <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):(this.state.c_data.group_name + '(' +this.state.c_data.group_count + ')')} rightImage={require('../../../resource/common/wx_more.png')}
-                                 clickRImage={() => {
-                                     if (this.state.data.type == 2) {
-
-                                         navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
+                                 titleClick={()=>{
+                                     if (this.state.c_data.type == 2) {
+                                         this.setState({
+                                             showChoosePeople: !this.state.showChoosePeople
+                                         })
                                      } else {
 
                                          if (this.state.senderId == RNStorage.user_id) {
@@ -467,6 +491,20 @@ export default class ChattingScreen extends WXBaseVC {
                                              })
                                              showToast('自己发送');
                                          }
+                                     }
+                                 }}
+                                 clickRImage={() => {
+                                     if (this.state.c_data.type == 2) {
+
+                                         if (this.state.showChoosePeople) {
+                                             this.setState({
+                                                 showChoosePeople: false,
+                                             })
+                                         }
+                                         navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
+
+                                     } else {
+
                                      }
                                  }}/>
                 <DraggableFlatList data={this.state.data}
@@ -537,10 +575,6 @@ export default class ChattingScreen extends WXBaseVC {
                                                                 }}
                                                                 isReceived={item.isReceived} data={item}
                                                                 onPress={() => {
-                                                                    // this.setState({
-                                                                    //   showRP: true
-                                                                    // })
-                                                                    // console.log(item);
                                                                     if (!item.isReceived) {
                                                                         if (RNStorage.user_id == item.send_id) {
 
@@ -681,8 +715,21 @@ export default class ChattingScreen extends WXBaseVC {
                 {this.state.inputType == 2 ? (
                     <EmojiView/>
                 ) : null}
+                {this.state.c_data.type == 2 && this.state.showChoosePeople ? (<ChooseMemberView data={this.state.c_data.members} itemClick={(index)=>{
+                    const model = this.state.c_data.members[index];
+                    this.setState({
+                        showChoosePeople: false,
+                        senderId:model.user_id
+                    })
+                }} selfClick={()=>{
+                    this.setState({
+                        showChoosePeople: false,
+                        senderId:RNStorage.user_id
+                    })
+                }}/>):null}
 
             </View>
+
             // </Provider>
         );
     }

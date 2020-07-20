@@ -61,9 +61,9 @@ export default class MainController extends PureComponent {
     }
 
     initConfig = () => {
-        HttpConfig.initHttpConfig();
-        DebugManager.initDeviceInfo(DeviceInfo);
-        DebugManager.showFloat(Manager);
+        // HttpConfig.initHttpConfig();
+        // DebugManager.initDeviceInfo(DeviceInfo);
+        // DebugManager.showFloat(Manager);
     };
 
     backListener = () => {
