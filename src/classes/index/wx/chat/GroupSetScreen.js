@@ -12,7 +12,7 @@ import {Colors, Const} from "../../../../common/storage/Const";
 import {XImage, XView} from "react-native-easy-app";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
 import {getPeople, showModalPrompt} from "../../../../compoments/YHUtils";
-import {isEmpty} from "../../../../common/utils/Utils";
+import {deepClone, isEmpty} from "../../../../common/utils/Utils";
 import {
     instance,
     PYQListTableName,
@@ -77,7 +77,7 @@ export default class GroupSetScreen extends BaseVC {
             {
                 user_name: '删除成员', avatar: require('../../../resource/index/chat/gourp_del.png'), onPress: () => {
                     navigation.push('GroupUserDelScreen', {
-                        group_id: this.props.route.params.c_id, refreshList: () => {
+                        group_id: parseInt(this.p_id), refreshList: () => {
                             this._requestData()
                             Notify.Refresh_conversation_list.sendEvent({})
                         }
@@ -98,6 +98,7 @@ export default class GroupSetScreen extends BaseVC {
         this._setPlaceViewBackgroundColor(Colors.white)
         this._setBarStyle(2);
         this._requestData();
+        this.p_id = deepClone(this.props.route.params.c_id);
     }
 
     _requestData() {

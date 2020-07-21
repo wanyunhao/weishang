@@ -139,20 +139,21 @@ export default class ChattingScreen extends WXBaseVC {
             });
         } else {
 
-            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
+            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((res) => {
+                let data = JSON.parse(JSON.stringify(res));
                 console.log(data);
                 let dataArray = [];
                 for (const dataKey in data) {
                     let model = data[dataKey];
-                    queryFilterFromRealm(WXGroupMemberTableName, 'user_id=' + model.send_id).then((data1) => {
-                        console.log(data1);
+                    queryFilterFromRealm(WXGroupMemberTableName, 'user_id=' + model.send_id).then((res1) => {
+                        let data1 = JSON.parse(JSON.stringify(res1));
                         if (!isEmpty(data1)) {
                             model.userinfo = data1[0];
                             dataArray.push(model);
-                            this.setState({
-                                data: dataArray
-                            })
                         }
+                        this.setState({
+                            data: dataArray
+                        })
 
                     })
                 }
