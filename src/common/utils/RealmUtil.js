@@ -198,6 +198,15 @@ export function writeToRealm(obj,tabName) {
     })
 }
 
+export function syncWriteToRealm(obj,tabName) {
+    return new Promise((resolve, reject) => {
+        instance.write(() => {
+            instance.create(tabName, obj, true)
+            resolve(true)
+        })
+    })
+}
+
 
 export function queryAllFromRealm(tabName) {
     return new Promise((resolve, reject) => {

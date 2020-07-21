@@ -13,7 +13,7 @@ import {RNStorage} from "../../../../../common/storage/AppStorage";
 export default class ChooseMemberView extends Component {
     render() {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container,{bottom:52 + INSETS.bottom}]}>
                 <View style={{width: 80,backgroundColor: Colors.white}}>
                     <ScrollView>
                         {this.props.data && this.props.data.map((value,index) => {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor:'transparent',
         flexDirection:'row',
         justifyContent:'space-between',
-        alignItems:'flex-end'
+        alignItems:'flex-end',
+        position:'absolute',
     },
 });

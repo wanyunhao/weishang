@@ -121,7 +121,6 @@ export default class SendRPScreen extends WXBaseVC {
                                     navigation.push('GroupUserDelScreen', {
                                         fromChoose: true,
                                         group_id: data.id, refreshList: (item) => {
-                                            console.log(item);
                                             this.setState({
                                                 df_user_info: item
                                             })

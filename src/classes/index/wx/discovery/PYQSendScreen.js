@@ -8,11 +8,22 @@ import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import ImagePicker from 'react-native-image-picker';
 import {deepClone, isEmpty} from "../../../../common/utils/Utils";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
-import {PYQListPicTableName, PYQListTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
-import {getNow} from "../../../../common/utils/DateUtils";
+import {
+    MSGTableName,
+    PYQListPicTableName,
+    PYQListTableName,
+    writeToRealm,
+    WXConversationTableName
+} from "../../../../common/utils/RealmUtil";
+import {dateFormat, formatChange, getNow} from "../../../../common/utils/DateUtils";
 import {showToast} from "../../../../common/widgets/Loading";
 import BaseVC from "../../zfb/Common/BaseVC";
+import {showOverlayPull} from "../../../../compoments/YHUtils";
+import YHDatePicker from "../chat/views/YHDatePicker";
+import {Overlay} from "teaset";
+import {Notify} from "../../../../common/events/Notify";
 
+import SyanImagePicker from 'react-native-syan-image-picker';
 export default class PYQSendScreen extends BaseVC {
 
     constructor(props) {
@@ -24,6 +35,7 @@ export default class PYQSendScreen extends BaseVC {
             didian: null,
             userinfo: {},
             time: '',
+            time_use: '',
             pics:[require('../../../resource/index/wx/fx/fb_add.png')]
         };
         this.imgWidth = (Const.screenWidth - 38) / 4 -1;
@@ -88,31 +100,60 @@ export default class PYQSendScreen extends BaseVC {
                                         //     // 选择成功，渲染图片
                                         //     // ...
                                         // })
-                                        const options = {
-                                            title: '选择照片',
-                                            storageOptions: {
-                                                skipBackup: true,
-                                                path: 'images',
-                                            },
-                                            takePhotoButtonTitle:'拍照',
-                                            chooseFromLibraryButtonTitle:'图库',
-                                            multiple: true
-                                        };
-                                        ImagePicker.showImagePicker(options, (response) => {
-                                            if (response.didCancel) {
-                                                console.log('User cancelled image picker');
-                                            } else if (response.error) {
-                                                console.log('ImagePicker Error: ', response.error);
-                                            } else if (response.customButton) {
-                                                console.log('User tapped custom button: ', response.customButton);
-                                            } else {
-                                                var imgArr = deepClone(this.state.pics);
-                                                imgArr.unshift('data:image/jpeg;base64,' + response.data);
-                                                this.setState({
-                                                    pics: imgArr,
-                                                });
+                                        SyanImagePicker.showImagePicker({
+                                            imageCount: 10 - this.state.pics.length,
+                                            allowPickingOriginalPhoto: false,
+                                            isCamera: false,
+                                            enableBase64: true
+                                        }, (err, selectedPhotos) => {
+                                            if (err) {
+                                                // 取消选择
+                                                return;
                                             }
-                                        });
+                                            // 选择成功，渲染图片
+                                            // ...
+                                            this.setState({
+                                                icon: selectedPhotos[0].base64
+                                            })
+                                            let imgArr = deepClone(this.state.pics);
+                                            for (const selectedPhotosKey in selectedPhotos) {
+                                                let model = selectedPhotos[selectedPhotosKey];
+                                                imgArr.unshift(model.base64)
+                                            }
+                                            this.setState({
+                                                pics: imgArr,
+                                            });
+                                            // var imgArr = deepClone(this.state.pics);
+                                            // imgArr.unshift('data:image/jpeg;base64,' + response.data);
+                                            // this.setState({
+                                            //     pics: imgArr,
+                                            // });
+                                        })
+                                        // const options = {
+                                        //     title: '选择照片',
+                                        //     storageOptions: {
+                                        //         skipBackup: true,
+                                        //         path: 'images',
+                                        //     },
+                                        //     takePhotoButtonTitle:'拍照',
+                                        //     chooseFromLibraryButtonTitle:'图库',
+                                        //     multiple: true
+                                        // };
+                                        // ImagePicker.showImagePicker(options, (response) => {
+                                        //     if (response.didCancel) {
+                                        //         console.log('User cancelled image picker');
+                                        //     } else if (response.error) {
+                                        //         console.log('ImagePicker Error: ', response.error);
+                                        //     } else if (response.customButton) {
+                                        //         console.log('User tapped custom button: ', response.customButton);
+                                        //     } else {
+                                        //         var imgArr = deepClone(this.state.pics);
+                                        //         imgArr.unshift('data:image/jpeg;base64,' + response.data);
+                                        //         this.setState({
+                                        //             pics: imgArr,
+                                        //         });
+                                        //     }
+                                        // });
                                     }
 
                                 }}/>
@@ -154,6 +195,14 @@ export default class PYQSendScreen extends BaseVC {
                     </YHTouchableOpacity>
                     <YHTouchableOpacity ref='apButton' style={{flexDirection:'row',alignItems:'center',height:50,justifyContent:'space-between'}} onPress={()=>{
 
+                        const view = showOverlayPull('bottom', false, (<YHDatePicker confirmDate={(value) => {
+                            Overlay.hide(view);
+                            const timeS = value.getTime() + "";
+                            this.setState({
+                                time:timeS,
+                                time_use:dateFormat(value.getTime(),'yyyy-MM-dd hh:mm'),
+                            })
+                        }}/>))
                     }}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
                             <XImage style={{marginRight:8}} icon={require('../../../resource/index/wx/fx/fb_icon_time.png')} iconSize={17.5}/>
@@ -162,6 +211,7 @@ export default class PYQSendScreen extends BaseVC {
                         <View style={{flexDirection:'row',alignItems:'center'}}>
 
                             {/*<Label size='xl' text='Hello world!' />*/}
+                            <Text style={{fontSize:16,color:'#1D1D1D'}}>{this.state.time_use}</Text>
                             <XImage style={{marginLeft:10}} icon={require('../../../resource/common/right.png')} iconSize={17}/>
                         </View>
                     </YHTouchableOpacity>

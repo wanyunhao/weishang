@@ -6,6 +6,7 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
+import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class ChatZhuanZhangListCell extends Component {
     render() {
@@ -19,12 +20,15 @@ export default class ChatZhuanZhangListCell extends Component {
                 let items = [
                     {
                         title: '删除', onPress: () => {
-
+                            clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                                this.props.refreshChat()
+                            })
                         }
                     },
                     {
                         title: '切换角色', onPress: () => {
 
+                            this.props.changeUser()
                         }
                     },
                     {

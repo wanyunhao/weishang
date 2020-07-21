@@ -59,7 +59,6 @@ export default class NewPersonView extends Component {
                             isCamera: false,
                             enableBase64: true
                         }, (err, selectedPhotos) => {
-                            console.log(selectedPhotos);
                             if (err) {
                                 // 取消选择
                                 return;

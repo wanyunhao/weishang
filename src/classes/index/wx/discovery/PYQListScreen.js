@@ -21,6 +21,7 @@ import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import BaseVC from "../../zfb/Common/BaseVC";
 import {getPeople, showActionSheet, showModalOperation, showModalPrompt} from "../../../../compoments/YHUtils";
 import {Provider} from "@ant-design/react-native";
+import {_getTimeStringAutoShort2} from "../../../../common/utils/YHTimeUtil";
 
 export default class PYQListScreen extends BaseVC {
 
@@ -181,7 +182,7 @@ export default class PYQListScreen extends BaseVC {
                     )}
                     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:15,}}>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text style={{color:'#7C7C7C',fontSize:11}}>{item.time}</Text>
+                            <Text style={{color:'#7C7C7C',fontSize:11}}>{_getTimeStringAutoShort2(item.time)}</Text>
                             {RNStorage.user_name == item.user_name ? <XText style={{color:'#5A6090',fontSize:11}} text='删除' onPress={()=>{
 
                             }}/>: null}

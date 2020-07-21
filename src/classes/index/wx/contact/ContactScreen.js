@@ -26,10 +26,11 @@ import {showToast} from "../../../../common/widgets/Loading";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import {
+  clearAllFromRealm, MSGTableName,
   queryAllFromRealm,
   queryFilterFromRealm,
   UsersTableName, writeToRealm,
-  WXConversationTableName
+  WXConversationTableName, WXGroupMemberTableName
 } from "../../../../common/utils/RealmUtil";
 import {XImage} from "react-native-easy-app";
 import BaseVC from "../../zfb/Common/BaseVC";
@@ -37,6 +38,9 @@ import {isEmpty} from "../../../../common/utils/Utils";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {Notify} from "../../../../common/events/Notify";
+import {showModalOperation, showOverlayModal} from "../../../../compoments/YHUtils";
+import NewPersonView, {TwoInputView} from "../chat/views/NewPersonView";
+import Overlay from "teaset/components/Overlay/Overlay";
 
 const { width } = Dimensions.get("window");
 
@@ -163,8 +167,6 @@ export default class ContactScreen extends BaseVC {
       } else {
         queryFilterFromRealm(WXConversationTableName,'df_user_id=' + item.item.id).then((res)=>{
           if (isEmpty(res)) {
-            console.log(RNStorage.user_id);
-            console.log(item.item.id);
             let pra_id = getNow();
             writeToRealm({
               id: pra_id,
@@ -285,7 +287,35 @@ export default class ContactScreen extends BaseVC {
     this.listData = listData;
     return (
       <View style={styles.container}>
-        <WXNavigationBar title='通讯录' hideBack={this.state.hideBack}/>
+        <WXNavigationBar title='通讯录' hideBack={this.state.hideBack} rightText='添加' clickRText={() => {
+          let items = [
+            {
+              text: '添加好友', onPress: () => {
+                const key = showOverlayModal('zoomOut', true, <NewPersonView cancelClick={() => {
+                  Overlay.hide(key);
+                }} confirmClick={(value) => {
+
+                  let pra_id = getNow();
+                  writeToRealm({
+                    id: pra_id,
+                    user_name: value.name,
+                    avatar: value.icon,
+                  }, UsersTableName).then((res) => {
+                    this._requestData();
+                  })
+                  Overlay.hide(key);
+                }}/>);
+              }
+            },
+            {
+              text: '退出小微', onPress: () => {
+                navigation.goBack();
+              }
+            },
+          ];
+          showModalOperation(items);
+
+        }}/>
         <View style={styles.content}>
           <FlatList
               ref={"list"}

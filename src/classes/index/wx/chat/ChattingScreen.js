@@ -30,7 +30,14 @@ import ZhuanZhangDetailScreen from "./views/ZhuanZhangDetailScreen";
 import SliderAntm from "@ant-design/react-native/es/slider";
 import SliderView from "./views/SliderView";
 import ChatYuyinCell from "./views/ChatYuyinCell";
-import {showActionSheet, showOverlayModal, showOverlayPull, showOverlayPull1} from "../../../../compoments/YHUtils";
+import {
+    getPeople,
+    showActionSheet,
+    showModalPrompt,
+    showOverlayModal,
+    showOverlayPull,
+    showOverlayPull1
+} from "../../../../compoments/YHUtils";
 import Wheel3View from "./views/Wheel3View";
 import ChatTonghHuaCell from "./views/ChatTonghHuaCell";
 import ImagePicker from "react-native-image-picker";
@@ -54,8 +61,8 @@ export default class ChattingScreen extends WXBaseVC {
             showEmojiView: false,
             showMoreView: false,
             c_data: {
-                userinfo:{
-                    user_name:''
+                userinfo: {
+                    user_name: ''
                 }
             },
             data: [],
@@ -68,9 +75,10 @@ export default class ChattingScreen extends WXBaseVC {
             time: new Date(),
             isDrag: false,
             showChoosePeople: false,
+            choosePeopleType: undefined,//1: 切换发送消息
         };
+        this.msg_id = null;
     }
-
 
 
     componentWillUnmount() {
@@ -105,7 +113,7 @@ export default class ChattingScreen extends WXBaseVC {
                     }
                 })
             } else {
-                queryFilterFromRealm(WXGroupMemberTableName,'group_id='+this.props.route.params.c_id).then((data1)=>{
+                queryFilterFromRealm(WXGroupMemberTableName, 'group_id=' + this.props.route.params.c_id).then((data1) => {
                     let model = data[0];
                     model.members = data1;
                     this.setState({
@@ -120,7 +128,6 @@ export default class ChattingScreen extends WXBaseVC {
 
     queryChat() {
         if (this.state.c_data.type == 1) {
-            console.log('来单聊了')
             queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
                 let dataArray = [];
                 for (const dataKey in data) {
@@ -141,7 +148,6 @@ export default class ChattingScreen extends WXBaseVC {
 
             queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((res) => {
                 let data = JSON.parse(JSON.stringify(res));
-                console.log(data);
                 let dataArray = [];
                 for (const dataKey in data) {
                     let model = data[dataKey];
@@ -226,7 +232,11 @@ export default class ChattingScreen extends WXBaseVC {
 
     sendHB(type) {
         navigation.push('SendRPScreen', {
-            type: type, data:this.state.c_data ,df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
+            type: type,
+            data: this.state.c_data,
+            df_user_info: this.state.c_data.userinfo,
+            c_id: this.state.c_data.id,
+            refreshList: () => {
                 this.queryChat();
 
                 writeToRealm({
@@ -252,11 +262,11 @@ export default class ChattingScreen extends WXBaseVC {
             };
             ImagePicker.launchCamera(options, (response => {
                 if (response.didCancel) {
-                    console.log('User cancelled image picker');
+                    // console.log('User cancelled image picker');
                 } else if (response.error) {
-                    console.log('ImagePicker Error: ', response.error);
+                    // console.log('ImagePicker Error: ', response.error);
                 } else if (response.customButton) {
-                    console.log('User tapped custom button: ', response.customButton);
+                    // console.log('User tapped custom button: ', response.customButton);
                 } else {
                     this.writePicToRealm(response);
                 }
@@ -446,7 +456,8 @@ export default class ChattingScreen extends WXBaseVC {
                         this.showPop('zoomOut', false, 'Pop zoom out')
                         let obj = {
                             id: item.id,
-                            isReceived: true
+                            hongbaoCount: 0,
+                            isReceived: true,
                         };
                         writeToRealm(obj, MSGTableName).then(res => {
                             writeToRealm({
@@ -474,45 +485,64 @@ export default class ChattingScreen extends WXBaseVC {
     // };
     // _onBackspacePress = () => {};
 
-    _addSubView() {
+    changeUser(item) {
+        if (this.state.c_data.type == 1) {
+            writeToRealm({
+                id: item.id,
+                send_id: item.send_id == RNStorage.user_id ? parseInt(this.state.c_data.df_user_id) : parseInt(RNStorage.user_id)
+            }, MSGTableName).then(() => {
+                this.queryChat();
+            })
+        } else {
+            this.setState({
+                showChoosePeople: true,
+                choosePeopleType: 1,
+            })
+            this.msg_id = item.id;
+        }
+    }
 
+    _addSubView() {
+        const isGroup = this.state.c_data.type == 2;
         return (
             <View style={styles.container}>
-                <WXNavigationBar title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ?this.state.c_data.userinfo.user_name:'' ):(this.state.c_data.group_name + '(' +this.state.c_data.group_count + ')')} rightImage={require('../../../resource/common/wx_more.png')}
-                                 titleClick={()=>{
-                                     if (this.state.c_data.type == 2) {
-                                         this.setState({
-                                             showChoosePeople: !this.state.showChoosePeople
-                                         })
-                                     } else {
+                <WXNavigationBar
+                    title={this.state.c_data.type == 1 ? (!isEmpty(this.state.c_data.userinfo) ? this.state.c_data.userinfo.user_name : '') : (this.state.c_data.group_name + '(' + this.state.c_data.group_count + ')')}
+                    rightImage={require('../../../resource/common/wx_more.png')}
+                    titleClick={() => {
+                        if (this.state.c_data.type == 2) {
+                            this.setState({
+                                showChoosePeople: !this.state.showChoosePeople
+                            })
+                        } else {
 
-                                         if (this.state.senderId == RNStorage.user_id) {
-                                             this.setState({
-                                                 senderId: this.state.c_data.df_user_id
-                                             })
-                                             showToast('切换到对方发送');
-                                         } else {
-                                             this.setState({
-                                                 senderId: RNStorage.user_id
-                                             })
-                                             showToast('自己发送');
-                                         }
-                                     }
-                                 }}
-                                 clickRImage={() => {
-                                     if (this.state.c_data.type == 2) {
+                            if (this.state.senderId == RNStorage.user_id) {
+                                this.setState({
+                                    senderId: this.state.c_data.df_user_id
+                                })
+                                showToast('切换到对方发送');
+                            } else {
+                                this.setState({
+                                    senderId: RNStorage.user_id
+                                })
+                                showToast('自己发送');
+                            }
+                        }
+                    }}
+                    clickRImage={() => {
+                        if (this.state.c_data.type == 2) {
 
-                                         if (this.state.showChoosePeople) {
-                                             this.setState({
-                                                 showChoosePeople: false,
-                                             })
-                                         }
-                                         navigation.push('GroupSetScreen',{c_id:this.props.route.params.c_id});
+                            if (this.state.showChoosePeople) {
+                                this.setState({
+                                    showChoosePeople: false,
+                                })
+                            }
+                            navigation.push('GroupSetScreen', {c_id: this.props.route.params.c_id});
 
-                                     } else {
+                        } else {
 
-                                     }
-                                 }}/>
+                        }
+                    }}/>
                 <DraggableFlatList data={this.state.data}
                                    style={{marginBottom: 52}}
                                    keyExtractor={(item, index) => `draggable-item-${item.id}`}
@@ -523,15 +553,11 @@ export default class ChattingScreen extends WXBaseVC {
                                                return (
                                                    <ChatListCell isSelf={RNStorage.user_id == item.send_id} data={item}
                                                                  drag={this.state.isDrag ? drag : null}
-                                                                 refreshChat={()=>{
+                                                                 refreshChat={() => {
                                                                      this.queryChat()
                                                                  }}
-                                                                 changeUser={()=>{
-                                                                     if (this.state.c_data.type == 1) {
-                                                                         writeToRealm({id:item.id,send_id:item.send_id == RNStorage.user_id?parseInt(this.state.c_data.df_user_id):parseInt(RNStorage.user_id)},MSGTableName).then(()=>{
-                                                                             this.queryChat();
-                                                                         })
-                                                                     }
+                                                                 changeUser={() => {
+                                                                     this.changeUser(item);
                                                                  }}
                                                                  orderClick={() => {
                                                                      this.setState({
@@ -543,6 +569,12 @@ export default class ChattingScreen extends WXBaseVC {
                                                return (
                                                    <ChatPicCell isSelf={RNStorage.user_id == item.send_id} data={item}
                                                                 drag={this.state.isDrag ? drag : null}
+                                                                refreshChat={() => {
+                                                                    this.queryChat()
+                                                                }}
+                                                                changeUser={() => {
+                                                                    this.changeUser(item);
+                                                                }}
                                                                 orderClick={() => {
                                                                     this.setState({
                                                                         isDrag: true,
@@ -553,6 +585,12 @@ export default class ChattingScreen extends WXBaseVC {
                                                return (
                                                    <ChatYuyinCell isSelf={RNStorage.user_id == item.send_id} data={item}
                                                                   drag={this.state.isDrag ? drag : null}
+                                                                  refreshChat={() => {
+                                                                      this.queryChat()
+                                                                  }}
+                                                                  changeUser={() => {
+                                                                      this.changeUser(item);
+                                                                  }}
                                                                   orderClick={() => {
                                                                       this.setState({
                                                                           isDrag: true,
@@ -563,6 +601,12 @@ export default class ChattingScreen extends WXBaseVC {
                                                return (
                                                    <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id}
                                                                      data={item} drag={this.state.isDrag ? drag : null}
+                                                                     refreshChat={() => {
+                                                                         this.queryChat()
+                                                                     }}
+                                                                     changeUser={() => {
+                                                                         this.changeUser(item);
+                                                                     }}
                                                                      orderClick={() => {
                                                                          this.setState({
                                                                              isDrag: true,
@@ -571,39 +615,85 @@ export default class ChattingScreen extends WXBaseVC {
                                                )
                                            case 5:
                                                return (
-                                                   // <ChatZhuanZhangListCell/>
                                                    <HongBaoCell isSelf={RNStorage.user_id == item.send_id}
                                                                 drag={this.state.isDrag ? drag : null}
+                                                                refreshChat={() => {
+                                                                    this.queryChat()
+                                                                }}
+                                                                changeUser={() => {
+                                                                    if (!isGroup) {
+                                                                        this.changeUser(item);
+                                                                    }
+                                                                }}
                                                                 orderClick={() => {
                                                                     this.setState({
                                                                         isDrag: true,
                                                                     })
                                                                 }}
-                                                                isReceived={item.isReceived} data={item}
+                                                                isReceived={item.hongbaoCount == 0} data={item}
                                                                 onPress={() => {
-                                                                    if (!item.isReceived) {
-                                                                        if (RNStorage.user_id == item.send_id) {
+                                                                    const isMe = RNStorage.user_id == item.send_id;
+                                                                    if (item.hongbaoCount != 0) {
+                                                                        if (isGroup) {
+                                                                            if (isMe) {
+                                                                                showModalPrompt('领取个数', '还剩' + item.hongbaoCount + '个', (text) => {
+                                                                                    const inputCount = parseInt(text);
+                                                                                    if (isEmpty(text) || inputCount <= 0 || (inputCount > item.hongbaoCount)) {
+                                                                                        showToast('请输入正确个数');
+                                                                                        return;
+                                                                                    }
+                                                                                    this.showPop('zoomOut', false, 'Pop zoom out')
+                                                                                    let obj = {
+                                                                                        id: item.id,
+                                                                                        hongbaoCount: item.hongbaoCount - inputCount,
+                                                                                    };
+                                                                                    writeToRealm(obj, MSGTableName).then(res => {
+                                                                                        for (let i = 0; i < inputCount; i++) {
+                                                                                            const model = this.state.c_data.members[i + 1];
+                                                                                            writeToRealm({
+                                                                                                id: getNow() + i,
+                                                                                                c_id: this.state.c_data.id,//会话id
+                                                                                                send_id: item.send_id,
+                                                                                                type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                                                                                                xitongTextType: 2,
+                                                                                                hongbaoReceiveName: model.user_name,
+                                                                                                hongbaoSendName: isMe?'你':item.userinfo.user_name,
+                                                                                            }, MSGTableName)
+                                                                                        }
 
-                                                                            this.showPop('zoomOut', false, 'Pop zoom out')
-                                                                            let obj = {
-                                                                                id: item.id,
-                                                                                isReceived: true
-                                                                            };
-                                                                            writeToRealm(obj, MSGTableName).then(res => {
-                                                                                writeToRealm({
-                                                                                    id: getNow(),
-                                                                                    c_id: this.state.c_data.id,//会话id
-                                                                                    send_id: item.send_id,
-                                                                                    type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
-                                                                                    xitongTextType: 2,
-                                                                                    hongbaoReceiveName: this.state.c_data.userinfo.user_name,
-                                                                                    hongbaoSendName: '你',
-                                                                                }, MSGTableName)
-                                                                                this.queryChat();
-                                                                            });
+                                                                                        this.queryChat();
+                                                                                    });
+                                                                                }, '请输入个数')
+                                                                            } else {
+
+                                                                                this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                            }
+
                                                                         } else {
-                                                                            this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                            if (RNStorage.user_id == item.send_id) {
+                                                                                this.showPop('zoomOut', false, 'Pop zoom out')
+                                                                                let obj = {
+                                                                                    id: item.id,
+                                                                                    hongbaoCount: 0,
+                                                                                    isReceived: true
+                                                                                };
+                                                                                writeToRealm(obj, MSGTableName).then(res => {
+                                                                                    writeToRealm({
+                                                                                        id: getNow(),
+                                                                                        c_id: this.state.c_data.id,//会话id
+                                                                                        send_id: item.send_id,
+                                                                                        type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                                                                                        xitongTextType: 2,
+                                                                                        hongbaoReceiveName: this.state.c_data.userinfo.user_name,
+                                                                                        hongbaoSendName: '你',
+                                                                                    }, MSGTableName)
+                                                                                    this.queryChat();
+                                                                                });
+                                                                            } else {
+                                                                                this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                            }
                                                                         }
+
                                                                     } else {
                                                                         this.showPop('zoomOut', false, 'Pop zoom out')
                                                                     }
@@ -617,6 +707,14 @@ export default class ChattingScreen extends WXBaseVC {
                                                        this.showZhuanZhangPop('zoomOut', false, 'Pop zoom out', item)
                                                    }}
                                                                            drag={this.state.isDrag ? drag : null}
+                                                                           refreshChat={() => {
+                                                                               this.queryChat()
+                                                                           }}
+                                                                           changeUser={() => {
+                                                                               if (!isGroup) {
+                                                                                   this.changeUser(item);
+                                                                               }
+                                                                           }}
                                                                            orderClick={() => {
                                                                                this.setState({
                                                                                    isDrag: true,
@@ -629,6 +727,14 @@ export default class ChattingScreen extends WXBaseVC {
                                                    return (
                                                        <MsgSystemDefaultCell data={item}
                                                                              drag={this.state.isDrag ? drag : null}
+                                                                             refreshChat={() => {
+                                                                                 this.queryChat()
+                                                                             }}
+                                                                             changeUser={() => {
+                                                                                 if (!isGroup) {
+                                                                                     this.changeUser(item);
+                                                                                 }
+                                                                             }}
                                                                              orderClick={() => {
                                                                                  this.setState({
                                                                                      isDrag: true,
@@ -641,6 +747,14 @@ export default class ChattingScreen extends WXBaseVC {
                                                    return (
                                                        <MsgSystemCell data={item}
                                                                       drag={this.state.isDrag ? drag : null}
+                                                                      refreshChat={() => {
+                                                                          this.queryChat()
+                                                                      }}
+                                                                      changeUser={() => {
+                                                                          if (!isGroup) {
+                                                                              this.changeUser(item);
+                                                                          }
+                                                                      }}
                                                                       orderClick={() => {
                                                                           this.setState({
                                                                               isDrag: true,
@@ -654,6 +768,14 @@ export default class ChattingScreen extends WXBaseVC {
                                                    <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id}
                                                                      data={item}
                                                                      drag={this.state.isDrag ? drag : null}
+                                                                     refreshChat={() => {
+                                                                         this.queryChat()
+                                                                     }}
+                                                                     changeUser={() => {
+                                                                         if (!isGroup) {
+                                                                             this.changeUser(item);
+                                                                         }
+                                                                     }}
                                                                      orderClick={() => {
                                                                          this.setState({
                                                                              isDrag: true,
@@ -721,18 +843,48 @@ export default class ChattingScreen extends WXBaseVC {
                 {this.state.inputType == 2 ? (
                     <EmojiView/>
                 ) : null}
-                {this.state.c_data.type == 2 && this.state.showChoosePeople ? (<ChooseMemberView data={this.state.c_data.members} itemClick={(index)=>{
-                    const model = this.state.c_data.members[index];
-                    this.setState({
-                        showChoosePeople: false,
-                        senderId:model.user_id
-                    })
-                }} selfClick={()=>{
-                    this.setState({
-                        showChoosePeople: false,
-                        senderId:RNStorage.user_id
-                    })
-                }}/>):null}
+                {this.state.c_data.type == 2 && this.state.showChoosePeople ? (
+                    <ChooseMemberView data={this.state.c_data.members} itemClick={(index) => {
+                        const model = this.state.c_data.members[index];
+                        // console.log(model);
+                        // console.log(this.msg_id);
+                        // return;
+                        if (this.state.choosePeopleType == 1) {
+                            writeToRealm({
+                                id:parseInt(this.msg_id),
+                                send_id: parseInt(model.user_id)
+                            },MSGTableName).then(()=>{
+                                this._requestData()
+                            })
+                        } else {
+                            this.setState({
+                                senderId: model.user_id
+                            })
+                        }
+
+                        this.setState({
+                            showChoosePeople: false,
+                            choosePeopleType: null
+                        })
+                    }} selfClick={() => {
+                        if (this.state.choosePeopleType == 1) {
+                            writeToRealm({
+                                id:parseInt(this.msg_id),
+                                send_id: parseInt(RNStorage.user_id)
+                            },MSGTableName).then(()=>{
+                                this._requestData()
+                            })
+                        } else {
+                            this.setState({
+                                senderId: RNStorage.user_id
+                            })
+                        }
+
+                        this.setState({
+                            showChoosePeople: false,
+                            choosePeopleType: null
+                        })
+                    }}/>) : null}
 
             </View>
 

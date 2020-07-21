@@ -13,6 +13,7 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import {_getTimeStringAutoShort2, updateTimeShow} from "../../../../../common/utils/YHTimeUtil";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
+import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class MsgSystemCell extends Component {
 
@@ -22,15 +23,19 @@ export default class MsgSystemCell extends Component {
             <TouchableOpacity style={styles.container}  ref={ref => {
                 this.ref = ref;
             }} onLongPress={this.props.drag == null ? ()=>{
+
                 let items = [
                     {
-                        title: '修改', onPress: () => {
-
+                        title: '删除', onPress: () => {
+                            clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                                this.props.refreshChat()
+                            })
                         }
                     },
                     {
-                        title: '删除', onPress: () => {
+                        title: '切换角色', onPress: () => {
 
+                            this.props.changeUser()
                         }
                     },
                     {
@@ -60,15 +65,19 @@ export class MsgSystemDefaultCell extends Component {
             <TouchableOpacity style={styles.container}  ref={ref => {
                 this.ref = ref;
             }} onLongPress={this.props.drag == null ? ()=>{
+
                 let items = [
                     {
-                        title: '修改', onPress: () => {
-
+                        title: '删除', onPress: () => {
+                            clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                                this.props.refreshChat()
+                            })
                         }
                     },
                     {
-                        title: '删除', onPress: () => {
+                        title: '切换角色', onPress: () => {
 
+                            this.props.changeUser()
                         }
                     },
                     {

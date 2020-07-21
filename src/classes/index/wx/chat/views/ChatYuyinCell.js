@@ -5,6 +5,7 @@ import {XImage} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
+import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class ChatYuyinCell extends Component {
     render() {
@@ -17,12 +18,15 @@ export default class ChatYuyinCell extends Component {
                 let items = [
                     {
                         title: '删除', onPress: () => {
-
+                            clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                                this.props.refreshChat()
+                            })
                         }
                     },
                     {
                         title: '切换角色', onPress: () => {
 
+                            this.props.changeUser()
                         }
                     },
                     {

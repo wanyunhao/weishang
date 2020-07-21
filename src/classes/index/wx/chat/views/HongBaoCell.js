@@ -19,6 +19,7 @@ import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
+import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class HongBaoCell extends Component {
 
@@ -33,7 +34,6 @@ export default class HongBaoCell extends Component {
     const data = this.props.data;
     let isSelf = this.props.isSelf;
     let isReceived = this.props.isReceived;
-    console.log(data)
     return (
       <TouchableOpacity style={styles.container} {...this.props} ref={ref => {
         this.ref = ref;
@@ -41,12 +41,15 @@ export default class HongBaoCell extends Component {
         let items = [
           {
             title: '删除', onPress: () => {
-
+              clearRowFromRealm(data.id,MSGTableName).then(()=>{
+                this.props.refreshChat()
+              })
             }
           },
           {
             title: '切换角色', onPress: () => {
 
+              this.props.changeUser()
             }
           },
           {
