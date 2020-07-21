@@ -122,7 +122,8 @@ export default class SendRPScreen extends WXBaseVC {
                                         fromChoose: true,
                                         group_id: data.id, refreshList: (item) => {
                                             this.setState({
-                                                df_user_info: item
+                                                df_user_info: item,
+                                                select:1,
                                             })
                                         }
                                     })
