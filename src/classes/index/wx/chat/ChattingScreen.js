@@ -121,7 +121,7 @@ export default class ChattingScreen extends WXBaseVC {
     queryChat() {
         if (this.state.c_data.type == 1) {
             console.log('来单聊了')
-            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
+            queryFilterFromRealm(MSGTableName, 'isDelete = false AND c_id=' + this.state.c_data.id).then((data) => {
                 let dataArray = [];
                 for (const dataKey in data) {
                     let model = data[dataKey];
@@ -139,13 +139,11 @@ export default class ChattingScreen extends WXBaseVC {
             });
         } else {
 
-            queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
-                console.log(data);
+            queryFilterFromRealm(MSGTableName, 'isDelete = false AND c_id=' + this.state.c_data.id).then((data) => {
                 let dataArray = [];
                 for (const dataKey in data) {
                     let model = data[dataKey];
                     queryFilterFromRealm(WXGroupMemberTableName, 'user_id=' + model.send_id).then((data1) => {
-                        console.log(data1);
                         if (!isEmpty(data1)) {
                             model.userinfo = data1[0];
                             dataArray.push(model);

@@ -102,7 +102,7 @@ export default class GroupSetScreen extends BaseVC {
 
     _requestData() {
         queryFilterFromRealm(WXConversationTableName, 'id=' + this.props.route.params.c_id).then(data => {
-            queryFilterFromRealm(WXGroupMemberTableName, 'group_id=' + this.props.route.params.c_id).then((data1) => {
+            queryFilterFromRealm(WXGroupMemberTableName, 'isDelete = false AND group_id=' + this.props.route.params.c_id).then((data1) => {
                 let model = data[0];
                 model.members = data1;
                 this.setState({

@@ -68,7 +68,7 @@ export default class ConversationScreen extends WXBaseVC {
                     })
                 })
             } else {
-                queryFilterFromRealm(WXGroupMemberTableName,'group_id=' + model.id).then((res)=>{
+                queryFilterFromRealm(WXGroupMemberTableName,'isDelete = false AND group_id=' + model.id).then((res)=>{
                     model.group_info = res;
                     data.push(model);
                     this.setState({

@@ -40,7 +40,7 @@ export const WXGroupMemberSchema = {
         user_id: 'int?',//用户id
         user_name: 'string?',//名称
         avatar: 'string?',//用户头像
-
+        isDelete: {type:'bool?',default:false},
     }
 };
 //自己信息
@@ -95,6 +95,7 @@ export const WXMSGSchema = {
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
         received_id:'int?',
+        isDelete: {type:'bool?',default:false},
     }
 };
 //图片信息
