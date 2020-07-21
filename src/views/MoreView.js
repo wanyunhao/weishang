@@ -23,6 +23,10 @@ const iconTexts = [
   "相册", "拍摄", "视频通话", "发送时间",
   "红包", "转账", "语音输入", "我的收藏"
 ];
+const iconTexts1 = [
+  "相册", "拍摄", "视频通话", "发送时间",
+  "红包", "多人回复", "语音输入", "我的收藏"
+];
 
 export default class MoreView extends Component {
   render() {
@@ -38,7 +42,7 @@ export default class MoreView extends Component {
             }}
             key={"row" + i + "col" + j}
             icon={icons[i * 4 + j]}
-            text={iconTexts[i * 4 + j]}
+            text={(this.props.data.type == 1?iconTexts:iconTexts1)[i * 4 + j]}
             index={indd}
             sendImageMessage={this.props.sendImageMessage}
           />

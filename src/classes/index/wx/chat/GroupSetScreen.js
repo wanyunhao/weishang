@@ -23,6 +23,7 @@ import {
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {Notify} from "../../../../common/events/Notify";
 import {getNow} from "../../../../common/utils/DateUtils";
+import {showMsg} from "react-native-debug-tool/lib/utils/DebugUtils";
 
 export default class GroupSetScreen extends BaseVC {
     constructor() {
@@ -120,7 +121,22 @@ export default class GroupSetScreen extends BaseVC {
         return (
             <>
                 <WXNavigationBar title='群组设置' rightText='完成' nav_bg_color={Colors.white} noLine clickRText={() => {
-
+                    if (parseInt(this.state.group_count) >500) {
+                        showMsg('最多500人')
+                        return;
+                    }
+                    if (parseInt(this.state.group_count) <1) {
+                        showMsg('最少1人')
+                        return;
+                    }
+                    writeToRealm({
+                        id:this.props.route.params.c_id,
+                        group_name:this.state.group_name,
+                        group_count:parseInt(this.state.group_count),
+                    },WXConversationTableName).then(()=>{
+                        Notify.Refresh_conversation_list.sendEvent({})
+                        navigation.goBack();
+                    })
                 }}/>
                 <ScrollView style={{backgroundColor: '#EDEDED'}}>
                     <View style={{

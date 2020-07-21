@@ -30,10 +30,10 @@ export default class HongBaoCell extends Component {
 
 
   render() {
-
     const data = this.props.data;
     let isSelf = this.props.isSelf;
     let isReceived = this.props.isReceived;
+    console.log(data)
     return (
       <TouchableOpacity style={styles.container} {...this.props} ref={ref => {
         this.ref = ref;

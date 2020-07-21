@@ -139,12 +139,13 @@ export default class ChattingScreen extends WXBaseVC {
             });
         } else {
 
-            console.log('来群聊了');
             queryFilterFromRealm(MSGTableName, 'c_id=' + this.state.c_data.id).then((data) => {
+                console.log(data);
                 let dataArray = [];
                 for (const dataKey in data) {
                     let model = data[dataKey];
                     queryFilterFromRealm(WXGroupMemberTableName, 'user_id=' + model.send_id).then((data1) => {
+                        console.log(data1);
                         if (!isEmpty(data1)) {
                             model.userinfo = data1[0];
                             dataArray.push(model);
@@ -208,7 +209,11 @@ export default class ChattingScreen extends WXBaseVC {
                 this.sendHB(1);
                 break;
             case 5:
-                this.sendHB(2);
+                if (this.state.data.type == 1) {
+                    this.sendHB(2);
+                } else {
+
+                }
                 break;
             case 6:
                 this.showEdit('zoomOut', false, 'Pop zoom out');
@@ -220,7 +225,7 @@ export default class ChattingScreen extends WXBaseVC {
 
     sendHB(type) {
         navigation.push('SendRPScreen', {
-            type: type, df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
+            type: type, data:this.state.c_data ,df_user_info: this.state.c_data.userinfo, c_id: this.state.c_data.id, refreshList: () => {
                 this.queryChat();
 
                 writeToRealm({
@@ -707,7 +712,7 @@ export default class ChattingScreen extends WXBaseVC {
                     })
                 }}/>
                 {this.state.inputType == 3 ? (
-                    <MoreView itemClick={(index) => {
+                    <MoreView data={this.state.c_data} itemClick={(index) => {
                         this.handleClick(index);
                     }}/>
                 ) : null}

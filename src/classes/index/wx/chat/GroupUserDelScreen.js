@@ -19,6 +19,7 @@ export default class GroupUserDelScreen extends BaseVC {
 
         this.state = {
             data: {},
+            isChoose: false,
         }
     }
 
@@ -26,6 +27,9 @@ export default class GroupUserDelScreen extends BaseVC {
         this._setPlaceViewBackgroundColor(Colors.white)
         this._setBarStyle(2);
         this._requestData();
+        this.setState({
+            isChoose: this.props.route.params.fromChoose,
+        })
         //this.props.route.params.c_id
     }
 
@@ -34,7 +38,7 @@ export default class GroupUserDelScreen extends BaseVC {
             this.setState({
                 data
             })
-            // console.log(data);
+            // console.log(data);this.props.route.params.fromChoose
         })
     }
 
@@ -42,7 +46,7 @@ export default class GroupUserDelScreen extends BaseVC {
 
         return (
             <>
-                <WXNavigationBar title='成员列表' rightText='完成' nav_bg_color={Colors.white} noLine clickRText={() => {
+                <WXNavigationBar title='成员列表' rightText={this.state.isChoose ? null:'完成'} nav_bg_color={Colors.white} noLine clickRText={() => {
                     for (const dataKey in this.state.data) {
                         let model = this.state.data[dataKey];
                         if (model.sel) {
@@ -78,10 +82,6 @@ export default class GroupUserDelScreen extends BaseVC {
                 <FlatList data={this.state.data}
                           style={{backgroundColor: Colors.white}}
                           renderItem={({item, index}) => this._renderCell(item)
-
-                              //     <MsgListCell data={item} itemClick={() => {
-                              //     navigation.push('ChattingScreen', {c_id: item.id});
-                              // }}/>
                           }
                 />
             </>
@@ -91,10 +91,15 @@ export default class GroupUserDelScreen extends BaseVC {
     _renderCell(item) {
         return (
             <XView onPress={()=>{
-                item.sel = !item.sel;
-                this.setState({
-                    data:this.state.data
-                })
+                if (this.state.isChoose) {
+                    this.props.route.params.refreshList(item)
+                    navigation.goBack();
+                } else {
+                    item.sel = !item.sel;
+                    this.setState({
+                        data:this.state.data
+                    })
+                }
             }} style={{
                 flexDirection: 'row',
                 height: 50,
@@ -107,10 +112,10 @@ export default class GroupUserDelScreen extends BaseVC {
                     <XText style={{marginLeft: 10,}} text={item.user_name}/>
                 </View>
 
-                <XImage style={{marginLeft: 5,}}
-                        icon={item.sel ? require('../../../resource/index/chat/hb_send_select.png') : require('../../../resource/index/chat/hb_send_normal.png')}
-                        iconSize={18}
-                />
+                {this.state.isChoose ? null : <XImage style={{marginLeft: 5,}}
+                                                      icon={item.sel ? require('../../../resource/index/chat/hb_send_select.png') : require('../../../resource/index/chat/hb_send_normal.png')}
+                                                      iconSize={18}
+                />}
                 <YHDividingLine/>
             </XView>
         )

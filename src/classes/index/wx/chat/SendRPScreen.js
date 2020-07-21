@@ -8,7 +8,7 @@ import {
 import {Colors} from "../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
-import {XImage} from "react-native-easy-app";
+import {XImage, XView} from "react-native-easy-app";
 import {MSGTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {RNStorage} from "../../../../common/storage/AppStorage";
@@ -16,6 +16,7 @@ import {isEmpty} from "../../../../common/utils/Utils";
 import {showToast} from "../../../../common/widgets/Loading";
 import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
+import {Notify} from "../../../../common/events/Notify";
 
 export default class SendRPScreen extends WXBaseVC {
     constructor() {
@@ -24,6 +25,7 @@ export default class SendRPScreen extends WXBaseVC {
             select: 2,
             hongbaoText: '',
             hongbaoMoney: 0,
+            hongbaoCount: '1',
             type: 1,
             df_user_info: {avatar: '', user_name: ''},
         }
@@ -35,14 +37,13 @@ export default class SendRPScreen extends WXBaseVC {
         this.setState({
             type: this.props.route.params.type,
             df_user_info: this.props.route.params.df_user_info,
-        },()=>{
-
-            console.log(this.state.df_user_info);
         })
     }
 
 
     _addSubView() {
+        const data = this.props.route.params.data;
+        const isGroup = data.type == 2;
         return (
             <View style={styles.container}>
                 <WXNavigationBar title={this.state.type == 2 ? '转账' : '发红包'} rightText='发送' clickRText={() => {
@@ -51,19 +52,30 @@ export default class SendRPScreen extends WXBaseVC {
                         showToast(this.state.type == 2 ? '转账金额不能低于0.01' : '单个红包金额不能低于0.01');
                         return;
                     }
+                    if (isGroup && this.state.select == 1 &&isEmpty(this.state.df_user_info)) {
+                        showToast('请选择发送人');
+                        return;
+                    }
                     let obj = {
                         id: getNow(),
                         c_id: this.c_id,//会话id
-                        send_id: this.state.select == 2 ? RNStorage.user_id : this.state.df_user_info.id,
+                        send_id: this.state.select == 2 ? parseInt(RNStorage.user_id) : isGroup? parseInt(this.state.df_user_info.user_id) : parseInt(this.state.df_user_info.id),
                         type: this.state.type == 2 ? 6 : 5,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
 
                         // xitongText : 'int?',
                         // hongbaoTime : 'int?',
                         isReceived: false,
                     };
+                    if (isGroup && isEmpty(this.state.hongbaoCount)) {
+                        showToast('请输入个数');
+                        return;
+                    }
                     if (this.state.type == 1) {
                         obj.hongbaoText = isEmpty(this.state.hongbaoText) ? '恭喜发财，大吉大利' : this.state.hongbaoText;
                         obj.hongbaoMoney = this.state.hongbaoMoney;
+                        if (isGroup) {
+                            obj.hongbaoCount = parseInt(this.state.hongbaoCount);
+                        }
                     }
                     if (this.state.type == 2) {
                         // zhuanzhangText
@@ -89,19 +101,42 @@ export default class SendRPScreen extends WXBaseVC {
                             hongbaoText: text
                         })
                     }}/>
+                    {isGroup ? (
+                        <TitleAndSubCell
+                            isEdit={true} title={'红包个数(本群共' + data.members.length + '人)'}
+                            sub_title={'请输入个数'}
+                            value={this.state.hongbaoCount}
+                            onChangeText={(text) => {
+                                this.setState({
+                                    hongbaoCount: text
+                                })
+                            }}/>) : null}
                 </View>
                 <View style={{paddingHorizontal: 15, backgroundColor: Colors.white}}>
                     <Text style={{marginTop: 10,}}>选择发送人</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'row', alignItems: 'center', paddingVertical: 10,}}>
-                            <View>
-                                <XImage icon={isEmpty(this.state.df_user_info) ? null : this.state.df_user_info.avatar}
-                                        iconSize={35}/>
+                            <XView onPress={() => {
+                                if (isGroup) {
+                                    navigation.push('GroupUserDelScreen', {
+                                        fromChoose: true,
+                                        group_id: data.id, refreshList: (item) => {
+                                            console.log(item);
+                                            this.setState({
+                                                df_user_info: item
+                                            })
+                                        }
+                                    })
+                                }
+                            }}>
+                                <XImage
+                                    icon={isEmpty(this.state.df_user_info) ? require('../../../resource/common/add_user.png') : this.state.df_user_info.avatar}
+                                    iconSize={35}/>
                                 <Text style={{
                                     fontSize: 12,
                                     marginTop: 3
-                                }}>{isEmpty(this.state.df_user_info) ? '' : this.state.df_user_info.user_name}</Text>
-                            </View>
+                                }}>{isEmpty(this.state.df_user_info) ? '请选择' : this.state.df_user_info.user_name}</Text>
+                            </XView>
                             <XImage style={{marginLeft: 5,}}
                                     icon={this.state.select == 1 ? require('../../../resource/index/chat/hb_send_select.png') : require('../../../resource/index/chat/hb_send_normal.png')}
                                     iconSize={18} onPress={() => {
