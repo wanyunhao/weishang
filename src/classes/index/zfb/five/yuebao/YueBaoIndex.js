@@ -12,11 +12,21 @@ import {ZFBNavigationBar} from "../../../../../common/widgets/ZFBNavigation";
 import ImgTitleCell from "../view/ImgTitleCell";
 import {XImage} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
+import {showModalPrompt} from "../../../../../compoments/YHUtils";
+import {isEmpty} from "../../../../../common/utils/Utils";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
+import {queryFilterFromRealm, writeToRealm, ZFBUserTableName} from "../../../../../common/utils/RealmUtil";
+import {Notify} from "../../../../../common/events/Notify";
 
 export default class YueBaoIndex extends BaseVC {
     constructor() {
         super();
-
+        this.state = {
+            zfb_yeb: RNStorage.zfb_ye,
+            zrsy:'0.00',
+            ljsy:'0.00',
+            ll:'0.00'
+        }
     }
 
     _addSubView() {
@@ -30,12 +40,12 @@ export default class YueBaoIndex extends BaseVC {
                         <XImage icon={require('../../../../resource/zfb/five/yuebao/zfb_yeb_bg_eye.png')} style={{width:17.51,height:13.19,marginLeft:5}}/>
                     </View>
 
-                    <Text style={{color:'#000000',fontSize:34,marginTop:8}}>780.80</Text>
+                    <Text style={{color:'#000000',fontSize:34,marginTop:8}}>{this.state.zfb_yeb}</Text>
                     <View style={{backgroundColor:'#F7F7F7',height:30,paddingHorizontal:15,borderRadius:15,justifyContent:'center',marginTop:10}}>
                         <Text style={{color:'#666666',fontSize:12}}>
                             昨日收益{' '}
                             <Text style={{color:'#FF6600',fontSize:16,}}>
-                                0.04
+                                {this.state.zrsy}
                             </Text>
                             {' '}元
                         </Text>
@@ -43,16 +53,27 @@ export default class YueBaoIndex extends BaseVC {
                     <View style={{flexDirection:'row',marginTop:40}}>
                         <View style={{flex: 1,alignItems:'center'}}>
                             <Text style={{color:'#B4B4B4',fontSize:13}}>累计收益(元)</Text>
-                            <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>391.74</Text>
+                            <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>{this.state.ljsy}</Text>
                         </View>
                         <View style={{flex: 1,alignItems:'center'}}>
                             <Text style={{color:'#B4B4B4',fontSize:13}}>七日年化(%)</Text>
-                            <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>2.4250</Text>
+                            <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>{this.state.ll}</Text>
                         </View>
                     </View>
                     <View style={{flexDirection:'row',marginTop:40}}>
                         <YHTouchableOpacity textStyle={{color:'#FC6703',fontSize:17}} text='转出' style={{flex: 1,alignItems:'center',backgroundColor:'#FEF5EE',height:46,borderRadius:4,}}/>
-                        <YHTouchableOpacity textStyle={{color:'#FFFFFF',fontSize:17}} text='转入' style={{flex: 1,alignItems:'center',backgroundColor:'#FF6600',marginLeft:10,height:46,borderRadius:4,}}/>
+                        <YHTouchableOpacity textStyle={{color:'#FFFFFF',fontSize:17}} text='转入' style={{flex: 1,alignItems:'center',backgroundColor:'#FF6600',marginLeft:10,height:46,borderRadius:4,}} onPress={()=>{
+                            showModalPrompt('转入','',(text)=>{
+                                if (!isEmpty(text) && parseFloat(text)>0) {
+                                    RNStorage.zfb_yeb = (parseFloat(text)).toFixed(2);
+                                    writeToRealm({id:parseInt(RNStorage.zfb_user_id),zfb_yeb:RNStorage.zfb_yeb},ZFBUserTableName)
+                                    this.setState({
+                                        zfb_yeb: RNStorage.zfb_yeb,
+                                    })
+                                    Notify.Refresh_ZFB_YE.sendEvent({})
+                                }
+                            },'请输入金额')
+                        }}/>
                     </View>
                 </View>
             </View>
@@ -60,6 +81,15 @@ export default class YueBaoIndex extends BaseVC {
     }
     componentDidMount() {
         super._setPlaceViewBackgroundColor('#B14600')
+        queryFilterFromRealm(ZFBUserTableName,'id='+RNStorage.user_id).then((res)=>{
+            const model = res[0];
+            this.setState({
+                zfb_yeb: model.zfb_yeb,
+                zrsy: model.yeb_zrsy,
+                ljsy: model.yeb_ljsy,
+                ll: model.yeb_ll,
+            })
+        })
     }
 
 }

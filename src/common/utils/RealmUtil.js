@@ -3,6 +3,7 @@ import Realm from 'realm';
 /***表定义区**/
 export const WXConversationTableName = 'WXConversation';
 export const SelfTableName = 'Self';
+export const ZFBUserTableName = 'ZFBUserTableName';
 export const UsersTableName = 'Users';
 export const MSGTableName = 'MSG';
 export const MSGPicTableName = 'MSGPicTableName';
@@ -52,6 +53,23 @@ const SelfTableNameSchema = {
         avatar: 'string',
         wx_lq: {type:'float?',default:0},
         wx_lqt: {type:'float?',default:0},
+    }
+};
+//支付宝
+const ZFBUserTableNameSchema = {
+    name: ZFBUserTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        user_name: 'string',
+        avatar: 'string',
+        account:{type:'string?',default:'123456'},
+        level:{type:'string?',default:'大众会员'},//1: 大众会员 2: 黄金会员 3:铂金会员 4:钻石会员
+        zfb_ye: {type:'string?',default:'0.00'},
+        zfb_yeb: {type:'string?',default:'0.00'},
+        yeb_zrsy: {type:'string?',default:'0.00'},//昨日收益
+        yeb_ljsy: {type:'string?',default:'0.00'},//累计收益
+        yeb_ll: {type:'string?',default:'0.00'},//利率
     }
 };
 //用户
@@ -181,6 +199,7 @@ export const instance = new Realm({
         WXNewFriendSchema,
         WXQB_BankSchema,
         WXGroupMemberSchema,
+        ZFBUserTableNameSchema,
         // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,

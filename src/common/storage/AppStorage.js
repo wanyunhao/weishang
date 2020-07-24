@@ -8,6 +8,20 @@ export const RNStorage = {//持久化数据列表
     avatarUrl: undefined,
     wx_lq: undefined,//微信零钱
     wx_lqt: undefined,//微信零钱通
+
+    zfb_bg_one: undefined,//首页背景
+    zfb_bg_two: undefined,//财富背景
+    zfb_bg_three: undefined,//口碑背景
+
+    zfb_user_id: undefined,
+    zfb_avatarUrl: undefined,
+    zfb_user_name: undefined,
+    zfb_account: undefined,
+    zfb_account_level: undefined,
+
+    zfb_ye: undefined,
+    zfb_yeb: undefined,
+
     customerId: undefined,//客户ID
     accessToken: undefined,//OAuth2.0 accessToken
     refreshToken: undefined,//OAuth2.0 refreshToken

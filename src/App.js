@@ -33,6 +33,7 @@ import ChooseLocationScreen from "./classes/index/wx/discovery/ChooseLocationScr
 import ContactScreen from './classes/index/wx/contact/ContactScreen';
 import ChatDemo from './classes/index/wx/chat/src/ChatDemo';
 import YueIndex from './classes/index/zfb/five/yue/YueIndex';
+import PersonInfoScreen from './classes/index/zfb/five/PersonInfoScreen';
 import YueBaoIndex from './classes/index/zfb/five/yuebao/YueBaoIndex';
 import ZZCIndex from './classes/index/zfb/five/zongzichan/ZZCIndex';
 import ZFBContactIndex from './classes/index/zfb/four/contact/ZFBContactIndex';
@@ -97,5 +98,6 @@ function ScreenList() {
         <Screen name='WXNewFriendScreen' component={WXNewFriendScreen}/>
         <Screen name='GroupSetScreen' component={GroupSetScreen}/>
         <Screen name='GroupUserDelScreen' component={GroupUserDelScreen}/>
+        <Screen name='PersonInfoScreen' component={PersonInfoScreen}/>
     </Navigator>;
 }

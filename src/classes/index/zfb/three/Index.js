@@ -3,31 +3,55 @@ import {
     StyleSheet,
     Text,
     View,
-    Image, StatusBar,
+    Image, StatusBar, TouchableOpacity,
 } from 'react-native';
 import {Colors, CommonStyles, Const, ImageRes} from "../../../../common/storage/Const";
 import {XImage} from "react-native-easy-app";
 import BaseVC from "../Common/BaseVC";
+import {RNStorage} from "../../../../common/storage/AppStorage";
+import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
+import SyanImagePicker from "react-native-syan-image-picker";
+import ZFBBaseVC from "../Common/ZFBBaseVC";
 
-export default class Index extends BaseVC {
+export default class Index extends ZFBBaseVC {
     constructor() {
         super();
-        this.imgs = [
-            {img: require('../../../resource/zfb/one/home_zfb_btn_sys.png'), title: '生活号',subTitle:'余额宝收益到账…'},
-            {img: require('../../../resource/zfb/one/home_zfb_btn_fq.png'), title: '小程序',subTitle:'天天可领福利…'},
-            {img: require('../../../resource/zfb/one/home_zfb_btn_sq.png'), title: '生活圈',subTitle:'你有朋…更新动态'},
-        ]
+        this.state = {
+            icon:RNStorage.zfb_bg_three
+        }
     }
+    _chooseImg() {
+        SyanImagePicker.showImagePicker({
+            imageCount: 1,
+            isCamera: false,
+            enableBase64: true
+        }, (err, selectedPhotos) => {
+            if (err) {
+                // 取消选择
+                return;
+            }
 
+            RNStorage.zfb_bg_three = selectedPhotos[0].base64;
+            // 选择成功，渲染图片
+            this.setState({
+                icon:selectedPhotos[0].base64
+            })
+        })
+    }
     _addSubView() {
         return (
-            <View>
-                <View style={{height:46,backgroundColor:Colors.zfb_theme_color,flexDirection:'row',justifyContent:'flex-end',paddingHorizontal:15,}}>
-                    <XImage style={{width:20.5,height:19.75,marginRight:20,}} icon={require('../../../resource/zfb/four/zfb_py_search.png')}/>
-                    <XImage style={{width: 23.19, height: 19.16,marginRight:20,}} icon={require('../../../resource/zfb/one/zfb_icon_txl.png')}/>
-                    <XImage style={{width: 19.19, height: 19.19}} icon={require('../../../resource/zfb/one/zfb_btn_add.png')}/>
-                </View>
-            </View>
+            <>
+
+                <TouchableOpacity style={{top:0,position:'absolute'}} onPress={()=> {
+                    this._chooseImg()
+                }}>
+                    <XImage style={{minWidth:Const.screenWidth,minHeight:Const.screenHeight}} icon={this.state.icon}/>
+                </TouchableOpacity>
+
+                {RNStorage.zfb_bg_two != undefined ? null :(<YHTouchableOpacity style={{width:Const.screenWidth,height:Const.screenHeight}} text='上传' onPress={()=>{
+                    this._chooseImg()
+                }}/>)}
+            </>
         )
     }
 

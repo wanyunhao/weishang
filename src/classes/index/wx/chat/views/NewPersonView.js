@@ -15,6 +15,7 @@ import {Button} from "@ant-design/react-native";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {isEmpty} from "../../../../../common/utils/Utils";
 import {showToast} from "../../../../../common/widgets/Loading";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
 
 export default class NewPersonView extends Component {
     constructor() {
@@ -27,6 +28,7 @@ export default class NewPersonView extends Component {
     }
 
     componentDidMount() {
+
         this._requestData();
     }
 
@@ -154,9 +156,82 @@ export class ConfirmCancelView extends Component {
         );
     }
 }
+
+export class NewPersonIconView extends Component {
+    constructor() {
+        super();
+        this.state = {
+            icon: RNStorage.zfb_avatarUrl,
+        }
+
+    }
+
+    // componentDidMount() {
+    //     this.setState({
+    //         icon:this.props.icon
+    //     })
+    // }
+
+    componentDidUpdate(prevProps,prevState){
+        if (prevState.icon != this.props.icon) {
+            this.setState({
+                icon:this.props.icon
+            })
+        }
+    }
+
+    _requestData() {
+        getPeople(1, (data) => {
+            this.setState({
+                icon: data[0].img,
+            },()=>{
+                this.props.getImage(this.state.icon)
+            })
+        })
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10,}}>
+                    <XView onPress={() => {
+                        this._requestData();
+                    }} style={{alignItems: 'center'}}>
+                        <XImage icon={require('../../../../resource/common/auto_get_pic.png')} iconSize={35}/>
+                        <XText style={{fontSize: 10, color: Colors.gray_text_color}} text='自动获取'/>
+                    </XView>
+                    <XImage onPress={this.props.cancelClick} style={{marginLeft: 40, marginRight: 40}}
+                            icon={this.state.icon} iconSize={60}/>
+                    <XView onPress={() => {
+                        SyanImagePicker.showImagePicker({
+                            imageCount: 1,
+                            isCrop: true,
+                            allowPickingOriginalPhoto: false,
+                            isCamera: false,
+                            enableBase64: true
+                        }, (err, selectedPhotos) => {
+                            if (err) {
+                                // 取消选择
+                                return;
+                            }
+                            // 选择成功，渲染图片
+                            // ...
+                            this.setState({
+                                icon: selectedPhotos[0].base64
+                            })
+                        })
+                    }} style={{alignItems: 'center'}}>
+                        <XImage icon={require('../../../../resource/common/manual_get_pic.png')} iconSize={35}/>
+                        <XText style={{fontSize: 10, color: Colors.gray_text_color}} text='从相册获取'/>
+                    </XView>
+                </View>
+            </View>
+        );
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
         paddingBottom: 60,
     },
