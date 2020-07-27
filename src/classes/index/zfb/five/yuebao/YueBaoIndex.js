@@ -80,7 +80,7 @@ export default class YueBaoIndex extends BaseVC {
         )
     }
     componentDidMount() {
-        super._setPlaceViewBackgroundColor('#B14600')
+        super._setPlaceViewBackgro
         queryFilterFromRealm(ZFBUserTableName,'id='+RNStorage.user_id).then((res)=>{
             const model = res[0];
             this.setState({
