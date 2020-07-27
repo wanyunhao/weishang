@@ -48,7 +48,7 @@ export default class Index extends ZFBBaseVC {
                     <XImage style={{minWidth:Const.screenWidth,minHeight:Const.screenHeight}} icon={this.state.icon}/>
                 </TouchableOpacity>
 
-                {RNStorage.zfb_bg_two != undefined ? null :(<YHTouchableOpacity style={{width:Const.screenWidth,height:Const.screenHeight}} text='上传' onPress={()=>{
+                {RNStorage.zfb_bg_three != undefined ? null :(<YHTouchableOpacity style={{width:Const.screenWidth,height:Const.screenHeight}} text='上传' onPress={()=>{
                     this._chooseImg()
                 }}/>)}
             </>

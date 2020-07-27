@@ -36,6 +36,7 @@ import YueIndex from './classes/index/zfb/five/yue/YueIndex';
 import PersonInfoScreen from './classes/index/zfb/five/PersonInfoScreen';
 import YueBaoIndex from './classes/index/zfb/five/yuebao/YueBaoIndex';
 import ZZCIndex from './classes/index/zfb/five/zongzichan/ZZCIndex';
+import EditMoney from './classes/index/zfb/five/zongzichan/EditMoney';
 import ZFBContactIndex from './classes/index/zfb/four/contact/ZFBContactIndex';
 import WXNewFriendScreen from "./classes/index/wx/contact/WXNewFriendScreen";
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
@@ -99,5 +100,6 @@ function ScreenList() {
         <Screen name='GroupSetScreen' component={GroupSetScreen}/>
         <Screen name='GroupUserDelScreen' component={GroupUserDelScreen}/>
         <Screen name='PersonInfoScreen' component={PersonInfoScreen}/>
+        <Screen name='EditMoney' component={EditMoney}/>
     </Navigator>;
 }

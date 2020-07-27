@@ -12,6 +12,7 @@ export const RNStorage = {//持久化数据列表
     zfb_bg_one: undefined,//首页背景
     zfb_bg_two: undefined,//财富背景
     zfb_bg_three: undefined,//口碑背景
+    zfb_bg_zzc: undefined,//总资产背景
 
     zfb_user_id: undefined,
     zfb_avatarUrl: undefined,

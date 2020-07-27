@@ -17,12 +17,13 @@ import {isEmpty} from "../../../../../common/utils/Utils";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {queryFilterFromRealm, writeToRealm, ZFBUserTableName} from "../../../../../common/utils/RealmUtil";
 import {Notify} from "../../../../../common/events/Notify";
+import ZFBBaseVC from "../../Common/ZFBBaseVC";
 
-export default class YueBaoIndex extends BaseVC {
+export default class YueBaoIndex extends ZFBBaseVC {
     constructor() {
         super();
         this.state = {
-            zfb_yeb: RNStorage.zfb_ye,
+            zfb_yeb: RNStorage.zfb_yeb,
             zrsy:'0.00',
             ljsy:'0.00',
             ll:'0.00'
@@ -33,7 +34,7 @@ export default class YueBaoIndex extends BaseVC {
         return (
             <View>
                 <XImage resizeMode='stretch' icon={require('../../../../resource/zfb/five/yuebao/zfb_yeb_bg.png')} style={{position:'absolute',width:Const.screenWidth, height:405,}}/>
-                <ZFBNavigationBar title='余额' nav_bg_color='transparent' noLine={true} rightImage={require('../../../../resource/zfb/common/zfb_ye_more_dian.png')}/>
+                <ZFBNavigationBar title='余额宝' nav_bg_color='transparent' noLine={true} rightImage={require('../../../../resource/zfb/common/zfb_ye_more_dian.png')}/>
                 <View style={{borderRadius:4,marginLeft:16,width:Const.screenWidth - 32,backgroundColor:Colors.white,padding:15,alignItems:'center',marginTop:10,height:351}}>
                     <View style={{flexDirection:'row',alignItems:'center',marginTop:30,}}>
                         <Text style={{color:'#333333',fontSize:12.5}}>总金额(元)</Text>
@@ -80,7 +81,8 @@ export default class YueBaoIndex extends BaseVC {
         )
     }
     componentDidMount() {
-        super._setPlaceViewBackgro
+        this._setBarStyle(1)
+        this._setPlaceViewBackgroundColor('#FF6600')
         queryFilterFromRealm(ZFBUserTableName,'id='+RNStorage.user_id).then((res)=>{
             const model = res[0];
             this.setState({

@@ -67,9 +67,23 @@ const ZFBUserTableNameSchema = {
         level:{type:'string?',default:'大众会员'},//1: 大众会员 2: 黄金会员 3:铂金会员 4:钻石会员
         zfb_ye: {type:'string?',default:'0.00'},
         zfb_yeb: {type:'string?',default:'0.00'},
+        zfb_yeb_lx: {type:'string?',default:'0.00'},//余额宝利息
         yeb_zrsy: {type:'string?',default:'0.00'},//昨日收益
         yeb_ljsy: {type:'string?',default:'0.00'},//累计收益
         yeb_ll: {type:'string?',default:'0.00'},//利率
+        zcc_lccp: {type:'string?',default:'0.00'},//总资产开始 理财产品
+        zcc_lccp_lx: {type:'string?',default:'0.00'},//理财产品 利息
+        zcc_jj: {type:'string?',default:'0.00'},//基金
+        zcc_jj_lx: {type:'string?',default:'0.00'},//基金 利息
+        zcc_hj: {type:'string?',default:'0.00'},//黄金
+        zcc_hj_lx: {type:'string?',default:'0.00'},//黄金 利息
+        zcc_ylb: {type:'string?',default:'0.00'},//余利宝
+        zcc_ylb_lx: {type:'string?',default:'0.00'},//余利宝 利息
+
+        zcc_huabei: {type:'string?',default:'0.00'},//花呗
+        zcc_jiebei: {type:'string?',default:'0.00'},//借呗
+        zcc_wangshangdai: {type:'string?',default:'0.00'},//网商贷
+        zcc_beiyongjin: {type:'string?',default:'0.00'},//备用金
     }
 };
 //用户
