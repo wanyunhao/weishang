@@ -10,7 +10,7 @@ import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import {ZFBNavigationBar} from "../../../../../common/widgets/ZFBNavigation";
 import ImgTitleCell from "../view/ImgTitleCell";
-import {XImage} from "react-native-easy-app";
+import {XImage, XView} from "react-native-easy-app";
 import {Colors, Const} from "../../../../../common/storage/Const";
 import {showModalPrompt} from "../../../../../compoments/YHUtils";
 import {isEmpty} from "../../../../../common/utils/Utils";
@@ -41,8 +41,29 @@ export default class YueBaoIndex extends ZFBBaseVC {
                         <XImage icon={require('../../../../resource/zfb/five/yuebao/zfb_yeb_bg_eye.png')} style={{width:17.51,height:13.19,marginLeft:5}}/>
                     </View>
 
-                    <Text style={{color:'#000000',fontSize:34,marginTop:8}}>{this.state.zfb_yeb}</Text>
-                    <View style={{backgroundColor:'#F7F7F7',height:30,paddingHorizontal:15,borderRadius:15,justifyContent:'center',marginTop:10}}>
+                    <XView onPress={()=>{
+                        showModalPrompt('总金额','',(text)=>{
+                            if (!isEmpty(text) && parseFloat(text)>0) {
+                                writeToRealm({id:parseInt(RNStorage.zfb_user_id),zfb_yeb:text},ZFBUserTableName)
+                                this.setState({
+                                    zfb_yeb: text,
+                                })
+                            }
+                        },'请输入总金额')
+                    }}>
+
+                        <Text style={{color:'#000000',fontSize:34,marginTop:8}}>{this.state.zfb_yeb}</Text>
+                    </XView>
+                    <XView onPress={()=>{
+                        showModalPrompt('昨日收益','',(text)=>{
+                            if (!isEmpty(text) && parseFloat(text)>0) {
+                                writeToRealm({id:parseInt(RNStorage.zfb_user_id),yeb_zrsy:text},ZFBUserTableName)
+                                this.setState({
+                                    zrsy: text,
+                                })
+                            }
+                        },'请输入昨日收益')
+                    }} style={{backgroundColor:'#F7F7F7',height:30,paddingHorizontal:15,borderRadius:15,justifyContent:'center',marginTop:10}}>
                         <Text style={{color:'#666666',fontSize:12}}>
                             昨日收益{' '}
                             <Text style={{color:'#FF6600',fontSize:16,}}>
@@ -50,16 +71,34 @@ export default class YueBaoIndex extends ZFBBaseVC {
                             </Text>
                             {' '}元
                         </Text>
-                    </View>
+                    </XView>
                     <View style={{flexDirection:'row',marginTop:40}}>
-                        <View style={{flex: 1,alignItems:'center'}}>
+                        <XView onPress={()=>{
+                            showModalPrompt('累计收益','',(text)=>{
+                                if (!isEmpty(text) && parseFloat(text)>0) {
+                                    writeToRealm({id:parseInt(RNStorage.zfb_user_id),zfb_yeb_lx:text},ZFBUserTableName)
+                                    this.setState({
+                                        ljsy: text,
+                                    })
+                                }
+                            },'请输入累计收益')
+                        }} style={{flex: 1,alignItems:'center'}}>
                             <Text style={{color:'#B4B4B4',fontSize:13}}>累计收益(元)</Text>
                             <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>{this.state.ljsy}</Text>
-                        </View>
-                        <View style={{flex: 1,alignItems:'center'}}>
+                        </XView>
+                        <XView onPress={()=>{
+                            showModalPrompt('七日年化','',(text)=>{
+                                if (!isEmpty(text) && parseFloat(text)>0) {
+                                    writeToRealm({id:parseInt(RNStorage.zfb_user_id),yeb_ll:text},ZFBUserTableName)
+                                    this.setState({
+                                        ll: text,
+                                    })
+                                }
+                            },'请输入七日年化')
+                        }} style={{flex: 1,alignItems:'center'}}>
                             <Text style={{color:'#B4B4B4',fontSize:13}}>七日年化(%)</Text>
                             <Text style={{color:'#333333',fontSize:17,fontWeight:'bold',marginTop:10}}>{this.state.ll}</Text>
-                        </View>
+                        </XView>
                     </View>
                     <View style={{flexDirection:'row',marginTop:40}}>
                         <YHTouchableOpacity textStyle={{color:'#FC6703',fontSize:17}} text='转出' style={{flex: 1,alignItems:'center',backgroundColor:'#FEF5EE',height:46,borderRadius:4,}}/>
@@ -85,10 +124,11 @@ export default class YueBaoIndex extends ZFBBaseVC {
         this._setPlaceViewBackgroundColor('#FF6600')
         queryFilterFromRealm(ZFBUserTableName,'id='+RNStorage.user_id).then((res)=>{
             const model = res[0];
+            console.log(model)
             this.setState({
                 zfb_yeb: model.zfb_yeb,
                 zrsy: model.yeb_zrsy,
-                ljsy: model.yeb_ljsy,
+                ljsy: model.zfb_yeb_lx,
                 ll: model.yeb_ll,
             })
         })

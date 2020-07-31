@@ -5,6 +5,7 @@ import {XImage, XView} from "react-native-easy-app";
 import ImgTitleCell from "./view/ImgTitleCell";
 import ZFBBaseVC from "../Common/ZFBBaseVC";
 import {RNStorage} from "../../../../common/storage/AppStorage";
+import {queryFilterFromRealm, ZFBUserTableName} from "../../../../common/utils/RealmUtil";
 
 export default class Index extends ZFBBaseVC {
     constructor() {
@@ -14,7 +15,15 @@ export default class Index extends ZFBBaseVC {
             avatar:RNStorage.zfb_avatarUrl,
             account:RNStorage.zfb_account,
             level:RNStorage.zfb_account_level,
+            zzc: '',
+            yue: '',
+            yueb: '',
         }
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this._requestData()
     }
 
     _requestData() {
@@ -23,6 +32,29 @@ export default class Index extends ZFBBaseVC {
             avatar:RNStorage.zfb_avatarUrl,
             account:RNStorage.zfb_account,
             level:RNStorage.zfb_account_level,
+        })
+        queryFilterFromRealm(ZFBUserTableName, 'id=' + RNStorage.user_id).then((res) => {
+            const model = res[0];
+            var zzc = parseFloat(model.zfb_ye) + parseFloat(model.zfb_yeb);
+            let zrsy = parseFloat(model.zfb_yeb_lx) + parseFloat(model.zcc_lccp_lx) + parseFloat(model.zcc_jj_lx) + parseFloat(model.zcc_hj_lx) + parseFloat(model.zcc_ylb_lx);
+            if (model.lccp_sel == 2) {
+                zzc += parseFloat(model.zcc_lccp)
+            }
+            if (model.jj_sel == 2) {
+                zzc += parseFloat(model.zcc_jj)
+            }
+            if (model.hj_sel == 2) {
+                zzc += parseFloat(model.zcc_hj)
+            }
+            if (model.ylb_sel == 2) {
+                zzc += parseFloat(model.zcc_ylb)
+            }
+
+            this.setState({
+                zzc: zzc,
+                yue: model.zfb_ye,
+                yueb: model.zfb_yeb,
+            })
         })
     }
 
@@ -93,14 +125,14 @@ export default class Index extends ZFBBaseVC {
                     <ImgTitleCell hasLine sub_color='#0EA095' data={{
                         title: '总资产',
                         icon: require('../../../resource/zfb/five/zfb_me_btn2.png'),
-                        rightText: '15个积分待领取',
+                        rightText:'账户安全保障中',
                     }} itemClick={() => {
                         navigation.push('ZZCIndex');
                     }}/>
                     <ImgTitleCell hasLine data={{
                         title: '余额',
                         icon: require('../../../resource/zfb/five/zfb_me_btn3.png'),
-                        rightText: RNStorage.zfb_ye + ' 元',
+                        rightText: this.state.yue + ' 元',
                     }} itemClick={() => {
                         navigation.push('YueIndex')
                     }}/>

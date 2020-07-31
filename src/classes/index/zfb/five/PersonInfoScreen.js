@@ -58,13 +58,12 @@ export default class PersonInfoScreen extends ZFBBaseVC {
                 <ZFBNavigationBar title='编辑个人资料' rightText={'完成'} clickRText={()=>{
 
                     writeToRealm({
-                        id: this.state.id,
+                        id: parseInt(this.state.id),
                         user_name: this.state.nickname,
                         avatar: this.state.avatar,
                         account:this.state.account,
                         level:this.state.level,
                     },ZFBUserTableName).then(()=>{
-                        this.props.route.params.refreshUserInfo && this.props.route.params.refreshUserInfo()
                         RNStorage.zfb_user_id = this.state.id;
                         RNStorage.zfb_avatarUrl = this.state.avatar;
                         RNStorage.zfb_user_name = this.state.nickname;
@@ -72,6 +71,7 @@ export default class PersonInfoScreen extends ZFBBaseVC {
                         RNStorage.zfb_account_level = this.state.level;
                         RNStorage.zfb_ye = this.state.ye;
                         RNStorage.zfb_yeb = this.state.yeb;
+                        this.props.route.params.refreshUserInfo && this.props.route.params.refreshUserInfo()
                         navigation.goBack()
                     })
                 }}/>

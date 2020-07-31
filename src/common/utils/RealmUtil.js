@@ -79,6 +79,10 @@ const ZFBUserTableNameSchema = {
         zcc_hj_lx: {type:'string?',default:'0.00'},//黄金 利息
         zcc_ylb: {type:'string?',default:'0.00'},//余利宝
         zcc_ylb_lx: {type:'string?',default:'0.00'},//余利宝 利息
+        lccp_sel: {type:'int?',default:1},//理财产品默认选中
+        jj_sel: {type:'int?',default:1},//理财产品默认选中
+        hj_sel: {type:'int?',default:1},//理财产品默认选中
+        ylb_sel: {type:'int?',default:1},//理财产品默认选中
 
         zcc_huabei: {type:'string?',default:'0.00'},//花呗
         zcc_jiebei: {type:'string?',default:'0.00'},//借呗

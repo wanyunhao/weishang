@@ -23,18 +23,59 @@ export default class Title2TF extends Component {
     }
 
     componentDidMount() {
-        if (this.props.select == 1) {
+        // console.log('componentDidMount',this.props.data)
+        // if (this.props.data.select == 1) {
+        //     this.setState({
+        //         select:this.props.data.select,
+        //         one:this.props.data.one,
+        //     })
+        // } else {
+        //     this.setState({
+        //         select:this.props.data.select,
+        //         two:this.props.data.one,
+        //         three:this.props.data.two,
+        //     })
+        // }
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        console.log('nextProps===',nextProps)
+        console.log('this.props===',this.props.data)
+        if (nextProps.data.select == 1) {
             this.setState({
-                select:this.props.select,
-                one:this.props.one,
+                select:nextProps.data.select,
+                one:nextProps.data.one,
             })
         } else {
             this.setState({
-                select:this.props.select,
-                two:this.props.one,
-                three:this.props.two,
+                select:nextProps.data.select,
+                two:nextProps.data.one,
+                three:nextProps.data.two,
             })
         }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // console.log('prevProps===',prevProps)
+        // console.log('prevState===',prevState)
+        // console.log('this.props===',this.props.data)
+        // console.log('prevProps', prevProps)
+        // console.log('this.props', this.props.data)
+        //
+        // if (prevState.select != this.props.data.select) {
+        //     if (this.props.data.select == 1) {
+        //         this.setState({
+        //             select:this.props.data.select,
+        //             one:this.props.data.one,
+        //         })
+        //     } else {
+        //         this.setState({
+        //             select:this.props.data.select,
+        //             two:this.props.data.one,
+        //             three:this.props.data.two,
+        //         })
+        //     }
+        // }
     }
 
     render() {
@@ -61,6 +102,7 @@ export default class Title2TF extends Component {
                         <TextInput
                             underlineColorAndroid="transparent"
                             placeholder={this.state.select == 1?'请输入':''}
+                            editable={this.state.select == 1}
                             value={this.state.one}
                             onChangeText={(text) => {
                                 this.setState({
@@ -94,6 +136,7 @@ export default class Title2TF extends Component {
                                 underlineColorAndroid="transparent"
                                 keyboardType={'numeric'}
                                 placeholder={this.state.select == 2?'请输入':''}
+                                editable={this.state.select == 2}
                                 value={this.state.two}
                                 onChangeText={(text) => {
                                     this.setState({
@@ -112,6 +155,7 @@ export default class Title2TF extends Component {
                                 underlineColorAndroid="transparent"
                                 keyboardType={'numeric'}
                                 placeholder={this.state.select == 2?'请输入':''}
+                                editable={this.state.select == 2}
                                 value={this.state.three}
                                 onChangeText={(text) => {
                                     this.setState({

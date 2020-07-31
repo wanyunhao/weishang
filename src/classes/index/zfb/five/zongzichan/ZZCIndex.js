@@ -49,7 +49,11 @@ export default class ZZCIndex extends ZFBBaseVC {
                 {name: '黄金', left: this.state.hj, right: this.state.hj_lx},
                 {name: '余利宝', left: this.state.ylb, right: this.state.ylb_lx},
             ],
-            items2: []
+            items2: [],
+            lccp_sel:1,
+            jj_sel:1,
+            hj_sel:1,
+            ylb_sel:1,
         }
         // this.items = [
         //     {name: '余额', left: this.state.yue},
@@ -103,7 +107,9 @@ export default class ZZCIndex extends ZFBBaseVC {
                 <View>
                     <ZFBNavigationBar title='总资产' noLine={true} rightText='服务'/>
                     <XView onPress={() => {
-                        navigation.push('EditMoney')
+                        navigation.push('EditMoney',{refreshData: ()=>{
+                                this._requestData()
+                            }})
                     }} style={{
                         borderRadius: 4,
                         marginLeft: 16,
@@ -269,20 +275,25 @@ export default class ZZCIndex extends ZFBBaseVC {
 
     componentDidMount() {
         super._setPlaceViewBackgroundColor('#0A62A1')
+        this._requestData()
+    }
+
+    _requestData() {
+
         queryFilterFromRealm(ZFBUserTableName, 'id=' + RNStorage.user_id).then((res) => {
             const model = res[0];
             var zzc = parseFloat(model.zfb_ye) + parseFloat(model.zfb_yeb);
             let zrsy = parseFloat(model.zfb_yeb_lx) + parseFloat(model.zcc_lccp_lx) + parseFloat(model.zcc_jj_lx) + parseFloat(model.zcc_hj_lx) + parseFloat(model.zcc_ylb_lx);
-            if (!isEmpty(model.zcc_lccp_lx)) {
+            if (model.lccp_sel == 2) {
                 zzc += parseFloat(model.zcc_lccp)
             }
-            if (!isEmpty(model.zcc_jj_lx)) {
+            if (model.jj_sel == 2) {
                 zzc += parseFloat(model.zcc_jj)
             }
-            if (!isEmpty(model.zcc_hj_lx)) {
+            if (model.hj_sel == 2) {
                 zzc += parseFloat(model.zcc_hj)
             }
-            if (!isEmpty(model.zcc_ylb_lx)) {
+            if (model.ylb_sel == 2) {
                 zzc += parseFloat(model.zcc_ylb)
             }
 
@@ -304,16 +315,20 @@ export default class ZZCIndex extends ZFBBaseVC {
                 wangshangdai: model.zcc_wangshangdai,
                 jiebei: model.zcc_jiebei,
                 beiyongjin: model.zcc_beiyongjin,
+                lccp_sel: model.lccp_sel,
+                hj_sel: model.hj_sel,
+                jj_sel: model.jj_sel,
+                ylb_sel: model.ylb_sel,
             },()=>{
                 // console.log(this.state.items)
                 this.setState({
                     items: [
                         {name: '余额', left: this.state.yue},
                         {name: '余额宝', left: this.state.yueb, right: this.state.yueb_lx},
-                        {name: '理财产品', left: this.state.lccp, right: this.state.lccp_lx},
-                        {name: '基金', left: this.state.jj, right: this.state.jj_lx},
-                        {name: '黄金', left: this.state.hj, right: this.state.hj_lx},
-                        {name: '余利宝', left: this.state.ylb, right: this.state.ylb_lx},
+                        {name: '理财产品', left: this.state.lccp, right: this.state.lccp_sel == 1 ? '' : this.state.lccp_lx},
+                        {name: '基金', left: this.state.jj, right: this.state.jj_sel == 1 ? '' : this.state.jj_lx},
+                        {name: '黄金', left: this.state.hj, right: this.state.hj_sel == 1 ? '' : this.state.hj_lx},
+                        {name: '余利宝', left: this.state.ylb, right: this.state.ylb_sel == 1 ? '' : this.state.ylb_lx},
                     ],
                     items2: [
                         {name: '花呗', left: this.state.huabei},
@@ -322,7 +337,6 @@ export default class ZZCIndex extends ZFBBaseVC {
                         {name: '备用金', left: this.state.beiyongjin},
                     ]
                 },()=>{
-                    console.log(this.state.huabei);
                 })
             })
         })

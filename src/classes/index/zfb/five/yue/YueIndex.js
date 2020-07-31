@@ -14,7 +14,7 @@ import {showModalPrompt} from "../../../../../compoments/YHUtils";
 import {isEmpty} from "../../../../../common/utils/Utils";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {Notify} from "../../../../../common/events/Notify";
-import {writeToRealm, ZFBUserTableName} from "../../../../../common/utils/RealmUtil";
+import {queryFilterFromRealm, writeToRealm, ZFBUserTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class YueIndex extends BaseVC {
     constructor() {
@@ -95,6 +95,12 @@ export default class YueIndex extends BaseVC {
     }
     componentDidMount() {
         super._setPlaceViewBackgroundColor('#0A62A1')
+        queryFilterFromRealm(ZFBUserTableName,'id='+RNStorage.user_id).then((res)=>{
+            const model = res[0];
+            this.setState({
+                yue: model.zfb_ye,
+            })
+        })
     }
 
 }

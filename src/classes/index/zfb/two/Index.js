@@ -12,12 +12,15 @@ import SyanImagePicker from "react-native-syan-image-picker";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import ZFBBaseVC from "../Common/ZFBBaseVC";
+import {queryFilterFromRealm, ZFBUserTableName} from "../../../../common/utils/RealmUtil";
 
 export default class Index extends ZFBBaseVC {
     constructor() {
         super();
         this.state = {
-            icon:RNStorage.zfb_bg_two
+            icon:RNStorage.zfb_bg_two,
+            zzc: '',
+            zrsy: '',
         }
     }
 
@@ -37,6 +40,38 @@ export default class Index extends ZFBBaseVC {
             // 选择成功，渲染图片
             this.setState({
                 icon:selectedPhotos[0].base64
+            })
+        })
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this._requestData()
+    }
+
+
+    _requestData() {
+
+        queryFilterFromRealm(ZFBUserTableName, 'id=' + RNStorage.user_id).then((res) => {
+            const model = res[0];
+            var zzc = parseFloat(model.zfb_ye) + parseFloat(model.zfb_yeb);
+            let zrsy = parseFloat(model.zfb_yeb_lx) + parseFloat(model.zcc_lccp_lx) + parseFloat(model.zcc_jj_lx) + parseFloat(model.zcc_hj_lx) + parseFloat(model.zcc_ylb_lx);
+            if (model.lccp_sel == 2) {
+                zzc += parseFloat(model.zcc_lccp)
+            }
+            if (model.jj_sel == 2) {
+                zzc += parseFloat(model.zcc_jj)
+            }
+            if (model.hj_sel == 2) {
+                zzc += parseFloat(model.zcc_hj)
+            }
+            if (model.ylb_sel == 2) {
+                zzc += parseFloat(model.zcc_ylb)
+            }
+
+            this.setState({
+                zzc: zzc,
+                zrsy: zrsy,
             })
         })
     }
@@ -90,11 +125,11 @@ export default class Index extends ZFBBaseVC {
                                         <Text style={{color: '#84C3F6', fontSize: 10, marginLeft: 5}}>保障中</Text>
                                     </View>
                                 </View>
-                                <Text style={{color: Colors.white, fontSize: 27}}>570.80</Text>
+                                <Text style={{color: Colors.white, fontSize: 27}}>{this.state.zzc}</Text>
                             </View>
                             <View style={{alignItems: 'flex-end'}}>
                                 <Text style={{color: '#84C3F6', fontSize: 12}}>昨日收益</Text>
-                                <Text style={{color: Colors.white, fontSize: 27}}>+0.04</Text>
+                                <Text style={{color: Colors.white, fontSize: 27}}>+{this.state.zrsy}</Text>
                             </View>
                         </View>
 
