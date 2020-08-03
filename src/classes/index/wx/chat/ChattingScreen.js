@@ -17,7 +17,7 @@ import {
     MSGTableName,
     queryFilterFromRealm,
     SelfTableName,
-    UsersTableName, writeToRealm, WXConversationTableName, WXGroupMemberTableName
+    UsersTableName, writeToRealm, WXConversationTableName, WXGroupMemberTableName, WXHBLQListTableName
 } from "../../../../common/utils/RealmUtil";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {deepClone, isEmpty} from "../../../../common/utils/Utils";
@@ -358,7 +358,7 @@ export default class ChattingScreen extends WXBaseVC {
         Overlay.show(overlayView);
     }
 
-    showPop(type, modal, text) {
+    showPop(type, modal, text,item) {
         let overlayView = (
             <Overlay.PopView
                 type={type}
@@ -371,7 +371,7 @@ export default class ChattingScreen extends WXBaseVC {
                     minHeight: Const.screenHeight,
                     padding: 0
                 }}>
-                    <HBDetailScreen closeHB={() => {
+                    <HBDetailScreen data={item} closeHB={() => {
                         this.overlayPopView1 && this.overlayPopView1.close()
                         this.overlayPopView && this.overlayPopView.close()
                     }}/>
@@ -453,7 +453,7 @@ export default class ChattingScreen extends WXBaseVC {
                     <YHHongBaoPopView closeClick={() => {
                         this.overlayPopView1 && this.overlayPopView1.close()
                     }} finishAnimation={() => {
-                        this.showPop('zoomOut', false, 'Pop zoom out')
+                        this.showPop('zoomOut', false, 'Pop zoom out',item)
                         let obj = {
                             id: item.id,
                             hongbaoCount: 0,
@@ -642,14 +642,14 @@ export default class ChattingScreen extends WXBaseVC {
                                                                                         showToast('请输入正确个数');
                                                                                         return;
                                                                                     }
-                                                                                    this.showPop('zoomOut', false, 'Pop zoom out')
                                                                                     let obj = {
                                                                                         id: item.id,
                                                                                         hongbaoCount: item.hongbaoCount - inputCount,
                                                                                     };
                                                                                     writeToRealm(obj, MSGTableName).then(res => {
                                                                                         for (let i = 0; i < inputCount; i++) {
-                                                                                            const model = this.state.c_data.members[i + 1];
+                                                                                            const currentIndex = parseInt((item.totalhongbaoCount - item.hongbaoCount) + i)
+                                                                                            const model = this.state.c_data.members[currentIndex];
                                                                                             writeToRealm({
                                                                                                 id: getNow() + i,
                                                                                                 c_id: this.state.c_data.id,//会话id
@@ -659,24 +659,76 @@ export default class ChattingScreen extends WXBaseVC {
                                                                                                 hongbaoReceiveName: model.user_name,
                                                                                                 hongbaoSendName: isMe?'你':item.userinfo.user_name,
                                                                                             }, MSGTableName)
-                                                                                        }
 
+                                                                                            queryFilterFromRealm(WXHBLQListTableName,'msg_id=' + item.id + 'AND index=' + currentIndex).then((data)=>{
+                                                                                                writeToRealm({
+                                                                                                    id:data[0].id,
+                                                                                                    avatar: model.avatar,
+                                                                                                    isLq: true,
+                                                                                                    lqTime: getNow(),
+                                                                                                    user_name:model.user_name
+                                                                                                },WXHBLQListTableName).then(()=>{
+                                                                                                    if (i == inputCount - 1) {
+                                                                                                        this.showPop('zoomOut', false, 'Pop zoom out',item)
+                                                                                                    }
+                                                                                                })
+                                                                                            })
+                                                                                        }
                                                                                         this.queryChat();
                                                                                     });
                                                                                 }, '请输入个数')
                                                                             } else {
+                                                                                writeToRealm({
+                                                                                    id: getNow(),
+                                                                                    c_id: this.state.c_data.id,//会话id
+                                                                                    send_id: item.send_id,
+                                                                                    type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                                                                                    xitongTextType: 2,
+                                                                                    hongbaoReceiveName: '你',
+                                                                                    hongbaoSendName: item.userinfo.user_name,
+                                                                                }, MSGTableName).then(()=>{
+                                                                                    this.queryChat();
+                                                                                })
+                                                                                for (let i = 0; i < item.totalhongbaoCount; i++) {
+                                                                                    const model = this.state.c_data.members[i];
+                                                                                    queryFilterFromRealm(WXHBLQListTableName,'msg_id=' + item.id + 'AND index=' + i).then((data)=>{
+                                                                                        writeToRealm({
+                                                                                            id:data[0].id,
+                                                                                            avatar: model.avatar,
+                                                                                            isLq: true,
+                                                                                            lqTime: getNow(),
+                                                                                            user_name:model.user_name
+                                                                                        },WXHBLQListTableName).then(()=>{
+                                                                                            if (i == item.totalhongbaoCount - 1) {
+                                                                                                // this.showPop('zoomOut', false, 'Pop zoom out',item)
 
-                                                                                this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                                                this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                                            }
+                                                                                        })
+                                                                                    })
+                                                                                }
                                                                             }
 
                                                                         } else {
                                                                             if (RNStorage.user_id == item.send_id) {
-                                                                                this.showPop('zoomOut', false, 'Pop zoom out')
+
                                                                                 let obj = {
                                                                                     id: item.id,
                                                                                     hongbaoCount: 0,
                                                                                     isReceived: true
                                                                                 };
+                                                                                writeToRealm({
+                                                                                    id: getNow(),
+                                                                                    msg_id: item.id,//消息id
+                                                                                    user_name : this.state.c_data.userinfo.user_name, //用户名
+                                                                                    avatar : this.state.c_data.userinfo.avatar, //头像
+                                                                                    money : item.hongbaoMoney, //钱
+                                                                                    isBest: true,//是否手气最佳
+                                                                                    isLq: true,//是否已经领取
+                                                                                    lqTime : getNow(),//领取时间
+                                                                                },WXHBLQListTableName).then((res)=>{
+                                                                                    this.showPop('zoomOut', false, 'Pop zoom out',item)
+                                                                                })
                                                                                 writeToRealm(obj, MSGTableName).then(res => {
                                                                                     writeToRealm({
                                                                                         id: getNow(),
@@ -690,12 +742,23 @@ export default class ChattingScreen extends WXBaseVC {
                                                                                     this.queryChat();
                                                                                 });
                                                                             } else {
-                                                                                this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                                writeToRealm({
+                                                                                    id: getNow(),
+                                                                                    msg_id: item.id,//消息id
+                                                                                    user_name : RNStorage.user_name, //用户名
+                                                                                    avatar : RNStorage.avatarUrl, //头像
+                                                                                    money : item.hongbaoMoney, //钱
+                                                                                    isBest: true,//是否手气最佳
+                                                                                    isLq: true,//是否已经领取
+                                                                                    lqTime : getNow(),//领取时间
+                                                                                },WXHBLQListTableName).then((res)=>{
+                                                                                    this.showHB('zoomOut', false, 'Pop zoom out', item)
+                                                                                })
                                                                             }
                                                                         }
 
                                                                     } else {
-                                                                        this.showPop('zoomOut', false, 'Pop zoom out')
+                                                                        this.showPop('zoomOut', false, 'Pop zoom out',item)
                                                                     }
                                                                 }}/>
                                                )

@@ -13,6 +13,7 @@ export const PYQListTalkTableName = 'PYQListTalkTableName';
 export const WXNewFriendTableName = 'WXNewFriendTableName';
 export const WXQB_BankTableName = 'WXQB_BankTableName';
 export const WXGroupMemberTableName = 'WXGroupMemberTableName';
+export const WXHBLQListTableName = 'WXHBLQListTableName';
 
 //微信会话列表
 export const WXConversationSchema = {
@@ -122,6 +123,7 @@ export const WXMSGSchema = {
         hongbaoText : 'string?',
         hongbaoMoney : 'string?',
         hongbaoCount : 'int?',
+        totalhongbaoCount : 'int?',
         hongbaoTime : 'int?',
         zhuanzhangText : 'string?',
         zhuanzhangMoney : 'string?',
@@ -131,6 +133,23 @@ export const WXMSGSchema = {
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
         received_id:'int?',
+    }
+};
+//红包领取人列表
+export const WXHBLQListSchema = {
+    name: WXHBLQListTableName,
+    primaryKey: 'id',
+    properties: {
+        id: 'int',
+        msg_id: 'int?',//消息id
+        index: 'int?',//消息id
+        user_name : {type:'string?',default:''}, //用户名
+        avatar : {type:'string?',default:''}, //头像
+        money : {type:'string?',default:''}, //钱
+        isBest: {type:'bool?',default:false},//是否手气最佳
+        isLq: {type:'bool?',default:false},//是否已经领取
+        lqTime : 'int?',//领取时间
+
     }
 };
 //图片信息
@@ -218,6 +237,7 @@ export const instance = new Realm({
         WXQB_BankSchema,
         WXGroupMemberSchema,
         ZFBUserTableNameSchema,
+        WXHBLQListSchema,
         // WXMSGPicSchema
     ],
     deleteRealmIfMigrationNeeded: true,

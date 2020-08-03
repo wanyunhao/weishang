@@ -4,13 +4,32 @@ import {
     Text,
     View,
     Image, StatusBar,
+    FlatList,
 } from 'react-native';
 import {WXNavigationBar} from "../../../../../common/widgets/WXNavigation";
 import {XFlatList, XImage, XText} from "react-native-easy-app";
 import {Colors, CommonStyles, Const} from "../../../../../common/storage/Const";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
+import {queryFilterFromRealm, WXHBLQListTableName} from "../../../../../common/utils/RealmUtil";
+import {_getTimeStringAutoShort2} from "../../../../../common/utils/YHTimeUtil";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
+import {isEmpty} from "../../../../../common/utils/Utils";
 
 export default class HBDetailScreen extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: {
+                userinfo: {
+
+                }
+            },
+            list: [
+
+            ]
+        }
+    }
 
     render() {
         return (
@@ -30,8 +49,8 @@ export default class HBDetailScreen extends Component {
                        <XImage style={{width:24,height:19.3}} icon={require('../../../../resource/index/chat/hbxq_more.png')}/>
                    </View>
                </View>
-                <XFlatList
-                    data={['1',2]}
+                <FlatList
+                    data={this.state.list}
                     ListHeaderComponent={() => {
                         return this._renderHeader();
                     }}
@@ -44,35 +63,55 @@ export default class HBDetailScreen extends Component {
     }
 
     _renderHeader() {
+        const isGroup = this.state.data.totalhongbaoCount > 0;
         return (
             <View style={{alignItems:'center',marginTop:27,paddingBottom:67}}>
                 <View style={{flexDirection:'row',alignItems:'center'}}>
-                    <XImage style={{borderRadius:2}} icon={require('../../../../resource/images/avatar.png')} iconSize={21}/>
-                    <XText style={{fontSize:18,color:'#191919',marginLeft:7}} text='a.l的红包'/>
-                    <XText style={{width:17,height: 17,lineHeight:17,fontSize:11,color:Colors.white,backgroundColor:'#CFAC74',textAlign:'center',marginLeft:7}} text='拼' onPress={()=>{}}/>
+                    <XImage style={{borderRadius:2}} icon={this.state.data.userinfo.avatar} iconSize={21}/>
+                    <XText style={{fontSize:18,color:'#191919',marginLeft:7}} text={this.state.data.userinfo.user_name + '的红包'}/>
+                    {isGroup ? (<XText style={{width:17,height: 17,lineHeight:17,fontSize:11,color:Colors.white,backgroundColor:'#CFAC74',textAlign:'center',marginLeft:7}} text='拼' onPress={()=>{}}/>):null}
                 </View>
-                <XText style={{color:'#B3B3B3',fontSize:13,marginTop:7}} text='过年好'/>
-                <View style={{marginTop:15,flexDirection:'row',alignItems:'flex-end'}}>
-                    <XText style={{color:'#CFAC74',fontSize:54,fontWeight:'bold'}} text='88.08'/>
-                    <XText style={{color:'#C2A472',fontSize:14,marginLeft:8,marginBottom:12,}} text='元'/>
-                </View>
-                <View style={{flexDirection:'row',alignItems:'center'}}>
+                <XText style={{color:'#B3B3B3',fontSize:13,marginTop:7}} text={this.state.data.hongbaoText}/>
+                {!isGroup && (this.state.data.send_id == RNStorage.user_id) ? null : (
+                    <>
+                    <View style={{marginTop:15,flexDirection:'row',alignItems:'flex-end'}}>
+                        <XText style={{color:'#CFAC74',fontSize:54,fontWeight:'bold'}} text={!isEmpty(this.state.list)?this.state.list[0].money:''}/>
+                        <XText style={{color:'#C2A472',fontSize:14,marginLeft:8,marginBottom:12,}} text='元'/>
+                    </View>
+                    <View style={{flexDirection:'row',alignItems:'center'}}>
                     <XText style={{color:'#CFAC74',fontSize:13,}} text='已存入零钱，可直接提现'/>
                     <XImage style={{width: 6.31,height: 11.19,marginLeft:3}} icon={require('../../../../resource/index/chat/hbxq_more_jt.png')}/>
-                </View>
+                    </View>
+                    </>
+                ) }
             </View>
         )
+    }
+
+    componentDidMount() {
+        this.setState({
+            data: this.props.data
+        },()=>{
+            // console.log('data====',this.state.data);
+            queryFilterFromRealm(WXHBLQListTableName,'isLq=true AND msg_id='+ this.state.data.id).then((data1)=>{
+                console.log('data1====',data1);
+                this.setState({
+                    list:data1
+                })
+            })
+        })
+
     }
 
     _renderCell(item,index) {
         return (
             <View style={{flexDirection:'row',alignItems:'center',paddingVertical:11,paddingHorizontal:15,}}>
-                <Image style={{borderRadius:4,width: 45,height: 45}} source={require('../../../../resource/images/avatar.png')}/>
+                <XImage style={{borderRadius:4}} icon={item.avatar} iconSize={45}/>
                 <View style={{marginLeft:10,flex:1}}>
-                    <XText style={{color:'#191919',fontSize:19}} text='达菲林'/>
-                    <XText style={{color:'#B3B3B3',fontSize:13,}} text='1月25日 17:30'/>
+                    <XText style={{color:'#191919',fontSize:19}} text={item.user_name}/>
+                    <XText style={{color:'#B3B3B3',fontSize:13,}} text={_getTimeStringAutoShort2(parseInt(item.lqTime),true)}/>
                 </View>
-                <XText style={{color:'#191919',fontSize:16}} text='1.08元'/>
+                <XText style={{color:'#191919',fontSize:16}} text={item.money + '元'}/>
                 <YHDividingLine left={72}/>
             </View>
         )

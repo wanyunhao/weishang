@@ -9,7 +9,7 @@ import {Colors} from "../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
 import {XImage, XView} from "react-native-easy-app";
-import {MSGTableName, writeToRealm} from "../../../../common/utils/RealmUtil";
+import {MSGTableName, writeToRealm, WXHBLQListTableName} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {isEmpty} from "../../../../common/utils/Utils";
@@ -40,6 +40,23 @@ export default class SendRPScreen extends WXBaseVC {
         })
     }
 
+    getRandomMoney(remainMoney,remainSize){
+        let moneyList=[];
+        const min=0.01;
+        let max,money;
+        while (remainSize>1){
+            max=remainMoney/remainSize*2;
+            money=Math.random()*max;
+            money=money<0.01 ? 0.01 : money;
+            money=Math.round(money*100)/100;
+            moneyList.push(money);
+            remainSize--;
+            remainMoney-=money;
+        }
+
+        moneyList.push(Math.round(remainMoney*100)/100);
+        return moneyList;
+    }
 
     _addSubView() {
         const data = this.props.route.params.data;
@@ -56,8 +73,9 @@ export default class SendRPScreen extends WXBaseVC {
                         showToast('请选择发送人');
                         return;
                     }
+                    const msg_id = getNow();
                     let obj = {
-                        id: getNow(),
+                        id: msg_id,
                         c_id: this.c_id,//会话id
                         send_id: this.state.select == 2 ? parseInt(RNStorage.user_id) : isGroup? parseInt(this.state.df_user_info.user_id) : parseInt(this.state.df_user_info.id),
                         type: this.state.type == 2 ? 6 : 5,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
@@ -75,6 +93,28 @@ export default class SendRPScreen extends WXBaseVC {
                         obj.hongbaoMoney = this.state.hongbaoMoney;
                         if (isGroup) {
                             obj.hongbaoCount = parseInt(this.state.hongbaoCount);
+                            obj.totalhongbaoCount = parseInt(this.state.hongbaoCount);
+                            var moneylist = this.getRandomMoney(parseFloat(this.state.hongbaoMoney),parseInt(this.state.hongbaoCount));
+                            let max = 0;
+                            moneylist.map(value => {
+                                if (value > max) {
+                                    max = value
+                                }
+                            })
+                            for (let i = 0; i < this.state.hongbaoCount; i++) {
+                                writeToRealm({
+                                    id: getNow() + i,
+                                    index: i,
+                                    msg_id: msg_id,//消息id
+                                    money : moneylist[i] + "", //钱
+                                    isBest: max == moneylist[i],//是否手气最佳
+                                    isLq: false,//是否已经领取
+                                },WXHBLQListTableName).then((res)=>{
+                                })
+                            }
+
+                        } else {
+                            obj.hongbaoCount = 1;
                         }
                     }
                     if (this.state.type == 2) {
