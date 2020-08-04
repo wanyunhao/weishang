@@ -8,7 +8,7 @@ import {
 import {Colors} from "../../../../common/storage/Const";
 import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
-import {XImage, XView} from "react-native-easy-app";
+import {XHttp, XImage, XView} from "react-native-easy-app";
 import {MSGTableName, writeToRealm, WXHBLQListTableName} from "../../../../common/utils/RealmUtil";
 import {getNow} from "../../../../common/utils/DateUtils";
 import {RNStorage} from "../../../../common/storage/AppStorage";
@@ -17,6 +17,7 @@ import {showToast} from "../../../../common/widgets/Loading";
 import BaseVC from "../../zfb/Common/BaseVC";
 import WXBaseVC from "../../zfb/Common/WXBaseVC";
 import {Notify} from "../../../../common/events/Notify";
+import {Api} from "../../../../common/http/Api";
 
 export default class SendRPScreen extends WXBaseVC {
     constructor() {
@@ -58,6 +59,33 @@ export default class SendRPScreen extends WXBaseVC {
         return moneyList;
     }
 
+    _fahongbao(successBlock) {
+
+        const data = this.props.route.params.data;
+        const isGroup = data.type == 2;
+        const obj = {
+            token: '123456',
+            user_id: RNStorage.user_id,//发红包者昵称
+            send_user_nickname: this.state.select == 1?this.state.df_user_info.user_name:RNStorage.user_name,//发红包者昵称
+            send_user_atatar:this.state.select == 1?this.state.df_user_info.avatar:RNStorage.avatarUrl,//发红包者头像
+            is_group:isGroup ? '1': '0',//是否为群发送（1是0不是）
+            title:this.state.hongbaoText,//红包标题
+            money:this.state.hongbaoMoney,//发送金额
+            type:this.state.type == 1 ? '0':'1',//0 普通红包 1 转账
+            quantity:this.state.hongbaoCount,//红包数量
+            plat:'2',//发送平台（1：支付宝2：微信） 默认为支付宝
+        }
+        console.log(obj);
+        XHttp().url(Api.Api_Gift_send)
+            .param(obj)
+            .post((success, json) => {
+                console.log('来了老弟',success)
+                console.log('来了老弟json->',json)
+                if (success) {
+                    successBlock()
+                }
+            })
+    }
     _addSubView() {
         const data = this.props.route.params.data;
         const isGroup = data.type == 2;
@@ -73,58 +101,61 @@ export default class SendRPScreen extends WXBaseVC {
                         showToast('请选择发送人');
                         return;
                     }
-                    const msg_id = getNow();
-                    let obj = {
-                        id: msg_id,
-                        c_id: this.c_id,//会话id
-                        send_id: this.state.select == 2 ? parseInt(RNStorage.user_id) : isGroup? parseInt(this.state.df_user_info.user_id) : parseInt(this.state.df_user_info.id),
-                        type: this.state.type == 2 ? 6 : 5,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                    this._fahongbao(()=>{
 
-                        // xitongText : 'int?',
-                        // hongbaoTime : 'int?',
-                        isReceived: false,
-                    };
-                    if (isGroup && isEmpty(this.state.hongbaoCount)) {
-                        showToast('请输入个数');
-                        return;
-                    }
-                    if (this.state.type == 1) {
-                        obj.hongbaoText = isEmpty(this.state.hongbaoText) ? '恭喜发财，大吉大利' : this.state.hongbaoText;
-                        obj.hongbaoMoney = this.state.hongbaoMoney;
-                        if (isGroup) {
-                            obj.hongbaoCount = parseInt(this.state.hongbaoCount);
-                            obj.totalhongbaoCount = parseInt(this.state.hongbaoCount);
-                            var moneylist = this.getRandomMoney(parseFloat(this.state.hongbaoMoney),parseInt(this.state.hongbaoCount));
-                            let max = 0;
-                            moneylist.map(value => {
-                                if (value > max) {
-                                    max = value
-                                }
-                            })
-                            for (let i = 0; i < this.state.hongbaoCount; i++) {
-                                writeToRealm({
-                                    id: getNow() + i,
-                                    index: i,
-                                    msg_id: msg_id,//消息id
-                                    money : moneylist[i] + "", //钱
-                                    isBest: max == moneylist[i],//是否手气最佳
-                                    isLq: false,//是否已经领取
-                                },WXHBLQListTableName).then((res)=>{
-                                })
-                            }
+                        const msg_id = getNow();
+                        let obj = {
+                            id: msg_id,
+                            c_id: this.c_id,//会话id
+                            send_id: this.state.select == 2 ? parseInt(RNStorage.user_id) : isGroup? parseInt(this.state.df_user_info.user_id) : parseInt(this.state.df_user_info.id),
+                            type: this.state.type == 2 ? 6 : 5,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
 
-                        } else {
-                            obj.hongbaoCount = 1;
+                            // xitongText : 'int?',
+                            // hongbaoTime : 'int?',
+                            isReceived: false,
+                        };
+                        if (isGroup && isEmpty(this.state.hongbaoCount)) {
+                            showToast('请输入个数');
+                            return;
                         }
-                    }
-                    if (this.state.type == 2) {
-                        // zhuanzhangText
-                        obj.zhuanzhangText = isEmpty(this.state.hongbaoText) ? this.state.select == 2 ? ('转账给' + this.state.df_user_info.user_name) : '转账给你' : this.state.hongbaoText;
-                        obj.zhuanzhangMoney = this.state.hongbaoMoney;
-                    }
-                    writeToRealm(obj, MSGTableName).then((res) => {
-                        this.props.route.params.refreshList();
-                        navigation.goBack();
+                        if (this.state.type == 1) {
+                            obj.hongbaoText = isEmpty(this.state.hongbaoText) ? '恭喜发财，大吉大利' : this.state.hongbaoText;
+                            obj.hongbaoMoney = this.state.hongbaoMoney;
+                            if (isGroup) {
+                                obj.hongbaoCount = parseInt(this.state.hongbaoCount);
+                                obj.totalhongbaoCount = parseInt(this.state.hongbaoCount);
+                                var moneylist = this.getRandomMoney(parseFloat(this.state.hongbaoMoney),parseInt(this.state.hongbaoCount));
+                                let max = 0;
+                                moneylist.map(value => {
+                                    if (value > max) {
+                                        max = value
+                                    }
+                                })
+                                for (let i = 0; i < this.state.hongbaoCount; i++) {
+                                    writeToRealm({
+                                        id: getNow() + i,
+                                        index: i,
+                                        msg_id: msg_id,//消息id
+                                        money : moneylist[i] + "", //钱
+                                        isBest: max == moneylist[i],//是否手气最佳
+                                        isLq: false,//是否已经领取
+                                    },WXHBLQListTableName).then((res)=>{
+                                    })
+                                }
+
+                            } else {
+                                obj.hongbaoCount = 1;
+                            }
+                        }
+                        if (this.state.type == 2) {
+                            // zhuanzhangText
+                            obj.zhuanzhangText = isEmpty(this.state.hongbaoText) ? this.state.select == 2 ? ('转账给' + this.state.df_user_info.user_name) : '转账给你' : this.state.hongbaoText;
+                            obj.zhuanzhangMoney = this.state.hongbaoMoney;
+                        }
+                        writeToRealm(obj, MSGTableName).then((res) => {
+                            this.props.route.params.refreshList();
+                            navigation.goBack();
+                        })
                     })
                 }}/>
                 <View>
