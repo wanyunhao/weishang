@@ -69,7 +69,7 @@ export default class SendRPScreen extends WXBaseVC {
             send_user_nickname: this.state.select == 1?this.state.df_user_info.user_name:RNStorage.user_name,//发红包者昵称
             send_user_atatar:this.state.select == 1?this.state.df_user_info.avatar:RNStorage.avatarUrl,//发红包者头像
             is_group:isGroup ? '1': '0',//是否为群发送（1是0不是）
-            title:this.state.hongbaoText,//红包标题
+            title:isEmpty(this.state.hongbaoText) ? '恭喜发财,大吉大利' : this.state.hongbaoText,//红包标题
             money:this.state.hongbaoMoney,//发送金额
             type:this.state.type == 1 ? '0':'1',//0 普通红包 1 转账
             quantity:this.state.hongbaoCount,//红包数量
@@ -79,10 +79,11 @@ export default class SendRPScreen extends WXBaseVC {
         XHttp().url(Api.Api_Gift_send)
             .param(obj)
             .post((success, json) => {
-                console.log('来了老弟',success)
-                console.log('来了老弟json->',json)
+                console.log('json->',json);
                 if (success) {
-                    successBlock()
+                    if (json.status == 1) {
+                        successBlock()
+                    }
                 }
             })
     }

@@ -678,17 +678,17 @@ export default class ChattingScreen extends WXBaseVC {
                                                                                     });
                                                                                 }, '请输入个数')
                                                                             } else {
-                                                                                writeToRealm({
-                                                                                    id: getNow(),
-                                                                                    c_id: this.state.c_data.id,//会话id
-                                                                                    send_id: item.send_id,
-                                                                                    type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
-                                                                                    xitongTextType: 2,
-                                                                                    hongbaoReceiveName: '你',
-                                                                                    hongbaoSendName: item.userinfo.user_name,
-                                                                                }, MSGTableName).then(()=>{
-                                                                                    this.queryChat();
-                                                                                })
+                                                                                // writeToRealm({
+                                                                                //     id: getNow(),
+                                                                                //     c_id: this.state.c_data.id,//会话id
+                                                                                //     send_id: item.send_id,
+                                                                                //     type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
+                                                                                //     xitongTextType: 2,
+                                                                                //     hongbaoReceiveName: '你',
+                                                                                //     hongbaoSendName: item.userinfo.user_name,
+                                                                                // }, MSGTableName).then(()=>{
+                                                                                //     this.queryChat();
+                                                                                // })
                                                                                 for (let i = 0; i < item.totalhongbaoCount; i++) {
                                                                                     const model = this.state.c_data.members[i];
                                                                                     queryFilterFromRealm(WXHBLQListTableName,'msg_id=' + item.id + 'AND index=' + i).then((data)=>{
