@@ -118,9 +118,10 @@ export default class Index extends ZFBBaseVC {
                     }} itemClick={() => {
                     }}/>
                     <ImgTitleCell hasLine marginTop={9} data={{
-                        title: '支付宝会员',
+                        title: '账单',
                         icon: require('../../../resource/zfb/five/zfb_me_btn1.png'),
                     }} itemClick={() => {
+                        navigation.push('ZFBBillsScreen')
                     }}/>
                     <ImgTitleCell hasLine sub_color='#0EA095' data={{
                         title: '总资产',

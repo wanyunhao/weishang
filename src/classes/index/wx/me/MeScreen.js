@@ -6,6 +6,7 @@ import {Colors} from "../../../../common/storage/Const";
 import {XImage} from "react-native-easy-app";
 import DiscoveryListCell from "../discovery/view/DiscoveryListCell";
 import BaseVC from "../../zfb/Common/BaseVC";
+import {RNStorage} from "../../../../common/storage/AppStorage";
 
 const { width } = Dimensions.get("window");
 
@@ -55,8 +56,8 @@ export default class MeScreen extends BaseVC {
         <ScrollView>
           <View style={{backgroundColor: Colors.white}}>
             <View style={{height:161.71}}>
-              <XImage icon={require('../../../resource/images/avatar.png')} iconSize={58} style={{position:'absolute',left:24,top:65}}/>
-              <Text style={{position:'absolute',left:98,top:65,fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>用户名</Text>
+              <XImage icon={RNStorage.avatarUrl} iconSize={58} style={{position:'absolute',left:24,top:65}}/>
+              <Text style={{position:'absolute',left:98,top:65,fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>{RNStorage.user_name}</Text>
               <XImage icon={require('../../../resource/index/wx/me/xiagnj.png')} style={{position:'absolute',right:16,top:16,width:18.5,height:15}}/>
               <XImage icon={require('../../../resource/index/wx/me/ewm.png')} iconSize={11.32} style={{position:'absolute',bottom:44,right:38}}/>
               <XImage icon={require('../../../resource/common/right.png')} style={{position:'absolute',bottom:40,right:15,width:10,height:20}}/>

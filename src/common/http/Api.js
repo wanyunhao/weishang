@@ -4,6 +4,9 @@ const Base_URL = 'http://117.24.14.55:3210';
 export const Api = {
     Usercenter_getUserlist: Base_URL + '/Api/Usercenter/getUserlist',// 随机获取用户信息
     Api_Gift_send: Base_URL + '/Api/Gift/send',//发红包接口
+    Api_Gift_addRecordForadd: Base_URL + '/Api/Gift/addRecordForadd',//自定义消息-自定义
+    Api_Gift_addRecordForTransfer: Base_URL + '/Api/Gift/addRecordForTransfer',//自定义消息-转账
+    Api_Gift_addRecordForRecharge: Base_URL + '/Api/Gift/addRecordForRecharge',//自定义消息-转账
     api_Usercenter_getBank: Base_URL + '/api/Usercenter/getBank',// 银行列表
     register_captcha: Base_URL + '/register/captcha',// 发送注册验证码
     login_captcha: Base_URL + '/login/captcha',// 发送登录验证码

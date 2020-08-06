@@ -2,7 +2,7 @@
  *  常用工具类
  */
 import React from 'react';
-import {ActionPopover, ActionSheet, Button, Label, Overlay, Theme} from "teaset";
+import {ActionPopover, ActionSheet, Button, Label, Overlay, PullPicker, Theme} from "teaset";
 import {XHttp} from "react-native-easy-app";
 import {Api} from "../common/http/Api";
 import {
@@ -30,6 +30,24 @@ export function showActionSheet(array) {
     let items = array;
     let cancelItem = {title: '取消'};
     ActionSheet.show(items, cancelItem,);
+}
+export function showEasyActionSheet(title,array,blockIndex,selectIndex) {
+    // let items = []
+    // array.map((val,index) =>{
+    //     let item = {title:val,onPress: ()=>{
+    //             blockIndex(index)
+    //         }}
+    //         items.push(item)
+    // })
+    // // let cancelItem = {title: '取消'};
+    // // ActionSheet.show(items, cancelItem,);
+
+    PullPicker.show(
+        title,
+        array,
+        selectIndex,
+        (item, index) => blockIndex(index)
+    );
 }
 export function showModalOperation(array) {
     // [
@@ -73,7 +91,6 @@ export function showOverlayModal(type, modal,view) {
             style={{alignItems: 'center', justifyContent: 'center'}}
             type={type}
             modal={modal}
-            ref={v => this.overlayPopView = v}
         >
             <View style={{backgroundColor: Theme.defaultColor, minWidth: 260, minHeight: 180, borderRadius: 15}}>
                 {view}

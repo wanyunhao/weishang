@@ -216,7 +216,7 @@ export default class ChattingScreen extends WXBaseVC {
                 this.sendHB(1);
                 break;
             case 5:
-                if (this.state.data.type == 1) {
+                if (this.state.c_data.type == 1) {
                     this.sendHB(2);
                 } else {
 
