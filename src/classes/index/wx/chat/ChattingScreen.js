@@ -72,6 +72,7 @@ export default class ChattingScreen extends WXBaseVC {
             kebordHeight: 0,
             emoji: '',
             senderId: RNStorage.user_id,
+            senderName: RNStorage.user_name,
             time: new Date(),
             isDrag: false,
             showChoosePeople: false,
@@ -225,6 +226,33 @@ export default class ChattingScreen extends WXBaseVC {
             case 6:
                 this.showEdit('zoomOut', false, 'Pop zoom out');
                 break;
+                // 消息撤回
+            case 8: {
+                writeToRealm({
+                    id: getNow(),
+                    c_id: this.state.c_data.id,//会话id
+                    send_id: parseInt(this.state.senderId),
+                    type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
+                    user_name:this.state.senderName,
+                    xitongTextType: 3,//1:纯文字 2:红包 3:消息撤回
+                }, MSGTableName).then(() => {
+                    writeToRealm({
+                        id: this.state.c_data.id,
+                        last_time: getNow(),
+                        last_type: RNStorage.user_id == this.state.senderId? "你撤回了一条消息": '"' + this.state.senderName +'" 撤回了一条消息'
+                    }, WXConversationTableName).then((res) => {
+                        Notify.Refresh_conversation_list.sendEvent({});
+                    })
+                    this.queryChat();
+                })
+            }
+                break;
+            case 11: {
+                navigation.push('ChatSystemMsgScreen',{refreshList: ()=>{
+                    this.queryChat()
+                    },data: this.state.c_data})
+            }
+            break
             default:
                 break;
         }
@@ -489,7 +517,8 @@ export default class ChattingScreen extends WXBaseVC {
         if (this.state.c_data.type == 1) {
             writeToRealm({
                 id: item.id,
-                send_id: item.send_id == RNStorage.user_id ? parseInt(this.state.c_data.df_user_id) : parseInt(RNStorage.user_id)
+                send_id: item.send_id == RNStorage.user_id ? parseInt(this.state.c_data.df_user_id) : parseInt(RNStorage.user_id),
+                user_name: this.state.c_data.userinfo.user_name,
             }, MSGTableName).then(() => {
                 this.queryChat();
             })
@@ -518,12 +547,14 @@ export default class ChattingScreen extends WXBaseVC {
 
                             if (this.state.senderId == RNStorage.user_id) {
                                 this.setState({
-                                    senderId: this.state.c_data.df_user_id
+                                    senderId: this.state.c_data.df_user_id,
+                                    senderName: this.state.c_data.userinfo.user_name,
                                 })
                                 showToast('切换到对方发送');
                             } else {
                                 this.setState({
-                                    senderId: RNStorage.user_id
+                                    senderId: RNStorage.user_id,
+                                    senderName: RNStorage.user_name,
                                 })
                                 showToast('自己发送');
                             }
@@ -785,18 +816,19 @@ export default class ChattingScreen extends WXBaseVC {
                                                                            }}/>
                                                )
                                            case 7: {
-                                               if (item.xitongTextType == 1) {
+                                               if (item.xitongTextType == 1 || item.xitongTextType == 3 || item.xitongTextType == 4) {
 
                                                    return (
                                                        <MsgSystemDefaultCell data={item}
+                                                                             isOnlyText={item.xitongTextType == 4}
+                                                                             isTime={item.xitongTextType == 1}
+                                                                             isCheHui={item.xitongTextType == 3}
                                                                              drag={this.state.isDrag ? drag : null}
                                                                              refreshChat={() => {
                                                                                  this.queryChat()
                                                                              }}
                                                                              changeUser={() => {
-                                                                                 if (!isGroup) {
-                                                                                     this.changeUser(item);
-                                                                                 }
+                                                                                 this.changeUser(item);
                                                                              }}
                                                                              orderClick={() => {
                                                                                  this.setState({
@@ -814,9 +846,7 @@ export default class ChattingScreen extends WXBaseVC {
                                                                           this.queryChat()
                                                                       }}
                                                                       changeUser={() => {
-                                                                          if (!isGroup) {
-                                                                              this.changeUser(item);
-                                                                          }
+                                                                          this.changeUser(item);
                                                                       }}
                                                                       orderClick={() => {
                                                                           this.setState({
@@ -826,6 +856,7 @@ export default class ChattingScreen extends WXBaseVC {
                                                    )
                                                }
                                            }
+                                           break
                                            case 8:
                                                return (
                                                    <ChatTonghHuaCell isSelf={RNStorage.user_id == item.send_id}
@@ -915,13 +946,15 @@ export default class ChattingScreen extends WXBaseVC {
                         if (this.state.choosePeopleType == 1) {
                             writeToRealm({
                                 id:parseInt(this.msg_id),
-                                send_id: parseInt(model.user_id)
+                                send_id: parseInt(model.user_id),
+                                user_name: model.user_name
                             },MSGTableName).then(()=>{
                                 this._requestData()
                             })
                         } else {
                             this.setState({
-                                senderId: model.user_id
+                                senderId: model.user_id,
+                                senderName: model.user_name,
                             })
                         }
 
@@ -939,7 +972,8 @@ export default class ChattingScreen extends WXBaseVC {
                             })
                         } else {
                             this.setState({
-                                senderId: RNStorage.user_id
+                                senderId: RNStorage.user_id,
+                                senderName: RNStorage.user_name,
                             })
                         }
 

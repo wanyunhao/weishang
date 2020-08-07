@@ -25,14 +25,38 @@ const iconTexts = [
 ];
 const iconTexts1 = [
   "相册", "拍摄", "视频通话", "发送时间",
-  "红包", "多人回复", "语音输入", "我的收藏"
+  "红包", "多人回复", "语音输入", "我的收藏","消息撤回","发送文件","发送链接","系统消息"
 ];
-
-
 export default class MoreView extends Component {
+  // render() {
+  //   return (
+  //       <View style={[styles.moreViewContainer]}>
+  //         <ScrollView  horizontal={true} pagingEnabled={true} style={{backgroundColor:'red',height:'100%',flexWrap:'wrap'}}>
+  //         {data.map((value, index) => {
+  //           return (
+  //               <View key={"page" + index} style={[styles.rowContainer,{}]}>
+  //                 <Cell
+  //                     itemClick={()=>{
+  //                       this.props.itemClick(index)
+  //                     }}
+  //                     key={index}
+  //                     icon={value.img}
+  //                     // text={(this.props.data.type == 1?value.title:iconTexts1)[index]}
+  //                     text={value.title}
+  //                     index={index}
+  //                     sendImageMessage={this.props.sendImageMessage}
+  //                 />
+  //               </View>
+  //           )
+  //         })}
+  //         </ScrollView>
+  //       </View>
+  //   )
+  // }
+
   render() {
     var page = [];
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 3; i++) {
       var row = [];
       for (var j = 0; j < 4; j++) {
         let indd = i * 4 + j;

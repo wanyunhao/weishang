@@ -17,6 +17,7 @@ import ZFBController from "./mainController/ZFBController";
 import LoginVC from "./classes/login/LoginVC";
 import RegisterVC from "./classes/login/RegisterVC";
 import ChattingScreen from "./classes/index/wx/chat/ChattingScreen";
+import ChatSystemMsgScreen from "./classes/index/wx/chat/ChatSystemMsgScreen";
 import GroupSetScreen from "./classes/index/wx/chat/GroupSetScreen";
 import GroupUserDelScreen from "./classes/index/wx/chat/GroupUserDelScreen";
 import SendRPScreen from "./classes/index/wx/chat/SendRPScreen";
@@ -103,5 +104,6 @@ function ScreenList() {
         <Screen name='PersonInfoScreen' component={PersonInfoScreen}/>
         <Screen name='EditMoney' component={EditMoney}/>
         <Screen name='ZFBBillsScreen' component={ZFBBillsScreen}/>
+        <Screen name='ChatSystemMsgScreen' component={ChatSystemMsgScreen}/>
     </Navigator>;
 }

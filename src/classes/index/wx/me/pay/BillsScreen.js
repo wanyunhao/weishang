@@ -27,8 +27,9 @@ export default class BillsScreen extends WXBaseVC {
                     title: "Sides",
                     data: ["French Fries", "Onion Rings", "Fried Shrimps"]
                 },
-            ]
+            ],
         };
+        this.billType = 0
     }
 
     divMessage(hasAvatar,hasCheck,infoText,tiXian,hasName) {
@@ -42,15 +43,15 @@ export default class BillsScreen extends WXBaseVC {
 
 
     _submit(value) {
-        let url = '';
-        url = Api.Api_Gift_addRecordForadd
         const obj = {
             ...value,
             token: '123456',
             user_id: RNStorage.user_id,//当前用户
             plat: '2',//发送平台（1：支付宝2：微信） 默认为支付宝
+            type: this.billType
         }
-        XHttp().url(url)
+        console.log(obj);
+        XHttp().url(Api.Api_Gift_addRecord)
             .loadingFunc(loading => showLoading('请稍等',loading))
             .param(obj)
             .post((success, json) => {
@@ -67,37 +68,44 @@ export default class BillsScreen extends WXBaseVC {
                     let items = [
                         {
                             text: '添加自定义消息', onPress: () => {
-                                this.divMessage(true,true,[])
+                                this.billType = 1
+                                this.divMessage(true,true,[],false,true)
                             }
                         },
                         {
                             text: '添加转账消息', onPress: () => {
+                                this.billType = 2
                                 this.divMessage(true,true,['转账-转给','转账-来自'])
                             }
                         },
                         {
                             text: '添加红包消息', onPress: () => {
+                                this.billType = 3
                                 this.divMessage(false,true,['微信红包-发给','微信红包-来自'])
                             }
                         },
                         {
                             text: '添加提现消息', onPress: () => {
+                                this.billType = 4
                                 this.divMessage(false,false,['零钱提现-到'],true,false)
                             }
                         },
                         {
                             text: '添加充值消息', onPress: () => {
+                                this.billType = 5
                                 this.divMessage(false,false,['零钱充值-来自'],true,false)
                             }
                         },
                         {
                             text: '添加零钱通消息', onPress: () => {
 
+                                this.billType = 6
                                 this.divMessage(false,true,['零钱通转出-到','转入零钱通-来自'])
                             }
                         },
                         {
                             text: '二维码收付款', onPress: () => {
+                                this.billType = 7
                                 this.divMessage(false,true,['扫二维码付款-给','扫二维码付款-来自'])
                             }
                         },

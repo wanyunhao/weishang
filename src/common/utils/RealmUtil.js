@@ -128,7 +128,7 @@ export const WXMSGSchema = {
         zhuanzhangText : 'string?',
         zhuanzhangMoney : 'string?',
         xitongText:'string?',
-        xitongTextType:'int?',//1:纯文字 2:红包
+        xitongTextType:'int?',//1:时间 2:红包 3:消息撤回 4:纯文字
         hongbaoSendName : 'string?', //红包发送人姓名
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',

@@ -547,6 +547,7 @@ export class AddBillView extends Component {
                         plat: '1',//发送平台（1：支付宝2：微信） 默认为支付宝
                         avatar: this.state.icon,//头像
                         nickname: this.state.bill_name,//账单名称（转给的人）
+                        desc: this.state.bill_name,//账单名称（转给的人）
                         is_add: this.state.select == 1 ?'1':'0',//0--增加；1--减少
                     };
                     this.props.confirmClick(obj)

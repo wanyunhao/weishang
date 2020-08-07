@@ -14,6 +14,7 @@ import {_getTimeStringAutoShort2, updateTimeShow} from "../../../../../common/ut
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {showOperationItems} from "../../../../../compoments/YHUtils";
 import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
+import {RNStorage} from "../../../../../common/storage/AppStorage";
 
 export default class MsgSystemCell extends Component {
 
@@ -61,6 +62,8 @@ export class MsgSystemDefaultCell extends Component {
 
     render() {
         const data = this.props.data || {};
+        const isSelf = RNStorage.user_id == data.send_id;
+        const text = isSelf? "你撤回了一条消息": '"' + data.user_name +'" 撤回了一条消息'
         return (
             <TouchableOpacity style={styles.container}  ref={ref => {
                 this.ref = ref;
@@ -89,7 +92,18 @@ export class MsgSystemDefaultCell extends Component {
                 showOperationItems(this.ref, items)
             } : this.props.drag}>
                 <View style={{alignItems:'center'}}>
-                    <Text style={{color:'#A5A5A5',fontSize:11}}>{_getTimeStringAutoShort2(parseInt(data.xitongText),true)}</Text>
+                    {this.props.isCheHui ? (
+                        <Text style={{color:'#A5A5A5',fontSize:11}}>{text}
+                            {isSelf ? (<Text style={{color:'rgb(101,129,127)',fontSize:11}}>  重新编辑</Text>): null}
+                        </Text>
+                    ):null}
+                    {this.props.isOnlyText ? (
+                        <Text style={{color:'#A5A5A5',fontSize:11}}>{data.xitongText}</Text>
+                    ):null}
+                    {this.props.isTime ? (
+                        <Text style={{color:'#A5A5A5',fontSize:11}}>{_getTimeStringAutoShort2(parseInt(data.xitongText),true)}</Text>
+                    ):null}
+
                 </View>
             </TouchableOpacity>
         );
