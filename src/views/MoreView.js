@@ -3,7 +3,7 @@ import Global from '../common/utils/Global';
 import Utils from '../common/utils/WXUtils';
 // import ImagePicker from 'react-native-image-crop-picker';
 
-import {Dimensions, Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
+import {Dimensions, Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View,ScrollView} from 'react-native';
 import {Colors} from "../common/storage/Const";
 
 const {width} = Dimensions.get('window');
@@ -21,12 +21,13 @@ const icons = [
 
 const iconTexts = [
   "相册", "拍摄", "视频通话", "发送时间",
-  "红包", "转账", "语音输入", "我的收藏"
+  "红包", "转账", "语音输入", "我的收藏","消息撤回","发送文件","发送链接","系统消息"
 ];
 const iconTexts1 = [
   "相册", "拍摄", "视频通话", "发送时间",
   "红包", "多人回复", "语音输入", "我的收藏"
 ];
+
 
 export default class MoreView extends Component {
   render() {
@@ -54,7 +55,9 @@ export default class MoreView extends Component {
     }
     return (
       <View style={[styles.moreViewContainer,{paddingBottom:INSETS.bottom}]}>
-        {page}
+        <ScrollView>
+          {page}
+        </ScrollView>
       </View>
     );
   }
