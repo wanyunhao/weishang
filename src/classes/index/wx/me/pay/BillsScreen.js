@@ -19,14 +19,6 @@ export default class BillsScreen extends WXBaseVC {
         super(props);
         this.state = {
             data: [
-                {
-                    title: "Main dishes",
-                    data: ["Pizza", "Burger", "Risotto"]
-                },
-                {
-                    title: "Sides",
-                    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
-                },
             ],
         };
         this.billType = 0
@@ -57,10 +49,32 @@ export default class BillsScreen extends WXBaseVC {
             .post((success, json) => {
                 console.log(json);
                 if (success) {
-
+                    this._requestData()
                 }
             })
     }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this._requestData()
+    }
+
+    _requestData() {
+        XHttp().url(Api.Api_Gift_getRecord)
+            .param({
+                token: '123456',
+                plat: '2',
+                user_id: RNStorage.user_id,//当前用户
+                // month: RNStorage.user_id,//当前用户
+            })
+            .post((success, json) => {
+                console.log(json);
+                this.setState({
+                    data:json.data
+                })
+            })
+    }
+
     _addSubView() {
         return (
             <View style={styles.container}>
@@ -75,13 +89,13 @@ export default class BillsScreen extends WXBaseVC {
                         {
                             text: '添加转账消息', onPress: () => {
                                 this.billType = 2
-                                this.divMessage(true,true,['转账-转给','转账-来自'])
+                                this.divMessage(true,true,['转账-转给','转账-来自'],false,true)
                             }
                         },
                         {
                             text: '添加红包消息', onPress: () => {
                                 this.billType = 3
-                                this.divMessage(false,true,['微信红包-发给','微信红包-来自'])
+                                this.divMessage(false,true,['微信红包-发给','微信红包-来自'],false,true)
                             }
                         },
                         {
@@ -100,13 +114,13 @@ export default class BillsScreen extends WXBaseVC {
                             text: '添加零钱通消息', onPress: () => {
 
                                 this.billType = 6
-                                this.divMessage(false,true,['零钱通转出-到','转入零钱通-来自'])
+                                this.divMessage(false,true,['零钱通转出-到','转入零钱通-来自'],false,true)
                             }
                         },
                         {
                             text: '二维码收付款', onPress: () => {
                                 this.billType = 7
-                                this.divMessage(false,true,['扫二维码付款-给','扫二维码付款-来自'])
+                                this.divMessage(false,true,['扫二维码付款-给','扫二维码付款-来自'],false,true)
                             }
                         },
                     ];
@@ -116,8 +130,8 @@ export default class BillsScreen extends WXBaseVC {
                     sections={this.state.data}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => this._renderCell(item)}
-                    renderSectionHeader={({ section: { title } }) => (
-                        this._renderSectionView(title)
+                    renderSectionHeader={({ section: { count } }) => (
+                        this._renderSectionView(count)
                     )}
                 />
             </View>
@@ -129,13 +143,13 @@ export default class BillsScreen extends WXBaseVC {
             <View style={{padding:20,backgroundColor: '#F6F6F6'}}>
                 <View style={{flexDirection:'row',alignItems:'flex-end'}}>
                     <Text style={{color:'#353535',fontSize:18}}>
-                        {section}
+                        {section.date}
                     </Text>
                     <XImage style={{marginLeft:6,marginBottom:4}} icon={require('../../../../resource/common/zd_icon_more_x.png')} iconSize={11.37}/>
                 </View>
                 <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:4}}>
                     <Text style={{color:'#989898',fontSize:14}}>
-                        支出 ￥86.90 收入8888.80
+                        支出 ￥{section.red} 收入￥{section.add}
                     </Text>
                     <View style={{flexDirection:'row',alignItems:'center'}}>
                         <View style={{width:0.5,height:19,backgroundColor: '#D8D8D8'}}/>
@@ -149,20 +163,21 @@ export default class BillsScreen extends WXBaseVC {
         )
     }
     _renderCell(item) {
+        console.log(item);
         return (
             <View style={{padding:20, flexDirection:'row',alignItems:'center',flex:1,backgroundColor: 'white'}}>
-                <XImage icon={require('../../../../resource/images/avatar.png')} iconSize={44}/>
+                <XImage icon={item.operation_atavtar} iconSize={44}/>
                 <View style={{flex:1,marginLeft:11}}>
                     <Text style={{fontSize:18, color:'#353535'}}>
-                        {item}
+                        {item.desc}
                     </Text>
                     <Text style={{fontSize:13, color:'#B8B8B8',marginTop:3}}>
-                        {item}
+                        {item.add_time_date}
                     </Text>
                 </View>
 
                 <Text style={{fontSize:18, color:'#363636',marginTop:3}}>
-                    {item}
+                    {item.is_add + item.amount}
                 </Text>
                 <YHDividingLine left={75}/>
             </View>

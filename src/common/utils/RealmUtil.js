@@ -109,7 +109,7 @@ export const WXMSGSchema = {
         id: 'int',
         c_id: 'int',//会话id
         send_id : 'int',
-        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
+        type: 'int',//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话 9:文件 10:连接
         user_name: 'string?',
         avatar: 'string?',
         text: 'string?',
@@ -133,6 +133,12 @@ export const WXMSGSchema = {
         hongbaoReceiveName : 'string?', //红包接收人姓名
         isReceived: 'bool?',
         received_id:'int?',
+        fileName: {type:'string?',default:''},//文件名
+        fileType: {type:'string?',default:''},//文件类型
+        fileSize: {type:'string?',default:''},//文件大小
+        urlIcon: {type:'string?',default:''},//连接图片
+        urlTitle: {type:'string?',default:''},//连接标题
+        urlContent: {type:'string?',default:''},//连接内容
     }
 };
 //红包领取人列表

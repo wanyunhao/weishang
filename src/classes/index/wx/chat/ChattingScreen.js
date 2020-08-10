@@ -50,6 +50,7 @@ import {Notify} from "../../../../common/events/Notify";
 import YHDatePicker from "./views/YHDatePicker";
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import ChooseMemberView from "./views/ChooseMemberView";
+import ChatFileCell from "./views/ChatFileCell";
 
 export default class ChattingScreen extends WXBaseVC {
 
@@ -247,6 +248,26 @@ export default class ChattingScreen extends WXBaseVC {
                 })
             }
                 break;
+            case 9:
+            {
+                navigation.push('ChatFileScreen', {
+                    data: this.state.c_data,
+                    df_user_info: this.state.c_data.userinfo,
+                    c_id: this.state.c_data.id,
+                });
+            }
+
+                break
+            case 10:
+            {
+                navigation.push('ChatUrlScreen', {
+                    data: this.state.c_data,
+                    df_user_info: this.state.c_data.userinfo,
+                    c_id: this.state.c_data.id,
+                });
+            }
+
+                break
             case 11: {
                 navigation.push('ChatSystemMsgScreen',{refreshList: ()=>{
                     this.queryChat()
@@ -869,6 +890,25 @@ export default class ChattingScreen extends WXBaseVC {
                                                                          if (!isGroup) {
                                                                              this.changeUser(item);
                                                                          }
+                                                                     }}
+                                                                     orderClick={() => {
+                                                                         this.setState({
+                                                                             isDrag: true,
+                                                                         })
+                                                                     }}/>
+                                               )
+
+                                           case 9:
+                                               return (
+
+                                                   <ChatFileCell isSelf={RNStorage.user_id == item.send_id}
+                                                                     data={item}
+                                                                     drag={this.state.isDrag ? drag : null}
+                                                                     refreshChat={() => {
+                                                                         this.queryChat()
+                                                                     }}
+                                                                     changeUser={() => {
+                                                                         this.changeUser(item);
                                                                      }}
                                                                      orderClick={() => {
                                                                          this.setState({

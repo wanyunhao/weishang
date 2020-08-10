@@ -21,6 +21,8 @@ import ChatSystemMsgScreen from "./classes/index/wx/chat/ChatSystemMsgScreen";
 import GroupSetScreen from "./classes/index/wx/chat/GroupSetScreen";
 import GroupUserDelScreen from "./classes/index/wx/chat/GroupUserDelScreen";
 import SendRPScreen from "./classes/index/wx/chat/SendRPScreen";
+import ChatFileScreen from "./classes/index/wx/chat/ChatFileScreen";
+import ChatUrlScreen from "./classes/index/wx/chat/ChatUrlScreen";
 import PayScreen from "./classes/index/wx/me/pay/PayScreen";
 import WalletScreen from "./classes/index/wx/me/pay/WalletScreen";
 import BillsScreen from "./classes/index/wx/me/pay/BillsScreen";
@@ -105,5 +107,7 @@ function ScreenList() {
         <Screen name='EditMoney' component={EditMoney}/>
         <Screen name='ZFBBillsScreen' component={ZFBBillsScreen}/>
         <Screen name='ChatSystemMsgScreen' component={ChatSystemMsgScreen}/>
+        <Screen name='ChatFileScreen' component={ChatFileScreen}/>
+        <Screen name='ChatUrlScreen' component={ChatUrlScreen}/>
     </Navigator>;
 }

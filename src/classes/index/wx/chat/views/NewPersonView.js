@@ -286,6 +286,8 @@ export class HeadIconView extends Component {
                             // ...
                             this.setState({
                                 icon: selectedPhotos[0].base64
+                            },()=>{
+                                this.props.getImage(this.state.icon)
                             })
                         })
                     }} style={{alignItems: 'center'}}>
@@ -317,6 +319,7 @@ export class AddBillView extends Component {
             tiXian:false,
             hasName: true,
             categoryName:'',
+            bank_name:'',
             selectIndex: 0,
         }
     }
@@ -545,7 +548,7 @@ export class AddBillView extends Component {
                         time: this.state.time,//时间
                         mdesc: this.state.categoryName,//消费类型（支付宝用）
                         plat: '1',//发送平台（1：支付宝2：微信） 默认为支付宝
-                        avatar: this.state.icon,//头像
+                        file: this.state.icon,//头像
                         nickname: this.state.bill_name,//账单名称（转给的人）
                         desc: this.state.bill_name,//账单名称（转给的人）
                         is_add: this.state.select == 1 ?'1':'0',//0--增加；1--减少

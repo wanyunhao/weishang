@@ -78,17 +78,19 @@ export class MsgSystemDefaultCell extends Component {
                         }
                     },
                     {
-                        title: '切换角色', onPress: () => {
-
-                            this.props.changeUser()
-                        }
-                    },
-                    {
                         title: '排序', onPress: () => {
                             this.props.orderClick();
                         }
                     },
                 ];
+                if (!this.props.isOnlyText) {
+                    items.push({
+                        title: '切换角色', onPress: () => {
+
+                            this.props.changeUser()
+                        }
+                    })
+                }
                 showOperationItems(this.ref, items)
             } : this.props.drag}>
                 <View style={{alignItems:'center'}}>

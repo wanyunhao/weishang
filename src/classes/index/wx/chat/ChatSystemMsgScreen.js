@@ -16,6 +16,9 @@ import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {isEmpty} from "../../../../common/utils/Utils";
 import TitleAndSubCell from "../me/pay/views/TitleAndSubCell";
 import {Notify} from "../../../../common/events/Notify";
+import {MSGTableName, writeToRealm, WXConversationTableName} from "../../../../common/utils/RealmUtil";
+import {getNow} from "../../../../common/utils/DateUtils";
+import {RNStorage} from "../../../../common/storage/AppStorage";
 
 export default class ChatSystemMsgScreen extends WXBaseVC {
 
@@ -23,7 +26,8 @@ export default class ChatSystemMsgScreen extends WXBaseVC {
         super();
         this.state = {
             selectData:{
-                content: '请选择系统消息'
+                content: '请选择系统消息',
+                inputText: ''
             },
             userinfo: {
                 user_name: '',
@@ -200,11 +204,41 @@ export default class ChatSystemMsgScreen extends WXBaseVC {
             case 2:
                 yulanText = this.state.selectData.content.replace('用户名',this.state.userinfo.user_name)
                 break;
+            case 3:
+                yulanText = this.state.selectData.content.replace('用户名',this.state.userinfo.user_name)
+                if (!isEmpty(this.state.selectData.inputText)) yulanText = yulanText.replace('群名称',this.state.selectData.inputText)
+                break;
+            case 4:
+                yulanText = this.state.selectData.content
+                if (!isEmpty(this.state.selectData.inputText)) yulanText = yulanText.replace('群名称',this.state.selectData.inputText)
+                break;
+            case 5:
+                yulanText = this.state.selectData.content
+                if (!isEmpty(this.state.userinfo.user_name)) yulanText = yulanText.replace('用户名1',this.state.userinfo.user_name)
+                if (!isEmpty(this.state.userinfo2.user_name)) yulanText = yulanText.replace('用户名2',this.state.userinfo2.user_name)
+                break;
         }
+        this.yulanResult = yulanText
         return (
             <View style={[CommonStyles.container,{backgroundColor: '#7F7F7F'}]}>
                 <WXNavigationBar title={'添加系统消息'} rightText={'完成'} clickRText={()=>{
-
+                    writeToRealm({
+                        id: getNow(),
+                        c_id: data.id,//会话id
+                        type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
+                        send_id: parseInt(RNStorage.user_id),//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
+                        xitongTextType: 4,//1:纯文字 2:红包 3:消息撤回 4:系统消息
+                        xitongText: this.yulanResult,//1:纯文字 2:红包 3:消息撤回
+                    }, MSGTableName).then(() => {
+                        writeToRealm({
+                            id: data.id,
+                            last_time: getNow(),
+                            last_type: this.yulanResult
+                        }, WXConversationTableName).then((res) => {
+                            navigation.goBack()
+                            Notify.Refresh_conversation_list.sendEvent({});
+                        })
+                    })
                 }}/>
                 <View style={{padding:10,backgroundColor:Colors.white}}>
                     <Text>预览消息</Text>
@@ -214,36 +248,65 @@ export default class ChatSystemMsgScreen extends WXBaseVC {
                     </View>
                 </View>
 
-                <View style={{marginTop:10,padding:10,backgroundColor:Colors.white}}>
-                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                        <Text>用户昵称</Text>
-                        <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Text>
-                                {!isEmpty(this.state.userinfo.user_name) ? this.state.userinfo.user_name : '请选择'}
-                            </Text>
-                            <XText style={{backgroundColor:Colors.tabbar_select_color,marginLeft:10,lineHeight:30,borderRadius:4,paddingHorizontal:5}} text={isGroup? '选择群成员' : '不可修改'} onPress={()=>{
-                                if (isGroup) {
-                                    navigation.push('GroupUserDelScreen', {
-                                        fromChoose: true,
-                                        group_id: data.id, refreshList: (item) => {
-                                            // {"avatar": "http://appossimg.91ylian.com/v_img/v556.jpg", "group_id": 1596619839597, "id": 15966198458141, "user_id": 159661984581401, "user_name": "平野"}
-                                            this.setState({
-                                                userinfo: item,
+                {(this.state.selectData.type != 1) ? (
+                    <View style={{marginTop:10,padding:10,backgroundColor:Colors.white}}>
+                        {this.state.selectData.type != 4 ? (
+                            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                                <Text>用户昵称</Text>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Text>
+                                        {!isEmpty(this.state.userinfo.user_name) ? this.state.userinfo.user_name : '请选择'}
+                                    </Text>
+                                    <XText style={{backgroundColor:Colors.tabbar_select_color,marginLeft:10,lineHeight:30,borderRadius:4,paddingHorizontal:5}} text={isGroup? '选择群成员' : '不可修改'} onPress={()=>{
+                                        if (isGroup) {
+                                            navigation.push('GroupUserDelScreen', {
+                                                fromChoose: true,
+                                                group_id: data.id, refreshList: (item) => {
+                                                    // {"avatar": "http://appossimg.91ylian.com/v_img/v556.jpg", "group_id": 1596619839597, "id": 15966198458141, "user_id": 159661984581401, "user_name": "平野"}
+                                                    this.setState({
+                                                        userinfo: item,
+                                                    })
+                                                }
                                             })
                                         }
-                                    })
-                                }
+                                    }}/>
+                                </View>
+                            </View>
+                        ): null}
+                        {this.state.selectData.type == 5 ? (
+                            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingVertical:10}}>
+                                <Text>用户昵称</Text>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Text>
+                                        {!isEmpty(this.state.userinfo2.user_name) ? this.state.userinfo2.user_name : '请选择'}
+                                    </Text>
+                                    <XText style={{backgroundColor:Colors.tabbar_select_color,marginLeft:10,lineHeight:30,borderRadius:4,paddingHorizontal:5}} text={isGroup? '选择群成员' : '不可修改'} onPress={()=>{
+                                        if (isGroup) {
+                                            navigation.push('GroupUserDelScreen', {
+                                                fromChoose: true,
+                                                group_id: data.id, refreshList: (item) => {
+                                                    // {"avatar": "http://appossimg.91ylian.com/v_img/v556.jpg", "group_id": 1596619839597, "id": 15966198458141, "user_id": 159661984581401, "user_name": "平野"}
+                                                    this.setState({
+                                                        userinfo2: item,
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    }}/>
+                                </View>
+                            </View>
+                        ): null}
+                        {this.state.selectData.type == 3 || this.state.selectData.type == 4 ? (
+                            <TitleAndSubCell isEdit={true} title='编辑' sub_title={'请输入'} onChangeText={(text)=>{
+                                let model = this.state.selectData
+                                model.inputText = text
+                                this.setState({
+                                    selectData:model
+                                })
                             }}/>
-                        </View>
+                        ): null}
                     </View>
-                    {this.state.selectData.type == 3 ? (
-                        <TitleAndSubCell isEdit={true} title='编辑' onChangeText={(text)=>{
-                            this.setState({
-                                bank_num:text
-                            })
-                        }}/>
-                    ): null}
-                </View>
+                ): null}
                 <FlatList
                     style={{backgroundColor:Colors.white,marginTop:10}}
                     data={isGroup ? this.state.data1:this.state.data}
