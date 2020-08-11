@@ -32,8 +32,8 @@ export default class ChatUrlScreen extends WXBaseVC {
         super();
         this.state = {
             urlIcon: require('../../../resource/index/wx/fx/fb_add.png'),
-            urlTitle: '',
-            urlContent: '',
+            urlTitle: '标题',
+            urlContent: '内容',
             select: 2,
             df_user_info: {avatar: '', user_name: ''},
         }
@@ -69,14 +69,14 @@ export default class ChatUrlScreen extends WXBaseVC {
                         showToast('请输入标题')
                         return
                     }
-                    if (isEmpty(this.state.fileSize)) {
+                    if (isEmpty(this.state.urlContent)) {
                         showToast('请输入内容')
                         return
                     }
                     writeToRealm({
                         id: getNow(),
                         c_id: data.id,//会话id
-                        type: 10,//9: 发送文件
+                        type: 10,//10: 发送连接
                         send_id: this.state.select == 2 ? parseInt(RNStorage.user_id) : isGroup? parseInt(this.state.df_user_info.user_id) : parseInt(this.state.df_user_info.id),
                         urlIcon: this.state.urlIcon,
                         urlTitle: this.state.urlTitle,
@@ -114,10 +114,14 @@ export default class ChatUrlScreen extends WXBaseVC {
                         })
                     }}/>
                     <XView style={{marginLeft:10}} onPress={()=>{
-                        const key = showOverlayModal('zoomOut', true, <TwoInputView cancelClick={() => {
+                        const key = showOverlayModal('zoomOut', true, <URLInputView cancelClick={() => {
                             Overlay.hide(key);
                         }} confirmClick={(value) => {
 
+                            this.setState({
+                                urlTitle: value.first,
+                                urlContent: value.second,
+                            })
                             // let pra_id = getNow();
                             // writeToRealm({
                             //     id: pra_id,
@@ -142,8 +146,8 @@ export default class ChatUrlScreen extends WXBaseVC {
                             Overlay.hide(key);
                         }}/>);
                     }}>
-                        <Text>标题</Text>
-                        <Text>内容</Text>
+                        <Text>{this.state.urlTitle}</Text>
+                        <Text>{this.state.urlContent}</Text>
                     </XView>
                 </View>
                 <View style={{paddingHorizontal: 15, backgroundColor: Colors.white,marginTop:10}}>
@@ -218,24 +222,24 @@ export class URLInputView extends Component {
                     style={{width: 200, marginTop: 10,}}
                     size='md'
                     value={this.state.first}
-                    placeholder='请输入'
+                    placeholder='请输入标题'
                     onChangeText={text => this.setState({first: text})}
                 />
                 <Input
                     style={{width: 200, marginTop: 10,}}
                     size='md'
                     value={this.state.second}
-                    placeholder='请输入'
+                    placeholder='请输入内容'
                     onChangeText={text => this.setState({second: text})}
                 />
 
                 <ConfirmCancelView cancelClick={this.props.cancelClick} confirmClick={()=>{
                     if (isEmpty(this.state.first)) {
-                        showToast('请输入');
+                        showToast('请输入标题');
                         return
                     }
                     if (isEmpty(this.state.second)) {
-                        showToast('请输入');
+                        showToast('请输入内容');
                         return
                     }
                     const obj = {first: this.state.first, second: this.state.second};

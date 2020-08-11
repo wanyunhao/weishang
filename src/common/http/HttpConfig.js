@@ -13,10 +13,10 @@ export default class HttpConfig {
     static initHttpConfig() {
         XHttpConfig().initHttpLogOn(true)
             .initHeaderSetFunc((headers, request) => {
-                headers['Tenant-Type'] = 'Single';
-                if (RNStorage.token != null && RNStorage.token.length > 15) {
-                    headers.Authorization = 'Bearer ' + RNStorage.token;
-                }
+                // headers['Tenant-Type'] = 'Single';
+                // if (RNStorage.token != null && RNStorage.token.length > 15) {
+                //     headers.Authorization = 'Bearer ' + RNStorage.token;
+                // }
             })
             .initParseDataFunc((result, request, callback) => {
                 let {success, json, message, status, response} = result;

@@ -544,7 +544,7 @@ export class AddBillView extends Component {
 
                     const obj = {
                         money: this.state.money,//充值金额
-                        bank: this.state.bank_name,//银行
+                        bank: this.state.select_bank.bank_name + ' (' + this.state.select_bank.bank_num + ')',//银行
                         time: this.state.time,//时间
                         mdesc: this.state.categoryName,//消费类型（支付宝用）
                         plat: '1',//发送平台（1：支付宝2：微信） 默认为支付宝

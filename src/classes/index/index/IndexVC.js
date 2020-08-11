@@ -93,7 +93,7 @@ export default class IndexVC extends BaseVC {
 
     _addSubView() {
         return (
-            <View>
+            <>
                 <View
                     style={{height: 44, backgroundColor: Colors.white, justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={{fontSize: 17, color: '#000000'}}>制作截图</Text>
@@ -157,7 +157,7 @@ export default class IndexVC extends BaseVC {
                         </View>
                     </View>
                 </ScrollView>
-            </View>
+            </>
         )
     }
 
