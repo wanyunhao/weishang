@@ -19,16 +19,29 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
         super(props);
         this.state = {
             data: [
-                {
-                    title: "Main dishes",
-                    data: ["Pizza", "Burger", "Risotto"]
-                },
-                {
-                    title: "Sides",
-                    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
-                },
             ]
         };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this._requestData()
+    }
+
+    _requestData() {
+        XHttp().url(Api.Api_Gift_getRecord)
+            .param({
+                token: '123456',
+                plat: '1',
+                user_id: RNStorage.zfb_user_id,//当前用户
+                // month: RNStorage.user_id,//当前用户
+            })
+            .post((success, json) => {
+                console.log(json);
+                this.setState({
+                    data:json.data
+                })
+            })
     }
 
     divMessage(hasAvatar, hasCheck, infoText, tiXian, hasName, hasCategory, hasComment) {
@@ -49,22 +62,23 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                          }}/>);
     }
 
+
     _submit(value) {
-        let url = '';
-        url = Api.Api_Gift_addRecordForadd
         const obj = {
             ...value,
             token: '123456',
-            user_id: RNStorage.zfb_user_id,//当前用户
+            user_id: RNStorage.user_id,//当前用户
             plat: '1',//发送平台（1：支付宝2：微信） 默认为支付宝
+            type: this.billType
         }
-        XHttp().url(url)
+        console.log(obj);
+        XHttp().url(Api.Api_Gift_addRecord)
             .loadingFunc(loading => showLoading('请稍等',loading))
             .param(obj)
             .post((success, json) => {
                 console.log(json);
                 if (success) {
-
+                    this._requestData()
                 }
             })
     }
@@ -78,37 +92,50 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                                           {
                                               text: '自定义账单', onPress: () => {
                                                   this.divMessage(true, true, [], false, true, true)
+                                                  this.billType = 1
                                               }
                                           },
                                           {
                                               text: '添加转账消息', onPress: () => {
                                                   this.divMessage(true, true, ['转账-转给', '转账-来自'], false, true, true, true)
+
+                                                  this.billType = 2
                                               }
                                           },
                                           {
                                               text: '添加红包消息', onPress: () => {
                                                   this.divMessage(false, true, ['发送普通红包', '收到普通红包'], false, false, true)
+
+                                                  this.billType = 3
                                               }
                                           },
                                           {
                                               text: '二维码收付款', onPress: () => {
                                                   this.divMessage(true, true, ['扫付款码付款-给', '收款码收款-来自'], false, true, true)
+
+                                                  this.billType = 4
                                               }
                                           },
                                           {
                                               text: '收款', onPress: () => {
                                                   this.divMessage(true, true, [], false, true, true, true)
+
+                                                  this.billType = 5
                                               }
                                           },
                                           {
                                               text: '余额提现', onPress: () => {
 
                                                   this.divMessage(false, false, ['余额提现'], false, false, true)
+
+                                                  this.billType = 6
                                               }
                                           },
                                           {
                                               text: '余额充值', onPress: () => {
                                                   this.divMessage(false, false, ['余额充值'], false, false, true)
+
+                                                  this.billType = 7
                                               }
                                           },
                                       ];
@@ -146,8 +173,8 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                     sections={this.state.data}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({item}) => this._renderCell(item)}
-                    renderSectionHeader={({section: {title}}) => (
-                        this._renderSectionView(title)
+                    renderSectionHeader={({section: {count}}) => (
+                        this._renderSectionView(count)
                     )}
                 />
             </View>
@@ -174,13 +201,13 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                     height: 30,
                     borderRadius: 15
                 }}>
-                    <Text style={{color: '#3b3b3b'}}>本月</Text>
+                    <Text style={{color: '#3b3b3b'}}>{section.date}</Text>
                     <XImage style={{marginLeft: 6}} icon={require('../../../../resource/common/shixin_down.png')}
                             iconSize={11.37}/>
                 </XView>
                 <View>
-                    <Text style={{color: '#989898'}}>支出 100</Text>
-                    <Text style={{color: '#989898', marginTop: 3}}>支出 100</Text>
+                    <Text style={{color: '#989898'}}>支出 ￥{section.red} </Text>
+                    <Text style={{color: '#989898', marginTop: 3}}>收入￥{section.add}</Text>
                 </View>
             </View>
         )
@@ -189,18 +216,21 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
     _renderCell(item) {
         return (
             <View style={{padding: 20, flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: 'white'}}>
-                <XImage icon={require('../../../../resource/images/avatar.png')} iconSize={44}/>
+                <XImage icon={item.operation_atavtar} iconSize={44}/>
                 <View style={{flex: 1, marginLeft: 11}}>
                     <Text style={{fontSize: 18, color: '#353535'}}>
-                        {item}
+                        {item.desc}
+                    </Text>
+                    <Text style={{fontSize: 12, color: '#353535'}}>
+                        {item.mdesc}
                     </Text>
                     <Text style={{fontSize: 13, color: '#B8B8B8', marginTop: 3}}>
-                        {item}
+                        {item.add_time_date}
                     </Text>
                 </View>
 
                 <Text style={{fontSize: 18, color: '#363636', marginTop: 3}}>
-                    {item}
+                    {item.is_add + item.amount}
                 </Text>
                 <YHDividingLine left={75}/>
             </View>

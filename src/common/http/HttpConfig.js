@@ -14,6 +14,7 @@ export default class HttpConfig {
         XHttpConfig().initHttpLogOn(true)
             .initHeaderSetFunc((headers, request) => {
                 // headers['Tenant-Type'] = 'Single';
+                headers['Content-Type'] = 'text/html;charset=UTF-8';
                 // if (RNStorage.token != null && RNStorage.token.length > 15) {
                 //     headers.Authorization = 'Bearer ' + RNStorage.token;
                 // }
@@ -27,6 +28,7 @@ export default class HttpConfig {
                     callback(success, json, message, status, response);
                 }
             });
+
     }
 
 }

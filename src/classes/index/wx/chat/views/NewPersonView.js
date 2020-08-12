@@ -1,30 +1,17 @@
 import React, {Component} from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    TextInput,
-} from 'react-native';
+import {StyleSheet, Text, View,} from 'react-native';
 import {XImage, XText, XView} from "react-native-easy-app";
 import {Colors} from "../../../../../common/storage/Const";
 import SyanImagePicker from 'react-native-syan-image-picker';
-import {getPeople, showActionSheet, showEasyActionSheet, showOverlayPull} from "../../../../../compoments/YHUtils";
+import {getPeople, showEasyActionSheet, showOverlayPull} from "../../../../../compoments/YHUtils";
 import {Checkbox, Input, Overlay} from "teaset";
-import {Button} from "@ant-design/react-native";
 import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 import {isEmpty} from "../../../../../common/utils/Utils";
 import {showToast} from "../../../../../common/widgets/Loading";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import YHDatePicker from "./YHDatePicker";
-import {
-    MSGTableName,
-    queryAllFromRealm,
-    writeToRealm,
-    WXConversationTableName, WXQB_BankTableName
-} from "../../../../../common/utils/RealmUtil";
-import {dateFormat, getNow} from "../../../../../common/utils/DateUtils";
-import {Notify} from "../../../../../common/events/Notify";
+import {queryAllFromRealm, WXQB_BankTableName} from "../../../../../common/utils/RealmUtil";
+import {dateFormat} from "../../../../../common/utils/DateUtils";
 import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 
 export default class NewPersonView extends Component {
