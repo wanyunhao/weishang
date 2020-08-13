@@ -9,6 +9,7 @@ export const RNStorage = {//持久化数据列表
     wx_lq: undefined,//微信零钱
     wx_lqt: undefined,//微信零钱通
 
+    wx_pyq_bg: undefined,//微信朋友圈背景
     zfb_bg_one: undefined,//首页背景
     zfb_bg_two: undefined,//财富背景
     zfb_bg_three: undefined,//口碑背景

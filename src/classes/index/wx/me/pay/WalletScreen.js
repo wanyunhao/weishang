@@ -10,6 +10,8 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import BaseVC from "../../../zfb/Common/BaseVC";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {Notify} from "../../../../../common/events/Notify";
+import {showModalPrompt} from "../../../../../compoments/YHUtils";
+import {isEmpty} from "../../../../../common/utils/Utils";
 
 const {width} = Dimensions.get("window");
 
@@ -55,7 +57,12 @@ export default class WalletScreen extends BaseVC {
                         rightText: RNStorage.wx_lqt,
                         icon: require('../../../../resource/index/wx/me/pay/wallet/qb_icon_lqt.png'),
                     }} itemClick={() => {
-
+                        showModalPrompt('充值','',(text)=>{
+                            if (!isEmpty(text) && parseFloat(text)>0) {
+                                RNStorage.wx_lqt = (parseFloat(RNStorage.wx_lqt ) + parseFloat(text)).toFixed(2);
+                                Notify.Refresh_WX_LQ.sendEvent({})
+                            }
+                        },'请输入金额')
                     }}/>
                     <DiscoveryListCell data={{
                         title: '银行卡',

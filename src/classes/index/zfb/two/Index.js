@@ -86,7 +86,7 @@ export default class Index extends ZFBBaseVC {
                     <XImage style={{minWidth:Const.screenWidth,minHeight:Const.screenHeight}} icon={this.state.icon}/>
                 </TouchableOpacity>
                 <View style={{flex:1}}>
-                    <View style={{height: 119, backgroundColor: Colors.zfb_theme_color}}>
+                    <View style={{height: 129, backgroundColor: Colors.zfb_theme_color}}>
                         <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, marginTop: 10,}}>
                             <Text style={{flex: 1, color: Colors.white, fontSize: 18.5}}>财富</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>

@@ -32,7 +32,11 @@ export default class ZFBController extends PureComponent {
     }
 
     render() {
-        return <Navigator>
+        return <Navigator tabBarOptions={{
+            style : {
+                height:59 + INSETS.bottom
+            }
+        }}>
             <Screen name='Home1'
                     options={this.tabItemOption('首页', require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_s.png'), require('../classes/resource/zfb/common/zfb_tabbar_icon_sy_n.png'))}
                     component={OneController}/>

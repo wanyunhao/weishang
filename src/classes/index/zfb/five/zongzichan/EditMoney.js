@@ -76,26 +76,26 @@ export default class EditMoney extends ZFBBaseVC {
             <>
                 <ZFBNavigationBar title='编辑金额' noLine={true} rightText='保存' clickRText={() => {
                     writeToRealm({
-                        id: RNStorage.zfb_user_id,
-                        zfb_ye: this.state.ye,
-                        zfb_yeb: this.state.yeb,
-                        zfb_yeb_lx: this.state.yeb_lx,
-                        zcc_lccp: this.state.lccp,
-                        zcc_lccp_lx: this.state.lccp_lx,
-                        zcc_jj: this.state.jj,
-                        zcc_jj_lx: this.state.jj_lx,
-                        zcc_hj: this.state.hj,
-                        zcc_hj_lx: this.state.hj_lx,
-                        zcc_ylb: this.state.ylb,
-                        zcc_ylb_lx: this.state.ylb_lx,
-                        zcc_huabei: this.state.huabei,
+                        id: parseInt(RNStorage.zfb_user_id),
+                        zfb_ye: (parseFloat(this.state.ye)).toFixed(2),
+                        zfb_yeb: (parseFloat(this.state.yeb)).toFixed(2),
+                        zfb_yeb_lx: (parseFloat(this.state.yeb_lx)).toFixed(2),
+                        zcc_lccp: this.state.lccp_sel  == 1 ?this.state.lccp : (parseFloat(this.state.lccp)).toFixed(2),
+                        zcc_lccp_lx: (parseFloat(this.state.lccp_lx)).toFixed(2),
+                        zcc_jj: this.state.jj_sel  == 1 ?this.state.jj : (parseFloat(this.state.jj)).toFixed(2),
+                        zcc_jj_lx: (parseFloat(this.state.jj_lx)).toFixed(2),
+                        zcc_hj: this.state.hj_sel  == 1 ?this.state.hj : (parseFloat(this.state.hj)).toFixed(2),
+                        zcc_hj_lx: (parseFloat(this.state.hj_lx)).toFixed(2),
+                        zcc_ylb: this.state.ylb_sel  == 1 ?this.state.ylb : (parseFloat(this.state.ylb)).toFixed(2),
+                        zcc_ylb_lx: (parseFloat(this.state.ylb_lx)).toFixed(2),
+                        zcc_huabei: parseFloat(this.state.huabei) > 0 ? (parseFloat(this.state.huabei)).toFixed(2) :this.state.huabei,
                         lccp_sel: this.state.lccp_sel,
                         hj_sel: this.state.hj_sel,
                         jj_sel: this.state.jj_sel,
                         ylb_sel: this.state.ylb_sel,
-                        zcc_wangshangdai: this.state.wangshangdai,
-                        zcc_jiebei: this.state.jiebei,
-                        zcc_beiyongjin: this.state.beiyongjin,
+                        zcc_wangshangdai: parseFloat(this.state.wangshangdai) > 0 ? (parseFloat(this.state.wangshangdai)).toFixed(2) :this.state.wangshangdai,
+                        zcc_jiebei: parseFloat(this.state.jiebei) > 0 ? (parseFloat(this.state.jiebei)).toFixed(2) :this.state.jiebei,
+                        zcc_beiyongjin: parseFloat(this.state.beiyongjin) > 0 ? (parseFloat(this.state.beiyongjin)).toFixed(2) :this.state.beiyongjin,
                     },ZFBUserTableName).then(()=>{
                         navigation.goBack()
                         this.props.route.params.refreshData();
@@ -121,6 +121,26 @@ export default class EditMoney extends ZFBBaseVC {
                     <TitleAndSubCell value={this.state.yeb_lx} isEdit={true} title='余额宝利息' onChangeText={(text) => {
                         this.setState({
                             yeb_lx: text
+                        })
+                    }}/>
+                    <TitleAndSubCell value={this.state.huabei} isEdit={true} title='花呗' onChangeText={(text) => {
+                        this.setState({
+                            huabei: text
+                        })
+                    }}/>
+                    <TitleAndSubCell value={this.state.jiebei} isEdit={true} title='借呗' onChangeText={(text) => {
+                        this.setState({
+                            jiebei: text
+                        })
+                    }}/>
+                    <TitleAndSubCell value={this.state.wangshangdai} isEdit={true} title='网商贷' onChangeText={(text) => {
+                        this.setState({
+                            wangshangdai: text
+                        })
+                    }}/>
+                    <TitleAndSubCell value={this.state.beiyongjin} isEdit={true} title='备用金' onChangeText={(text) => {
+                        this.setState({
+                            beiyongjin: text
                         })
                     }}/>
                     <Title2TF data={{

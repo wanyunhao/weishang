@@ -1,27 +1,28 @@
-import React, {Component} from "react";
+import React from "react";
 
-import {Image, StyleSheet, Text, View,findNodeHandle,
-    FlatList} from "react-native";
+import {FlatList, Image, StyleSheet, Text, View} from "react-native";
 import {Colors, Const} from "../../../../common/storage/Const";
-import {XFlatList, XImage, XText} from "react-native-easy-app";
+import {XImage, XText, XView} from "react-native-easy-app";
 import {RNStorage} from "../../../../common/storage/AppStorage";
 import {
-    clearRowFromRealm, clearRowFromRealmFiltered,
+    clearRowFromRealm,
+    clearRowFromRealmFiltered,
     PYQListPicTableName,
     PYQListTableName,
     PYQListTalkTableName,
     queryAllFromRealm,
-    queryFilterFromRealm, writeToRealm
+    queryFilterFromRealm,
+    writeToRealm
 } from "../../../../common/utils/RealmUtil";
 import {isEmpty} from "../../../../common/utils/Utils";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
 import TalkBottomBarView from "./view/TalkBottomBarView";
-import {ActionPopover, Button, Label, Popover} from "teaset";
+import {ActionPopover} from "teaset";
 import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import BaseVC from "../../zfb/Common/BaseVC";
-import {getPeople, showActionSheet, showModalOperation, showModalPrompt} from "../../../../compoments/YHUtils";
-import {Provider} from "@ant-design/react-native";
+import {getPeople, showModalOperation, showModalPrompt} from "../../../../compoments/YHUtils";
 import {_getTimeStringAutoShort2} from "../../../../common/utils/YHTimeUtil";
+import SyanImagePicker from "react-native-syan-image-picker";
 
 export default class PYQListScreen extends BaseVC {
 
@@ -34,6 +35,7 @@ export default class PYQListScreen extends BaseVC {
             user_name: RNStorage.user_name,
             avatar: RNStorage.avatarUrl,
             showBottom: false,
+            top_bg :isEmpty(RNStorage.wx_pyq_bg) ? require('../../../resource/index/wx/fx/pyq_bg.png') : RNStorage.wx_pyq_bg
         };
         this.opreation_talk_id = null;
         this.pyq_id = null;
@@ -120,15 +122,38 @@ export default class PYQListScreen extends BaseVC {
 
     _renderHeader() {
         return (
-            <View style={{alignItems: 'flex-end',backgroundColor: Colors.white}}>
-                <Image style={{width:Const.screenWidth,height:313}} source={require('../../../resource/index/wx/fx/pyq_bg.png')}/>
+            <XView onPress={()=>{
+                SyanImagePicker.showImagePicker({
+                    imageCount: 1,
+                    isCrop: true,
+                    CropW:Const.screenWidth,
+                    CropH:313,
+                    allowPickingOriginalPhoto: false,
+                    isCamera: false,
+                    enableBase64: true
+                }, (err, selectedPhotos) => {
+                    if (err) {
+                        // 取消选择
+                        return;
+                    }
+                    // 选择成功，渲染图片
+                    // ...
+                    this.setState({
+                        top_bg: selectedPhotos[0].base64
+                    },()=>{
+                        RNStorage.wx_pyq_bg = this.state.top_bg
+                    })
+                })
+            }} style={{alignItems: 'flex-end',backgroundColor: Colors.white}}>
+                {/*<Image style={{width:Const.screenWidth,height:313}} source={this.state.top_bg}/>*/}
+                <XImage resizeMode='stretch' style={{width:Const.screenWidth,height:313}} icon={this.state.top_bg}/>
                 <View style={{flexDirection:'row',alignItems:'center',marginRight:15,marginTop:-45}}>
                     <Text style={{fontSize:13,color:Colors.white,marginRight:11}}>
                         {RNStorage.user_id}
                     </Text>
                     <XImage style={{borderRadius:5}} icon={RNStorage.avatarUrl} iconSize={60}/>
                 </View>
-            </View>
+            </XView>
         )
     }
 

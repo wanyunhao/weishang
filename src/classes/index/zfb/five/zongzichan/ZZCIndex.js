@@ -69,7 +69,8 @@ export default class ZZCIndex extends ZFBBaseVC {
         SyanImagePicker.showImagePicker({
             imageCount: 1,
             isCamera: false,
-            enableBase64: true
+            enableBase64: true,
+            allowPickingOriginalPhoto: true
         }, (err, selectedPhotos) => {
             if (err) {
                 // 取消选择
@@ -98,11 +99,12 @@ export default class ZZCIndex extends ZFBBaseVC {
                 {/*    this._chooseImg()*/}
                 {/*}}/>)}*/}
 
-                <YHTouchableOpacity style={{top: 0, position: 'absolute',}} onPress={() => {
+                <YHTouchableOpacity style={{top: 0,bottom:0,left:0,right:0, position: 'absolute'}} onPress={() => {
                     this._chooseImg()
                 }}>
-                    <XImage style={{minWidth: Const.screenWidth, minHeight: Const.screenHeight}}
-                            icon={this.state.icon}/>
+                    <XImage resizeMode='stretch' style={{width: '100%', height: '100%'}}
+                            icon={this.state.icon}
+                    />
                 </YHTouchableOpacity>
                 <View>
                     <ZFBNavigationBar title='总资产' noLine={true} rightText='服务'/>
@@ -116,7 +118,7 @@ export default class ZZCIndex extends ZFBBaseVC {
                         width: Const.screenWidth - 32,
                         backgroundColor: Colors.white,
                         paddingVertical: 15,
-                        marginTop: 80,
+                        marginTop: 70,
                         height: 381
                     }}>
                         <View style={{

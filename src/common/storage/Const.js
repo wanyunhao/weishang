@@ -1,7 +1,7 @@
 import {Dimensions, PixelRatio, Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-const {width, height, scale} = Dimensions.get('window');
+const {width, height, scale} = Dimensions.get('screen');
 
 export const Const = {
     screenWidth: width,//屏幕宽
