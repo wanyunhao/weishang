@@ -177,7 +177,7 @@ export default class BillsScreen extends WXBaseVC {
                     </Text>
                 </View>
 
-                <Text style={{fontSize:18, color:item.is_add == '+' ? 'rgb(231,84,30)':'#363636',marginTop:3,alignSelf:'flex-start'}}>
+                <Text style={{fontSize:18, color:item.is_add == '+' ? '#EBB02E':'#363636',marginTop:3,alignSelf:'flex-start'}}>
                     {item.is_add + item.amount}
                 </Text>
                 <YHDividingLine left={75}/>

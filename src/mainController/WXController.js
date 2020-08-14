@@ -24,7 +24,7 @@ export default class WXController extends PureComponent {
     render() {
         return <Navigator>
             <Screen name='Home1'
-                    options={this.tabItemOption('聊天', require('../classes/resource/tarbar/tabbar_icon_xx_s.png'), require('../classes/resource/tarbar/tabbar_icon_xx_n.png'))}
+                    options={this.tabItemOption('微信', require('../classes/resource/tarbar/tabbar_icon_xx_s.png'), require('../classes/resource/tarbar/tabbar_icon_xx_n.png'))}
                     component={ConversationScreen}/>
             <Screen name='Mine2'
                     options={this.tabItemOption('通讯录', require('../classes/resource/tarbar/tabbar_icon_txl_s.png'), require('../classes/resource/tarbar/tabbar_icon_txl_n.png'))}

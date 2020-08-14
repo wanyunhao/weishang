@@ -43,6 +43,7 @@ import ZZCIndex from './classes/index/zfb/five/zongzichan/ZZCIndex';
 import EditMoney from './classes/index/zfb/five/zongzichan/EditMoney';
 import ZFBContactIndex from './classes/index/zfb/four/contact/ZFBContactIndex';
 import WXNewFriendScreen from "./classes/index/wx/contact/WXNewFriendScreen";
+import WXPersonInfoScreen from "./classes/index/wx/me/WXPersonInfoScreen";
 import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
 
 import TeasetExampleHome from './classes/demo/views/Home';
@@ -109,5 +110,6 @@ function ScreenList() {
         <Screen name='ChatSystemMsgScreen' component={ChatSystemMsgScreen}/>
         <Screen name='ChatFileScreen' component={ChatFileScreen}/>
         <Screen name='ChatUrlScreen' component={ChatUrlScreen}/>
+        <Screen name='WXPersonInfoScreen' component={WXPersonInfoScreen}/>
     </Navigator>;
 }

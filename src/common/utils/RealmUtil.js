@@ -52,6 +52,7 @@ const SelfTableNameSchema = {
         id: 'int',
         user_name: 'string',
         avatar: 'string',
+        account: {type:'string?',default: ''},
         wx_lq: {type:'float?',default:0},
         wx_lqt: {type:'float?',default:0},
     }

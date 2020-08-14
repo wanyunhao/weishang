@@ -1,36 +1,26 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, Image, Text} from 'react-native';
-import ZFBBaseVC from "../Common/ZFBBaseVC";
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {ZFBNavigationBar} from "../../../../common/widgets/ZFBNavigation";
-import {NewPersonIconView} from "../../wx/chat/views/NewPersonView";
 import Input from "teaset/components/Input/Input";
 import {RNStorage} from "../../../../common/storage/AppStorage";
-import {showToast} from "../../../../common/widgets/Loading";
-import {XFlatList, XImage, XText, XView} from "react-native-easy-app";
+import {XImage, XView} from "react-native-easy-app";
 import {showActionSheet} from "../../../../compoments/YHUtils";
-import {
-    queryAllFromRealm,
-    queryFilterFromRealm,
-    writeToRealm,
-    ZFBUserTableName
-} from "../../../../common/utils/RealmUtil";
+import {queryAllFromRealm, SelfTableName, writeToRealm, ZFBUserTableName} from "../../../../common/utils/RealmUtil";
 import YHDividingLine from "../../../../common/widgets/YHDividingLine";
 import {Colors, Const} from "../../../../common/storage/Const";
-import {_getTimeStringAutoShort2} from "../../../../common/utils/YHTimeUtil";
 import YHTouchableOpacity from "../../../../compoments/YHTouchableOpacity";
-import {getNow} from "../../../../common/utils/DateUtils";
+import WXBaseVC from "../../zfb/Common/WXBaseVC";
+import {WXNavigationBar} from "../../../../common/widgets/WXNavigation";
+import {NewPersonIconView} from "../chat/views/NewPersonView";
 
-export default class PersonInfoScreen extends ZFBBaseVC {
+export default class WXPersonInfoScreen extends WXBaseVC {
     constructor() {
         super();
         this.state = {
-            id:RNStorage.zfb_user_id,
-            avatar:RNStorage.zfb_avatarUrl,
-            nickname:RNStorage.zfb_user_name,
-            account:RNStorage.zfb_account,
-            level:RNStorage.zfb_account_level,
-            ye:RNStorage.zfb_ye,
-            yeb:RNStorage.zfb_yeb,
+            id:RNStorage.user_id,
+            avatar:RNStorage.avatarUrl,
+            nickname:RNStorage.user_name,
+            account:RNStorage.account,
             data: [],
         }
     }
@@ -40,12 +30,12 @@ export default class PersonInfoScreen extends ZFBBaseVC {
         // queryFilterFromRealm(ZFBUserTableName,'id !=' + RNStorage.zfb_user_id).then((res)=>{
         //     console.log(res);
         // })
-        this._requestData()
+        // this._requestData()
     }
 
     _requestData() {
 
-        queryAllFromRealm(ZFBUserTableName).then((res)=>{
+        queryAllFromRealm(SelfTableName).then((res)=>{
             this.setState({
                 data:res
             })
@@ -55,22 +45,17 @@ export default class PersonInfoScreen extends ZFBBaseVC {
     _addSubView() {
         return (
             <>
-                <ZFBNavigationBar title='编辑个人资料' rightText={'完成'} clickRText={()=>{
+                <WXNavigationBar title='编辑个人资料' rightText={'完成'} clickRText={()=>{
 
                     writeToRealm({
                         id: parseInt(this.state.id),
                         user_name: this.state.nickname,
                         avatar: this.state.avatar,
                         account:this.state.account,
-                        level:this.state.level,
-                    },ZFBUserTableName).then(()=>{
-                        RNStorage.zfb_user_id = this.state.id;
-                        RNStorage.zfb_avatarUrl = this.state.avatar;
-                        RNStorage.zfb_user_name = this.state.nickname;
-                        RNStorage.zfb_account = this.state.account;
-                        RNStorage.zfb_account_level = this.state.level;
-                        RNStorage.zfb_ye = this.state.ye;
-                        RNStorage.zfb_yeb = this.state.yeb;
+                    },SelfTableName).then(()=>{
+                        RNStorage.avatarUrl = this.state.avatar;
+                        RNStorage.user_name = this.state.nickname;
+                        RNStorage.account = this.state.account;
                         this.props.route.params.refreshUserInfo && this.props.route.params.refreshUserInfo()
                         navigation.goBack()
                     })
@@ -96,51 +81,17 @@ export default class PersonInfoScreen extends ZFBBaseVC {
                         placeholder='请输入账号'
                         onChangeText={text => this.setState({account: text})}
                     />
-                    <XView onPress={()=>{
-                        let items = [
-                            {title: '大众会员', onPress: () => {
-                                    this.setState({
-                                        level:'大众会员'
-                                    })
 
-                                }},
-                            {title: '黄金会员', onPress: () => {
-                                    this.setState({
-                                        level:'黄金会员'
-                                    })
-                                }},
-                            {title: '铂金会员', onPress: () => {
-                                    this.setState({
-                                        level:'铂金会员'
-                                    })
-                                }},
-                            {title: '钻石会员', onPress: () => {
-                                    this.setState({
-                                        level:'钻石会员'
-                                    })
-                                }},
-                        ];
-                        showActionSheet(items);
-                    }}>
-
-                        <Input
-                            style={{width: 200, marginTop: 10,}}
-                            size='md'
-                            editable={false}
-                            value={this.state.level}
-                            placeholder='请选择'
-                        />
-                    </XView>
                 </View>
-                <FlatList
-                    data={this.state.data}
-                    renderItem={({item, index}) => {
-                        return this._renderCell(item,index);
-                    }}
-                    ListHeaderComponent={() => {
-                        return this._renderHeader();
-                    }}
-                />
+                {/*<FlatList*/}
+                {/*    data={this.state.data}*/}
+                {/*    renderItem={({item, index}) => {*/}
+                {/*        return this._renderCell(item,index);*/}
+                {/*    }}*/}
+                {/*    ListHeaderComponent={() => {*/}
+                {/*        return this._renderHeader();*/}
+                {/*    }}*/}
+                {/*/>*/}
             </>
         )
     }

@@ -29,17 +29,18 @@ export default class Index extends ZFBBaseVC {
         SyanImagePicker.showImagePicker({
             imageCount: 1,
             isCamera: false,
-            enableBase64: true
+            enableBase64: true,
+            allowPickingOriginalPhoto: true
         }, (err, selectedPhotos) => {
             if (err) {
                 // 取消选择
                 return;
             }
 
-            RNStorage.zfb_bg_two = selectedPhotos[0].base64;
+            RNStorage.zfb_bg_two = selectedPhotos[0].uri;
             // 选择成功，渲染图片
             this.setState({
-                icon:selectedPhotos[0].base64
+                icon:selectedPhotos[0].uri
             })
         })
     }
@@ -83,7 +84,7 @@ export default class Index extends ZFBBaseVC {
                 <TouchableOpacity style={{top:0,position:'absolute'}} onPress={()=> {
                     this._chooseImg()
                 }}>
-                    <XImage style={{minWidth:Const.screenWidth,minHeight:Const.screenHeight}} icon={this.state.icon}/>
+                    <XImage resizeMode='stretch' style={{minWidth:Const.screenWidth,minHeight:Const.screenHeight}} icon={this.state.icon}/>
                 </TouchableOpacity>
                 <View style={{flex:1}}>
                     <View style={{height: 129, backgroundColor: Colors.zfb_theme_color}}>

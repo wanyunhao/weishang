@@ -27,7 +27,7 @@ export default class LaunchController extends PureComponent {
             global.navigation = this.props.navigation;
             queryAllFromRealm(SelfTableName).then((data)=>{
                 if (isEmpty(data)) {
-                    let userinfo = {id:1,user_name:'自己',avatar:'https://pic.lanhuapp.com/FiYN8LHssdP-fu1AoC5jxzNLdFSL?imageMogr2/thumbnail/480x/crop/x360/format/webp/imageslim'}
+                    let userinfo = {id:1,user_name:'自己',account:'123',avatar:'https://pic.lanhuapp.com/FiYN8LHssdP-fu1AoC5jxzNLdFSL?imageMogr2/thumbnail/480x/crop/x360/format/webp/imageslim'}
                     writeToRealm(userinfo,ZFBUserTableName,ZFBUserTableName).then(()=>{
                         RNStorage.zfb_user_id = userinfo.id
                         RNStorage.zfb_avatarUrl = userinfo.avatar;

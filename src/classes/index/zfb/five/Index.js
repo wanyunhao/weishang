@@ -97,7 +97,7 @@ export default class Index extends ZFBBaseVC {
                                         paddingHorizontal: 11,
                                         borderRadius: 10,
                                         height: 20,
-                                        backgroundColor: '#2A8AD6',
+                                        backgroundColor: 'rgb(37,127,254)',
                                         justifyContent: 'center',
                                         marginTop: 5
                                     }}>

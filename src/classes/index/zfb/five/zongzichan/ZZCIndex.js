@@ -69,18 +69,17 @@ export default class ZZCIndex extends ZFBBaseVC {
         SyanImagePicker.showImagePicker({
             imageCount: 1,
             isCamera: false,
-            enableBase64: true,
+            enableBase64: false,
             allowPickingOriginalPhoto: true
         }, (err, selectedPhotos) => {
             if (err) {
                 // 取消选择
                 return;
             }
-
-            RNStorage.zfb_bg_zzc = selectedPhotos[0].base64;
+            RNStorage.zfb_bg_zzc = selectedPhotos[0].uri;
             // 选择成功，渲染图片
             this.setState({
-                icon: selectedPhotos[0].base64
+                icon: selectedPhotos[0].uri
             })
         })
     }
@@ -129,22 +128,27 @@ export default class ZZCIndex extends ZFBBaseVC {
                             height: 22,
                             paddingHorizontal: 15,
                         }}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <View>
                                 <Text style={{color: '#000000', fontSize: 16}}>我的资产</Text>
-                                <XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_eye.png')}
-                                        style={{width: 16.89, height: 11.5, marginLeft: 10}}/>
-                            </View>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_bzz.png')}
-                                        style={{width: 10.23, height: 11.74}}/>
                                 <Text style={{
                                     color: '#279C93',
                                     fontSize: 12,
-                                    marginLeft: 4,
                                     marginRight: 6
-                                }}>账户安全保障中</Text>
-                                <XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_more2.png')}
-                                        style={{width: 6.05, height: 9.55}}/>
+                                }}>账户安全保障中 ></Text>
+                                {/*<XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_eye.png')}*/}
+                                {/*        style={{width: 16.89, height: 11.5, marginLeft: 10}}/>*/}
+                            </View>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                {/*<XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_bzz.png')}*/}
+                                {/*        style={{width: 10.23, height: 11.74}}/>*/}
+
+                                {/*<Text style={{*/}
+                                {/*    color: '#279C93',*/}
+                                {/*    fontSize: 12,*/}
+                                {/*    marginRight: 6*/}
+                                {/*}}>账户安全保障中 ></Text>*/}
+                                {/*<XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_more2.png')}*/}
+                                {/*        style={{width: 6.05, height: 9.55}}/>*/}
                             </View>
                         </View>
                         <YHDividingLine isBottom={false} top={52}/>
@@ -156,7 +160,12 @@ export default class ZZCIndex extends ZFBBaseVC {
                             paddingHorizontal: 15,
                         }}>
                             <View>
-                                <Text style={{color: '#999999', marginRight: 14, fontSize: 12}}>总资产(元)</Text>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+
+                                    <Text style={{color: '#999999', marginRight: 1, fontSize: 12}}>总资产(元)</Text>
+                                    <XImage icon={require('../../../../resource/zfb/five/zzc/zfb_zzc_eye.png')}
+                                            style={{width: 16.89, height: 11.5, marginLeft: 1}}/>
+                                </View>
                                 <Text style={{color: '#333333', fontSize: 23, marginTop: 4}}>{this.state.zzc}</Text>
                             </View>
                             <View style={{alignItems: 'flex-end'}}>

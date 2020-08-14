@@ -81,9 +81,14 @@ export default class ConversationScreen extends WXBaseVC {
     }
 
     _addSubView() {
+        //wx_icon_search wx_icon_add
         return (
                 <View style={styles.container}>
-                    <WXNavigationBar title='微信' hideBack={true} rightText='添加' clickRText={() => {
+
+                    <WXNavigationBar
+                        rightImage2={require('../../../resource/index/wx_icon_search.png')}
+                        rightImage={require('../../../resource/index/wx_icon_add.png')}
+                        title='微信' hideBack={true} clickRImage={() => {
                         let items = [
                             {
                                 text: '创建单聊', onPress: () => {

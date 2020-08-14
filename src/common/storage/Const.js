@@ -43,7 +43,7 @@ export const Colors = { //App通用颜色
     zfb_tabbar_select_color: '#2080CA',
     qipao_background_color: '#95EC69',
     wx_line_color: '#EBEBEB',
-    zfb_theme_color: '#1B82D1',
+    zfb_theme_color: 'rgb(21,120,255)',
 
 };
 

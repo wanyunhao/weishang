@@ -3,7 +3,7 @@ import Global from "../../../../common/utils/Global";
 
 import {Dimensions, PixelRatio, ScrollView, StyleSheet, Text, View,} from "react-native";
 import {Colors} from "../../../../common/storage/Const";
-import {XImage} from "react-native-easy-app";
+import {XImage, XView} from "react-native-easy-app";
 import DiscoveryListCell from "../discovery/view/DiscoveryListCell";
 import BaseVC from "../../zfb/Common/BaseVC";
 import {RNStorage} from "../../../../common/storage/AppStorage";
@@ -17,6 +17,7 @@ export default class MeScreen extends BaseVC {
     this.state = {
       userInfo: {},
       // avatar: UserInfoUtil.getUserAvatar()
+      refresh:false
     };
   }
 
@@ -25,44 +26,30 @@ export default class MeScreen extends BaseVC {
     this._setPlaceViewBackgroundColor(Colors.white)
   }
 
-  refreshUserInfo() {
-    this.setState({
-      // userInfo: UserInfoUtil.userInfo
-    });
-  }
-
-  componentWillMount() {
-    // CountEmitter.addListener(
-    //   "notifyUserInfoUpdated",
-    //   this.notifyUserInfoUpdatedListener
-    // );
-  }
-
-  componentWillUnmount() {
-    // CountEmitter.removeListener(
-    //   "notifyUserInfoUpdated",
-    //   this.notifyUserInfoUpdatedListener
-    // );
-  }
-
-  notifyUserInfoUpdatedListener = () => {
-    // this.refreshUserInfo();
-  };
 
 
   _addSubView() {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <View style={{backgroundColor: Colors.white}}>
+          <XView onPress={()=>{
+            navigation.push('WXPersonInfoScreen',{refreshUserInfo:()=>{
+              this.setState({
+                refresh: !this.state.refresh
+              })
+              }})
+          }} style={{backgroundColor: Colors.white}}>
             <View style={{height:161.71}}>
               <XImage icon={RNStorage.avatarUrl} iconSize={58} style={{position:'absolute',left:24,top:65}}/>
-              <Text style={{position:'absolute',left:98,top:65,fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>{RNStorage.user_name}</Text>
+              <View style={{position:'absolute',left:98,top:65,}}>
+                <Text style={{fontSize:20,fontWeight:'bold',color:Colors.black_text_color}}>{RNStorage.user_name}</Text>
+                <Text style={{fontSize:14,color:Colors.gray_text_color,marginTop: 10}}>微信号: {RNStorage.account}</Text>
+              </View>
               <XImage icon={require('../../../resource/index/wx/me/xiagnj.png')} style={{position:'absolute',right:16,top:16,width:18.5,height:15}}/>
               <XImage icon={require('../../../resource/index/wx/me/ewm.png')} iconSize={11.32} style={{position:'absolute',bottom:44,right:38}}/>
               <XImage icon={require('../../../resource/common/right.png')} style={{position:'absolute',bottom:40,right:15,width:10,height:20}}/>
             </View>
-          </View>
+          </XView>
           <DiscoveryListCell marginTop={8} data={{
             title: '支付',
             icon: require('../../../resource/index/wx/me/wd_icon_zf.png'),
