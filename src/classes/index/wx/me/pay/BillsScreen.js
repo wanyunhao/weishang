@@ -163,10 +163,11 @@ export default class BillsScreen extends WXBaseVC {
         )
     }
     _renderCell(item) {
-        console.log(item);
         return (
             <View style={{padding:20, flexDirection:'row',alignItems:'center',flex:1,backgroundColor: 'white'}}>
-                <XImage icon={item.operation_atavtar} iconSize={44}/>
+                <View style={{alignSelf:'flex-start',borderRadius:22,width:44,height:44,overflow:'hidden'}}>
+                    <XImage icon={item.operation_atavtar} iconSize={44}/>
+                </View>
                 <View style={{flex:1,marginLeft:11}}>
                     <Text style={{fontSize:18, color:'#353535'}}>
                         {item.desc}
@@ -176,7 +177,7 @@ export default class BillsScreen extends WXBaseVC {
                     </Text>
                 </View>
 
-                <Text style={{fontSize:18, color:'#363636',marginTop:3}}>
+                <Text style={{fontSize:18, color:item.is_add == '+' ? 'rgb(231,84,30)':'#363636',marginTop:3,alignSelf:'flex-start'}}>
                     {item.is_add + item.amount}
                 </Text>
                 <YHDividingLine left={75}/>

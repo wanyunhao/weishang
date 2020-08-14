@@ -105,17 +105,18 @@ export default class ZZCIndex extends ZFBBaseVC {
                     <XImage resizeMode='stretch' style={{width: '100%', height: '100%'}}
                             icon={this.state.icon}
                     />
+                    <View style={{backgroundColor:'rgb(242,242,242)',top: 300,bottom:0,left:0,right:0, position: 'absolute'}}/>
                 </YHTouchableOpacity>
                 <View>
-                    <ZFBNavigationBar title='总资产' noLine={true} rightText='服务'/>
+                    <ZFBNavigationBar title='总资产' noLine={true} rightText='服务' nav_bg_color={'rgb(21,120,255)'}/>
                     <XView onPress={() => {
                         navigation.push('EditMoney',{refreshData: ()=>{
                                 this._requestData()
                             }})
                     }} style={{
                         borderRadius: 4,
-                        marginLeft: 16,
-                        width: Const.screenWidth - 32,
+                        marginLeft: 11,
+                        width: Const.screenWidth - 22,
                         backgroundColor: Colors.white,
                         paddingVertical: 15,
                         marginTop: 70,
@@ -168,7 +169,7 @@ export default class ZZCIndex extends ZFBBaseVC {
                             {this.state.items.map((value, index,) => {
                                 return (
                                     <View style={{
-                                        width: (Const.screenWidth - 32) / 2,
+                                        width: (Const.screenWidth - 22) / 2,
                                         height: 68,
                                         justifyContent: 'center',
                                     }}>
@@ -224,8 +225,8 @@ export default class ZZCIndex extends ZFBBaseVC {
 
                     <View style={{
                         borderRadius: 4,
-                        marginLeft: 16,
-                        width: Const.screenWidth - 32,
+                        marginLeft: 11,
+                        width: Const.screenWidth - 22,
                         backgroundColor: Colors.white,
                         marginTop: 12,
                         height: 188,
@@ -244,7 +245,7 @@ export default class ZZCIndex extends ZFBBaseVC {
                             {this.state.items2.map((value, index,) => {
                                 return (
                                     <View style={{
-                                        width: (Const.screenWidth - 32) / 2,
+                                        width: (Const.screenWidth - 22) / 2,
                                         height: 68,
                                         justifyContent: 'center',
                                     }}>
@@ -300,7 +301,7 @@ export default class ZZCIndex extends ZFBBaseVC {
             }
 
             this.setState({
-                zzc: zzc,
+                zzc: zzc.toFixed(2),
                 zrsy: zrsy,
                 yue: model.zfb_ye,
                 yueb: model.zfb_yeb,

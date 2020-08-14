@@ -70,8 +70,8 @@ export default class Index extends ZFBBaseVC {
             }
 
             this.setState({
-                zzc: zzc,
-                zrsy: zrsy,
+                zzc: zzc.toFixed(2),
+                zrsy: zrsy.toFixed(2),
             })
         })
     }

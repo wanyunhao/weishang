@@ -1,6 +1,6 @@
 import React from "react";
-import {SectionList, StyleSheet, Text, View} from "react-native";
-import {Colors} from "../../../../../common/storage/Const";
+import {Image, SectionList, StyleSheet, Text, View} from "react-native";
+import {Colors, ImageRes} from "../../../../../common/storage/Const";
 import {showModalOperation, showOverlayModal} from "../../../../../compoments/YHUtils";
 import Overlay from "teaset/components/Overlay/Overlay";
 import {XHttp, XImage, XText, XView} from "react-native-easy-app";
@@ -11,6 +11,7 @@ import {ZFBNavigationBar} from "../../../../../common/widgets/ZFBNavigation";
 import {Api} from "../../../../../common/http/Api";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {showLoading} from "../../../../../common/widgets/Loading";
+import YHTouchableOpacity from "../../../../../compoments/YHTouchableOpacity";
 
 
 export default class ZFBBillsScreen extends ZFBBaseVC {
@@ -25,6 +26,7 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
 
     componentDidMount() {
         super.componentDidMount();
+        this._setPlaceViewBackgroundColor('rgb(175,175,175)')
         this._requestData()
     }
 
@@ -86,7 +88,11 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
     _addSubView() {
         return (
             <View style={styles.container}>
-                <ZFBNavigationBar title='账单' rightImage={require('../../../../resource/common/wx_more.png')}
+                <ZFBNavigationBar title='账单'
+                                  nav_bg_color={Colors.white}
+                                  title_color={Colors.black}
+                                  left_img={ImageRes.wx_back}
+                                  rightImage={require('../../../../resource/common/wx_more.png')}
                                   clickRImage={() => {
                                       let items = [
                                           {
@@ -186,7 +192,7 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
             <View style={{
                 paddingHorizontal: 20,
                 paddingVertical: 5,
-                backgroundColor: '#EDEDED',
+                backgroundColor: 'rgb(245,245,245)',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexDirection: 'row'
@@ -205,9 +211,13 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                     <XImage style={{marginLeft: 6}} icon={require('../../../../resource/common/shixin_down.png')}
                             iconSize={11.37}/>
                 </XView>
-                <View>
-                    <Text style={{color: '#989898'}}>支出 ￥{section.red} </Text>
-                    <Text style={{color: '#989898', marginTop: 3}}>收入￥{section.add}</Text>
+                <View style={{flexDirection:'row',alignItems:'center'}}>
+                    <View style={{alignItems:'flex-end'}}>
+                        <Text style={{color: '#989898',fontSize:12}}>支出 ￥{section.red} </Text>
+                        <Text style={{color: '#989898', marginTop: 1,fontSize:12}}>收入￥{section.add}</Text>
+                    </View>
+                    <Image source={require('../../../../resource/common/right.png')}
+                           style={{width: 7, height: 14, marginLeft: 11}}/>
                 </View>
             </View>
         )
@@ -215,8 +225,10 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
 
     _renderCell(item) {
         return (
-            <View style={{padding: 20, flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: 'white'}}>
-                <XImage icon={item.operation_atavtar} iconSize={44}/>
+            <View style={{padding: 15, flexDirection: 'row', alignItems: 'center', flex: 1, backgroundColor: 'white'}}>
+                <View style={{alignSelf:'flex-start',borderRadius:22,width:44,height:44,overflow:'hidden'}}>
+                    <XImage icon={item.operation_atavtar} iconSize={44}/>
+                </View>
                 <View style={{flex: 1, marginLeft: 11}}>
                     <Text style={{fontSize: 18, color: '#353535'}}>
                         {item.desc}
@@ -229,7 +241,7 @@ export default class ZFBBillsScreen extends ZFBBaseVC {
                     </Text>
                 </View>
 
-                <Text style={{fontSize: 18, color: '#363636', marginTop: 3}}>
+                <Text style={{fontSize: 18, color: item.is_add == '+' ? 'rgb(231,84,30)':'#363636', marginTop: 3,alignSelf:'flex-start'}}>
                     {item.is_add + item.amount}
                 </Text>
                 <YHDividingLine left={75}/>
