@@ -149,7 +149,7 @@ export default class PYQListScreen extends BaseVC {
                 <XImage resizeMode='stretch' style={{width:Const.screenWidth,height:313}} icon={this.state.top_bg}/>
                 <View style={{flexDirection:'row',alignItems:'center',marginRight:15,marginTop:-45}}>
                     <Text style={{fontSize:13,color:Colors.white,marginRight:11}}>
-                        {RNStorage.user_id}
+                        {RNStorage.user_name}
                     </Text>
                     <XImage style={{borderRadius:5}} icon={RNStorage.avatarUrl} iconSize={60}/>
                 </View>

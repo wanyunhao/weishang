@@ -386,7 +386,7 @@ export default class ChattingScreen extends WXBaseVC {
                         writeToRealm({
                             id: getNow(),
                             c_id: this.state.c_data.id,//会话id
-                            send_id: this.state.senderId,
+                            send_id: parseInt(this.state.senderId),
                             type: type,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息
                             yuyintonghua: result,
                             shipin: result
