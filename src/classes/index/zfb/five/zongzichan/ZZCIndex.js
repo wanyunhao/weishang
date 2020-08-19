@@ -108,7 +108,7 @@ export default class ZZCIndex extends ZFBBaseVC {
                 </YHTouchableOpacity>
                 <View>
                     <ZFBNavigationBar title='总资产' noLine={true} rightText='服务' nav_bg_color={'rgb(21,120,255)'}/>
-                    <XView onPress={() => {
+                    <XView activeOpacity={1} onPress={() => {
                         navigation.push('EditMoney',{refreshData: ()=>{
                                 this._requestData()
                             }})
