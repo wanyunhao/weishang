@@ -91,6 +91,7 @@ export default class IndexVC extends BaseVC {
     }
 
 
+
     _addSubView() {
         return (
             <>
@@ -115,6 +116,7 @@ export default class IndexVC extends BaseVC {
                     </View>
                     <View style={{paddingHorizontal:21,paddingVertical:15,backgroundColor:Colors.white,marginTop:10}}>
                         <XView onPress={()=>{
+                            // this.test()
                             navigation.push('WX')
                             // this._setBarStyle(2);
                         }} style={{flexDirection:'row',justifyContent: 'space-between',alignItems: 'center'}}>

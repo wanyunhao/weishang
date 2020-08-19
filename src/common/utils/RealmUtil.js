@@ -140,6 +140,7 @@ export const WXMSGSchema = {
         urlIcon: {type:'string?',default:''},//连接图片
         urlTitle: {type:'string?',default:''},//连接标题
         urlContent: {type:'string?',default:''},//连接内容
+        create_time: 'int?',//创建时间
     }
 };
 //红包领取人列表

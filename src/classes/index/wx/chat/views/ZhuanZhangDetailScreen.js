@@ -12,7 +12,7 @@ import YHDividingLine from "../../../../../common/widgets/YHDividingLine";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {MSGTableName, writeToRealm, WXConversationTableName} from "../../../../../common/utils/RealmUtil";
 import {deepClone, isEmpty} from "../../../../../common/utils/Utils";
-import {getNow} from "../../../../../common/utils/DateUtils";
+import {dateToFormat, getNow} from "../../../../../common/utils/DateUtils";
 import {Notify} from "../../../../../common/events/Notify";
 
 export default class ZhuanZhangDetailScreen extends Component {
@@ -68,7 +68,7 @@ export default class ZhuanZhangDetailScreen extends Component {
                 <View style={{alignItems:'center',marginTop:46}}>
                     <XImage icon={this.state.type == 2 ? require('../../../../resource/index/chat/shoukuan_yes.png'):require('../../../../resource/index/chat/dqrsk.png')} iconSize={56.37}/>
                     <XText style={{color:'#1A1A1A',fontSize:17,marginTop:39}} text={statusText}/>
-                    <XText style={{color:'#1A1A1A',fontSize:47}} text='$888.99'/>
+                    <XText style={{color:'#1A1A1A',fontSize:47}} text={'￥'+ parseFloat(item.zhuanzhangMoney).toFixed(2)}/>
                     {this.state.type == 2 ? (
                         <View>
                             <XText style={{color:'#7F7F7F',fontSize:14}} text={(item.send_id == this.state.caozuo_user_id) ?(item.received_id ==this.state.caozuo_user_id)?'已存入零钱中':'已存入对方零钱中':'已存入零钱中'}/>
@@ -124,7 +124,7 @@ export default class ZhuanZhangDetailScreen extends Component {
                         </>
                     )}
                 </View>
-                <XText style={{color:'#7F7F7F',fontSize:14,position:'absolute',bottom:80,left:0,right:0,textAlign:'center'}} text='转账时间: 2020-01-27 14:00'/>
+                <XText style={{color:'#7F7F7F',fontSize:14,position:'absolute',bottom:80,left:0,right:0,textAlign:'center'}} text={'转账时间: ' + dateToFormat(item.create_time,'yyyy-MM-dd hh:mm')}/>
             </View>
         );
     }

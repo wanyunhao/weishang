@@ -10,8 +10,11 @@ import {Colors, Const} from "../../../../../common/storage/Const";
 import BaseVC from "../../../zfb/Common/BaseVC";
 import {RNStorage} from "../../../../../common/storage/AppStorage";
 import {Notify} from "../../../../../common/events/Notify";
-import {showModalPrompt} from "../../../../../compoments/YHUtils";
+import {showModalPrompt, showOverlayModal} from "../../../../../compoments/YHUtils";
 import {isEmpty} from "../../../../../common/utils/Utils";
+import Overlay from "teaset/components/Overlay/Overlay";
+import {URLInputView} from "../../chat/ChatUrlScreen";
+import {CommonTwoInputView} from "../../chat/views/NewPersonView";
 
 const {width} = Dimensions.get("window");
 
@@ -52,17 +55,30 @@ export default class WalletScreen extends BaseVC {
                     }} itemClick={() => {
                         navigation.push('PocketMoneyScreen')
                     }}/>
-                    <DiscoveryListCell hasLine data={{
+                    <DiscoveryListCell title_info={'1.32%'} hasLine data={{
                         title: '零钱通',
                         rightText: RNStorage.wx_lqt,
                         icon: require('../../../../resource/index/wx/me/pay/wallet/qb_icon_lqt.png'),
+                        title_info:'收益率' + RNStorage.wx_lqtsyl + '%',
                     }} itemClick={() => {
-                        showModalPrompt('充值','',(text)=>{
-                            if (!isEmpty(text) && parseFloat(text)>0) {
-                                RNStorage.wx_lqt = (parseFloat(RNStorage.wx_lqt ) + parseFloat(text)).toFixed(2);
-                                Notify.Refresh_WX_LQ.sendEvent({})
+                        // showModalPrompt('充值','',(text)=>{
+                        //     if (!isEmpty(text) && parseFloat(text)>0) {
+                        //         RNStorage.wx_lqt = (parseFloat(RNStorage.wx_lqt ) + parseFloat(text)).toFixed(2);
+                        //         Notify.Refresh_WX_LQ.sendEvent({})
+                        //     }
+                        // },'请输入金额')
+                        const key = showOverlayModal('zoomOut', true, <CommonTwoInputView value1={RNStorage.wx_lqt} value2={RNStorage.wx_lqtsyl} keyboardType1={'number-pad'} keyboardType2={'number-pad'} firstP={'请输入零钱通余额'} secondP={'请输入利率'} cancelClick={() => {
+                            Overlay.hide(key);
+                        }} confirmClick={(value) => {
+                            if (!isEmpty(value.first) && parseFloat(value.first)>0) {
+                                RNStorage.wx_lqt = parseFloat(value.first).toFixed(2);
                             }
-                        },'请输入金额')
+                            if (!isEmpty(value.second) && parseFloat(value.second)>0) {
+                                RNStorage.wx_lqtsyl = value.second
+                            }
+                            Notify.Refresh_WX_LQ.sendEvent({})
+                            Overlay.hide(key);
+                        }}/>);
                     }}/>
                     <DiscoveryListCell data={{
                         title: '银行卡',

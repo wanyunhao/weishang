@@ -42,6 +42,7 @@ export default class LaunchController extends PureComponent {
                             RNStorage.user_name = userinfo.user_name;
                             RNStorage.wx_lq = '0.00';
                             RNStorage.wx_lqt = '0.00';
+                            RNStorage.wx_lqtsyl = '0.00';
                             navigation.replace('Main')
                         });
                     })

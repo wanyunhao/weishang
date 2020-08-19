@@ -546,6 +546,64 @@ export class AddBillView extends Component {
         )
     }
 }
+
+
+
+export class CommonTwoInputView extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            first:'',
+            second:''
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            first:this.props.value1,
+            second:this.props.value2,
+        })
+    }
+
+    render() {
+        return (
+            <View style={{ alignItems: 'center', marginTop: 10,height:180,}}>
+                <Input
+                    style={{width: 200, marginTop: 10,}}
+                    size='md'
+                    value={this.state.first}
+                    placeholder={this.props.firstP}
+                    keyboardType={this.props.keyboardType1}
+                    onChangeText={text => this.setState({first: text})}
+                />
+                <Input
+                    style={{width: 200, marginTop: 10,}}
+                    size='md'
+                    value={this.state.second}
+                    placeholder={this.props.secondP}
+                    keyboardType={this.props.keyboardType2}
+                    onChangeText={text => this.setState({second: text})}
+                />
+
+                <ConfirmCancelView cancelClick={this.props.cancelClick} confirmClick={()=>{
+                    if (isEmpty(this.state.first)) {
+                        showToast(this.props.firstP);
+                        return
+                    }
+                    if (isEmpty(this.state.second)) {
+                        showToast(this.props.secondP);
+                        return
+                    }
+                    const obj = {first: this.state.first, second: this.state.second};
+                    this.props.confirmClick(obj)
+                }}/>
+            </View>
+        );
+    }
+}
+
+
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',

@@ -152,6 +152,7 @@ export default class SendRPScreen extends WXBaseVC {
                             // zhuanzhangText
                             obj.zhuanzhangText = isEmpty(this.state.hongbaoText) ? this.state.select == 2 ? ('转账给' + this.state.df_user_info.user_name) : '转账给你' : this.state.hongbaoText;
                             obj.zhuanzhangMoney = this.state.hongbaoMoney;
+                            obj.create_time = getNow();
                         }
                         writeToRealm(obj, MSGTableName).then((res) => {
                             this.props.route.params.refreshList();

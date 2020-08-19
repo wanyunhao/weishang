@@ -222,14 +222,15 @@ export default class ChatSystemMsgScreen extends WXBaseVC {
         return (
             <View style={[CommonStyles.container,{backgroundColor: '#7F7F7F'}]}>
                 <WXNavigationBar title={'添加系统消息'} rightText={'完成'} clickRText={()=>{
-                    writeToRealm({
+                    const obj = {
                         id: getNow(),
                         c_id: data.id,//会话id
                         type: 7,//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
                         send_id: parseInt(RNStorage.user_id),//1:文字 2:图片 3:语音 4:视频 5:红包 6:转账 7:系统消息 8:语音通话
                         xitongTextType: 4,//1:纯文字 2:红包 3:消息撤回 4:系统消息
                         xitongText: this.yulanResult,//1:纯文字 2:红包 3:消息撤回
-                    }, MSGTableName).then(() => {
+                    }
+                    writeToRealm(obj, MSGTableName).then(() => {
                         writeToRealm({
                             id: data.id,
                             last_time: getNow(),
@@ -310,6 +311,7 @@ export default class ChatSystemMsgScreen extends WXBaseVC {
                 <FlatList
                     style={{backgroundColor:Colors.white,marginTop:10}}
                     data={isGroup ? this.state.data1:this.state.data}
+                    keyExtractor={(item, index) => "list-item-" + index}
                     renderItem={({item, index}) => {
                         return (
                             <YHTouchableOpacity style={{padding:10}} onPress={()=>{
