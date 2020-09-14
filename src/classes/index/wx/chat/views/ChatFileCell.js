@@ -8,9 +8,63 @@ import TouchableOpacity from "teaset/components/ListRow/TouchableOpacity";
 import {clearRowFromRealm, MSGTableName} from "../../../../../common/utils/RealmUtil";
 
 export default class ChatFileCell extends Component {
+
+    constructor() {
+        super();
+
+        this.mapList = [
+            {
+                title:'.txt',
+                img:require('../../../../resource/index/chat/send/send_file.png')
+            },
+            {
+                title:'.ppt',
+                img:require('../../../../resource/index/chat/send/send_ppt.png')
+            },
+            {
+                title:'.pptx',
+                img:require('../../../../resource/index/chat/send/send_ppt.png')
+            },
+            {
+                title:'.doc',
+                img:require('../../../../resource/index/chat/send/send_word.png')
+            },
+            {
+                title:'.docx',
+                img:require('../../../../resource/index/chat/send/send_word.png')
+            },
+            {
+                title:'.xls',
+                img:require('../../../../resource/index/chat/send/send_excel.png')
+            },
+            {
+                title:'.xlsx',
+                img:require('../../../../resource/index/chat/send/send_excel.png')
+            },
+            {
+                title:'.zip',
+                img:require('../../../../resource/index/chat/send/send_rar.png')
+            },
+            {
+                title:'.rar',
+                img:require('../../../../resource/index/chat/send/send_rar.png')
+            },
+            {
+                title:'.pdf',
+                img:require('../../../../resource/index/chat/send/send_pdf.png')
+            },
+        ]
+    }
+
     render() {
         const data = this.props.data;
         let isSelf = this.props.isSelf;
+        let fileImg = null;
+        this.mapList.map(value => {
+            if (value.title == data.fileType) {
+                fileImg = value.img
+            }
+        })
         return (
             <TouchableOpacity style={styles.container} ref={ref => {
                 this.ref = ref;
@@ -50,7 +104,7 @@ export default class ChatFileCell extends Component {
                                             <Text>{data.fileName +data.fileType}</Text>
                                             <Text style={{color:'#e5e5e5',fontSize:12}}>{data.fileSize}</Text>
                                         </View>
-                                        <XImage icon={require('../../../../resource/images/avatar.png')} iconSize={50}/>
+                                        <XImage icon={fileImg} iconSize={50}/>
                                     </View>
                                 </View>
                                 {isSelf ? <Image style={{width:5,height:12,marginTop:10}} source={require('../../../../resource/index/chat_qp_left.png')}/> : null}

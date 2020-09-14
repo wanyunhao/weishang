@@ -31,43 +31,43 @@ export default class ChatFileScreen extends WXBaseVC {
         this.mapList = [
             {
                 title:'.txt',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_file.png')
             },
             {
                 title:'.ppt',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_ppt.png')
             },
             {
                 title:'.pptx',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_ppt.png')
             },
             {
                 title:'.doc',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_word.png')
             },
             {
                 title:'.docx',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_word.png')
             },
             {
                 title:'.xls',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_excel.png')
             },
             {
                 title:'.xlsx',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_excel.png')
             },
             {
                 title:'.zip',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_rar.png')
             },
             {
                 title:'.rar',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_rar.png')
             },
             {
                 title:'.pdf',
-                img:require('../../../resource/images/avatar.png')
+                img:require('../../../resource/index/chat/send/send_pdf.png')
             },
         ]
     }
@@ -82,7 +82,6 @@ export default class ChatFileScreen extends WXBaseVC {
 
     chooseFileType(index) {
         this.setState({
-
             fileType: this.mapList[index].title,
             fileIndex: index,
         })
@@ -128,7 +127,7 @@ export default class ChatFileScreen extends WXBaseVC {
                 <View style={{padding:10,backgroundColor:Colors.white}}>
                     <Text>预览消息</Text>
                     <View style={{marginTop:10,padding:10,borderRadius:5,borderWidth:0.5,alignSelf:'center', flexDirection:'row',alignItems:'flex-end'}}>
-                        <XImage icon={require('../../../resource/images/avatar.png')} iconSize={50}/>
+                        <XImage icon={this.mapList[this.state.fileIndex].img} iconSize={50}/>
                         <View style={{marginLeft:20,marginRight:20,height:50,justifyContent:'space-between'}}>
                             <Text>{this.state.fileName + this.state.fileType}</Text>
                             <Text style={{color:'#e5e5e5',fontSize:12}}>{this.state.fileSize}</Text>
