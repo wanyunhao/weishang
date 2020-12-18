@@ -76,13 +76,13 @@ target 'EasyApp' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-
-  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
-
-  pod 'RealmJS', :path => '../node_modules/realm'
-
-
-  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+#
+#  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+#
+#  pod 'RealmJS', :path => '../node_modules/realm'
+#
+#
+#  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
   target 'EasyAppTests' do
     inherit! :complete
