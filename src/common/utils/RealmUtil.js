@@ -21,6 +21,7 @@ export const WXConversationSchema = {
     primaryKey: 'id',
     properties: {
         id: 'int',
+        app: 'int',//1: wx 2: zfb 3: qq
         type: 'int',//1 单聊 2 群聊
         user_id: 'int?',
         df_user_id: 'int?',

@@ -80,17 +80,20 @@ export default class LoginVC extends PureComponent {
         //     return;
         // }
         // XHttp().param({account: this.state.phone, password: this.state.password, type: 'account'})
-        // XHttp().param({account: '17721111165', password: '111111', type: 'account'})
-        //     .url(Api.login_account)
-        //     .loadingFunc(loading => showLoading('登陆中...',loading))
-        //     .post((success, json, message, status) => {
-        //         showToast(json.msg);
-        //         if (success) {
-        //             RNStorage.token = json.data.token;
-        //             Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
-        //             navigation.goBack();
-        //         }
-        //     })
+        navigation.replace('Main')
+        XHttp().param({mobile: '17721111165', password: '111111'})
+            .url(Api.Api_User_login)
+            .loadingFunc(loading => showLoading('登陆中...',loading))
+            .post((success, json, message, status) => {
+                showToast(json.info);
+                if (success) {
+                    console.log(json);
+                    // navigation.replace('Main')
+                    // RNStorage.token = json.data.token;
+                    // Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
+                    // navigation.goBack();
+                }
+            })
     }
 }
 

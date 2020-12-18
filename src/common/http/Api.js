@@ -10,6 +10,12 @@ export const Api = {
     Api_Gift_addRecordForTransfer: Base_URL + '/Api/Gift/addRecordForTransfer',//自定义消息-转账
     Api_Gift_addRecordForRecharge: Base_URL + '/Api/Gift/addRecordForRecharge',//自定义消息-转账
     api_Usercenter_getBank: Base_URL + '/api/Usercenter/getBank',// 银行列表
+    Api_User_register: Base_URL + '/Api/User/register',// 注册用户
+    Api_User_resetpwd: Base_URL + '/Api/User/resetpwd',// 忘记密码
+    Api_User_login: Base_URL + '/Api/User/login',// 登录用户
+    Api_user_sendSmsCode: Base_URL + '/Api/User/sendSmsCode',// 发送验证码
+    Api_User_checkCode: Base_URL + '/Api/User/checkCode',// 激活码兑换
+    Api_User_MyInvite: Base_URL + '/Api/User/MyInvite',// 推广码输入
     register_captcha: Base_URL + '/register/captcha',// 发送注册验证码
     login_captcha: Base_URL + '/login/captcha',// 发送登录验证码
     user_pwd_captcha: Base_URL + '/user/pwd/captcha',// 发送修改密码用的短信验证码

@@ -76,22 +76,26 @@ export default class RegisterVC extends PureComponent {
                                         return;
                                     }
                                     let url = '';
+                                    let content = ''
                                     switch (this.state.type) {
                                         case 1:
-                                            url = Api.register_captcha;
+                                            url = Api.Api_User_register;
+                                            content = 'reg'
                                             break;
                                         case 2:
-                                            url = Api.user_pwd_captcha;
+                                            url = Api.Api_User_resetpwd;
+                                            content = 'forget'
                                             break;
                                         case 3:
                                             url = Api.login_captcha;
                                             break;
                                     }
-                                    XHttp().url(url)
-                                        .param({mobile: this.state.phone})
+                                    XHttp().url(Api.Api_user_sendSmsCode)
+                                        .param({mobile: this.state.phone,type:content})
                                         .loadingFunc(loading => showLoading('发送中...', loading))
                                         .post((success, json) => {
-                                            showToast(json.msg);
+                                            showToast(json.info);
+                                            console.log(json);
                                             if (success) {
                                                 this.countDownButton.startCountDown();
                                             }
@@ -141,44 +145,44 @@ export default class RegisterVC extends PureComponent {
     login = () => {
         navigation.popToTop();
         if (this.state.type == 1) {
-            XHttp().url(Api.register_mobile)
-                .param({mobile: this.state.phone, captcha: this.state.code, password: this.state.password})
+            XHttp().url(Api.Api_User_register)
+                .param({mobile: this.state.phone, code: this.state.code, password: this.state.password})
                 .loadingFunc((loading) => showLoading('注册中...', loading))
                 .post((success, data, msg) => {
                     showToast(data.msg);
                     if (success) {
-                        RNStorage.token = json.data.token;
-                        Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
+                        // RNStorage.token = json.data.token;
+                        // Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
                         navigation.popToTop();
                     }
                 });
         }
         if (this.state.type == 2) {
-            XHttp().url(Api.user_pwd_captcha)
-                .param({mobile: this.state.phone, captcha: this.state.code, password: this.state.password})
+            XHttp().url(Api.Api_User_resetpwd)
+                .param({mobile: this.state.phone, captcha: this.state.code, newpassword: this.state.password})
                 .loadingFunc((loading) => showLoading('修改中...', loading))
                 .post((success, data, msg) => {
                     showToast(data.msg);
                     if (success) {
-                        RNStorage.token = json.data.token;
-                        Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
+                        // RNStorage.token = json.data.token;
+                        // Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
                         navigation.popToTop();
                     }
                 });
         }
-        if (this.state.type == 3) {
-            XHttp().url(Api.login_mobile)
-                .param({mobile: this.state.phone, captcha: this.state.code, type: 'mobile'})
-                .loadingFunc((loading) => showLoading('登录中...', loading))
-                .post((success, data, msg) => {
-                    showToast(data.msg);
-                    if (success) {
-                        RNStorage.token = json.data.token;
-                        Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
-                        navigation.popToTop();
-                    }
-                });
-        }
+        // if (this.state.type == 3) {
+        //     XHttp().url(Api.login_mobile)
+        //         .param({mobile: this.state.phone, captcha: this.state.code, type: 'mobile'})
+        //         .loadingFunc((loading) => showLoading('登录中...', loading))
+        //         .post((success, data, msg) => {
+        //             showToast(data.msg);
+        //             if (success) {
+        //                 RNStorage.token = json.data.token;
+        //                 Notify.LOGIN_SUCCESS.sendEvent({isLogin: true});
+        //                 navigation.popToTop();
+        //             }
+        //         });
+        // }
     }
 }
 

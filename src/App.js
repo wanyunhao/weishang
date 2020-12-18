@@ -13,6 +13,7 @@ import {Assets} from "./common/http/Api";
 import LaunchController from "./mainController/LaunchController";
 import MainController from "./mainController/MainController";
 import WXController from "./mainController/WXController";
+import QQController from "./mainController/QQController";
 import ZFBController from "./mainController/ZFBController";
 import LoginVC from "./classes/login/LoginVC";
 import RegisterVC from "./classes/login/RegisterVC";
@@ -44,7 +45,7 @@ import EditMoney from './classes/index/zfb/five/zongzichan/EditMoney';
 import ZFBContactIndex from './classes/index/zfb/four/contact/ZFBContactIndex';
 import WXNewFriendScreen from "./classes/index/wx/contact/WXNewFriendScreen";
 import WXPersonInfoScreen from "./classes/index/wx/me/WXPersonInfoScreen";
-import TeaNavigator from "teaset/components/TeaNavigator/TeaNavigator";
+import QQChattingScreen from "./classes/index/qq/chat/ChattingScreen";
 
 import TeasetExampleHome from './classes/demo/views/Home';
 import {Const} from "./common/storage/Const";
@@ -111,5 +112,7 @@ function ScreenList() {
         <Screen name='ChatFileScreen' component={ChatFileScreen}/>
         <Screen name='ChatUrlScreen' component={ChatUrlScreen}/>
         <Screen name='WXPersonInfoScreen' component={WXPersonInfoScreen}/>
+        <Screen name='QQController' component={QQController}/>
+        <Screen name='QQChattingScreen' component={QQChattingScreen}/>
     </Navigator>;
 }

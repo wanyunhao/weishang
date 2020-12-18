@@ -170,6 +170,7 @@ export default class ContactScreen extends BaseVC {
             let pra_id = getNow();
             writeToRealm({
               id: pra_id,
+              app: 1,//1 单聊 2 群聊
               type: 1,//1 单聊 2 群聊
               user_id: parseInt(RNStorage.user_id),
               df_user_id: item.item.id,

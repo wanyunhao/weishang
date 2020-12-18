@@ -49,12 +49,12 @@ export default class LaunchController extends PureComponent {
 
                 } else {
 
-                    navigation.replace('Main')
+                    navigation.replace('LoginVC')
+                    // navigation.replace('Main')
                 }
 
             })
             // navigation.replace('Main')
-            // navigation.replace('LoginVC')
         }, this.printLog);
     };
 

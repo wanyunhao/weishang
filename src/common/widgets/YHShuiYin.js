@@ -93,7 +93,7 @@ export default class YHShuiYin extends PureComponent {
         let {isOpen, toFloat, animating} = this.state;
         if (!isOpen && toFloat && !animating) {
             return <View{...this.gestureResponder.panHandlers} style={styles.floatBtn}>
-                <Image source={require('../../classes/resource/images/avatar.png')} style={{width: IconRadius / 2, height: IconRadius / 2}}/>
+                <Image resizeMode='contain' source={require('../../classes/resource/index/chat/send/shuiyintu.png')} style={{width: IconRadius , height: IconRadius}}/>
             </View>
         }
         return null
@@ -196,15 +196,11 @@ const styles = StyleSheet.create({
     floatBtn: {
         left: 0,
         top: 0,
-        borderRadius: IconRadius / 2,
-        borderColor: DebugColors.blue,
-        borderWidth: 2,
-        height: IconRadius,
+        height: IconRadius/2,
         width: IconRadius,
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'gray',
     },
     titleStyle: {
         fontSize: 17,

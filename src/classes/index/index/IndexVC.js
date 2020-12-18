@@ -147,7 +147,26 @@ export default class IndexVC extends BaseVC {
                             {this.zfbArr.map(((value, index) => {
                                 return (
                                     <XView onPress={()=>{
-                                        showToast(index);
+                                    }} style={{alignItems: 'center'}}>
+                                        <XImage icon={value.img}
+                                                iconSize={40}/>
+                                        <Text style={{color: '#4A4A4A',marginTop:8}}>{value.title}</Text>
+                                    </XView>
+                                )
+                            }))}
+                        </View>
+                    </View>
+                    <View style={{paddingHorizontal:21,paddingVertical:15,backgroundColor:Colors.white,marginTop:10}}>
+                        <XView onPress={()=>{
+                            navigation.push('QQController')
+                        }} style={{flexDirection:'row',justifyContent: 'space-between',alignItems: 'center'}}>
+                            <XImage icon={require('../../resource/index/index/xb.png')} iconSize={38.8}/>
+                            <XImage icon={require('../../resource/index/index/more.png')} iconSize={13.85}/>
+                        </XView>
+                        <View style={{flexDirection:'row',alignItems: 'center',justifyContent: 'space-around',marginTop:27}}>
+                            {this.zfbArr.map(((value, index) => {
+                                return (
+                                    <XView onPress={()=>{
                                     }} style={{alignItems: 'center'}}>
                                         <XImage icon={value.img}
                                                 iconSize={40}/>

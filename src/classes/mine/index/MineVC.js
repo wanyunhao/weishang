@@ -1,8 +1,13 @@
 import React from 'react';
 import {StatusBar, StyleSheet, Text, View,} from 'react-native';
 import {Colors, Const} from "../../../common/storage/Const";
-import {XImage} from "react-native-easy-app";
+import {XImage, XView} from "react-native-easy-app";
 import BaseVC from "../../index/zfb/Common/BaseVC";
+import {showModalPrompt} from "../../../compoments/YHUtils";
+import {isEmpty} from "../../../common/utils/Utils";
+import {RNStorage} from "../../../common/storage/AppStorage";
+import {writeToRealm, ZFBUserTableName} from "../../../common/utils/RealmUtil";
+import {Notify} from "../../../common/events/Notify";
 
 export default class MineVC extends BaseVC {
     constructor() {
@@ -19,7 +24,7 @@ export default class MineVC extends BaseVC {
                 img: require('../../resource/mine/index/me_btn1.png')
             },
             {
-                title: '购买授权码',
+                title: '输入兑换码',
                 img: require('../../resource/mine/index/me_btn2.png')
             },
             {
@@ -67,12 +72,23 @@ export default class MineVC extends BaseVC {
                     <Text style={{fontSize: 14, color: '#2B2B2B', marginTop: 20}}>累计邀请0人</Text>
                 </View>
                 <View style={{flexDirection:'row',flexWrap: 'wrap'}}>
-                    {this.arr.map((value => {
+                    {this.arr.map(((value,index) => {
                         return (
-                            <View style={{alignItems:'center',justifyContent:'center',width:(Const.screenWidth / 3) - 1,height:(Const.screenWidth / 3) - 1}}>
+                            <XView style={{alignItems:'center',justifyContent:'center',width:(Const.screenWidth / 3) - 1,height:(Const.screenWidth / 3) - 1}} onPress={()=>{
+                                if (index == 1) {
+                                    showModalPrompt('兑换码','',(text)=>{
+
+                                    },'请输入兑换码')
+                                }
+                                if (index == 2) {
+                                    showModalPrompt('推广码','',(text)=>{
+
+                                    },'请输入推广码')
+                                }
+                            }}>
                                 <XImage icon={value.img} iconSize={32}/>
                                 <Text style={{color:'#7E7E7E',fontSize:14,marginTop:12}}>{value.title}</Text>
-                            </View>
+                            </XView>
                         )
                     }))}
                 </View>

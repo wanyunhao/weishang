@@ -104,6 +104,7 @@ export default class ConversationScreen extends WXBaseVC {
                                         }, UsersTableName).then((res) => {
                                             writeToRealm({
                                                 id: pra_id,
+                                                app: 1,//1 单聊 2 群聊
                                                 type: 1,//1 单聊 2 群聊
                                                 user_id: parseInt(RNStorage.user_id),
                                                 df_user_id: pra_id,
@@ -126,6 +127,7 @@ export default class ConversationScreen extends WXBaseVC {
                                         let pra_id = getNow();
                                         writeToRealm({
                                             id: pra_id,
+                                            app: 1,//1 单聊 2 群聊
                                             type: 2,//1 单聊 2 群聊
                                             group_name:value.group_name,
                                             group_count:parseInt(value.group_count),
@@ -156,6 +158,7 @@ export default class ConversationScreen extends WXBaseVC {
                                                     let pra_id = getNow();
                                                     writeToRealm({
                                                         id: pra_id,
+                                                        app: 1,//1 单聊 2 群聊
                                                         type: 1,//1 单聊 2 群聊
                                                         user_id: parseInt(RNStorage.user_id),
                                                         df_user_id: item.id,
