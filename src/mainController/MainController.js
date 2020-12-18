@@ -14,6 +14,7 @@ import HttpConfig from '../common/http/HttpConfig';
 
 import OneController from '../classes/index/index/IndexVC';
 import FourController from '../classes/mine/index/MineVC';
+import YHShuiYin from "../common/widgets/YHShuiYin";
 
 
 
@@ -64,6 +65,7 @@ export default class MainController extends PureComponent {
         // HttpConfig.initHttpConfig();
         // DebugManager.initDeviceInfo(DeviceInfo);
         // DebugManager.showFloat(Manager);
+        YHShuiYin.showFloat(Manager)
     };
 
     backListener = () => {
