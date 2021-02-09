@@ -1,0 +1,6 @@
+module Pods_EasyApp_EasyAppTests {
+  umbrella header "Pods-EasyApp-EasyAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
